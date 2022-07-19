@@ -6,5 +6,6 @@ import { UserMainPageComponent } from './pages/user-main-page/user-main-page.com
 @NgModule({
   declarations: [UserTestComponent, UserMainPageComponent],
   imports: [CommonModule],
+  exports: [UserTestComponent, UserMainPageComponent],
 })
 export class UserModule {}
