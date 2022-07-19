@@ -2,7 +2,9 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "toboggan-api": "apps/toboggan-api",
     "toboggan-app": "apps/toboggan-app",
-    "toboggan-app-e2e": "apps/toboggan-app-e2e"
+    "toboggan-app-e2e": "apps/toboggan-app-e2e",
+    "toboggan-common": "libs/toboggan-common"
   }
 }

@@ -1,4 +1,9 @@
+# Notes:
+- https://github.com/nrwl/nx/issues/11138
+- put common object types @common-data project? (between app and api)
 
+
+---------------
 
 # TobogganWs
 

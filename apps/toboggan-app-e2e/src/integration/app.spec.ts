@@ -1,13 +1,11 @@
-import { getGreeting } from '../support/app.po';
+import { getCreateUserButton, getUsers } from '../support/app.po';
 
-describe('toboggan-app', () => {
+describe('TobogganApp', () => {
   beforeEach(() => cy.visit('/'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome toboggan-app');
+  it('should display users', () => {
+    getUsers().should((t) => expect(t.length).equal(2));
+    getCreateUserButton().click();
+    getUsers().should((t) => expect(t.length).equal(3));
   });
 });
