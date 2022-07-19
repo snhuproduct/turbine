@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "toboggan-app": "apps/toboggan-app",
+    "toboggan-app-e2e": "apps/toboggan-app-e2e"
+  }
+}
