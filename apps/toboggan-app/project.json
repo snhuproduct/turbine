@@ -16,7 +16,12 @@
         "tsConfig": "apps/toboggan-app/tsconfig.app.json",
         "assets": [
           "apps/toboggan-app/src/favicon.ico",
-          "apps/toboggan-app/src/assets"
+          "apps/toboggan-app/src/assets",
+          {
+            "glob": "**/*",
+            "input": "./node_modules/@snhuproduct/toboggan-ui-components-library/src/assets",
+            "output": "/assets/"
+          }
         ],
         "styles": [
           "./node_modules/@snhuproduct/toboggan-ui-components-library/src/scss/styles.scss",
