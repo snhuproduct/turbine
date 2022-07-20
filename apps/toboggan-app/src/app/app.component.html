@@ -1,14 +1,15 @@
-<h1>Users</h1>
+<gp-page>
+  <h1>Users</h1>
 
-<ul>
-  <li *ngFor="let t of users" class="user">{{ t.username }}</li>
-  <button id="create-user" (click)="createUser()">Create User</button>
+  <ul>
+    <li *ngFor="let t of users" class="user">{{ t.username }}</li>
+    <button id="create-user" (click)="createUser()">Create User</button>
+  </ul>
 
-</ul>
 
-
-<ul>
+  <ul>
     <li *ngFor="let t of groups" class="group">{{ t.groupname }}</li>
     <button id="create-group" (click)="createGroup()">Create Group</button>
-  
   </ul>
+
+</gp-page>
