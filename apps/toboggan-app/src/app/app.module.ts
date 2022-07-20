@@ -1,14 +1,22 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, UserModule],
+  imports: [
+    BrowserAnimationsModule,
+    BrowserModule,
+    StoriesModule,
+    HttpClientModule,
+    AppRoutingModule,
+    UserModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

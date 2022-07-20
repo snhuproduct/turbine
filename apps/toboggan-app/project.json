@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/toboggan-app",
         "index": "apps/toboggan-app/src/index.html",
@@ -16,7 +18,10 @@
           "apps/toboggan-app/src/favicon.ico",
           "apps/toboggan-app/src/assets"
         ],
-        "styles": ["apps/toboggan-app/src/styles.css"],
+        "styles": [
+          "./node_modules/@snhuproduct/toboggan-ui-components-library/src/scss/styles.scss",
+          "apps/toboggan-app/src/styles.css"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -84,7 +89,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/toboggan-app"],
+      "outputs": [
+        "coverage/apps/toboggan-app"
+      ],
       "options": {
         "jestConfig": "apps/toboggan-app/jest.config.ts",
         "passWithNoTests": true
