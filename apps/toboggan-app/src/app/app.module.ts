@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +14,6 @@ import { UserModule } from './user/user.module';
     StoriesModule,
     HttpClientModule,
     AppRoutingModule,
-    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
