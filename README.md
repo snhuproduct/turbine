@@ -6,6 +6,19 @@ This README file contains instructions regarding our main project dependencies (
 
 - [Environment Setup Review](https://drive.google.com/file/d/1gbKBwPrOcju0hHzaR9aFWiOdxlxPf0ie/view)
 
+## Requirements
+
+- This project requires you to have a .npmrc file on the root path with your credentials setup. It should look similar to this:
+
+```
+//npm.pkg.github.com/:_authToken=ASK_THIS_TOKEN_IN_OUR_SLACK_CHANNEL
+@snhuproduct:registry=https://npm.pkg.github.com/
+
+//npm.pkg.github.com/:_authToken=GITHUB_PERSONAL_ACCESS_TOKEN_HERE
+```
+
+- If this is not setup properly, you'll have a 401 error while running npm install, due to our toboggan-ui module.
+
 ## Storybook
 
 #### Importing toboggan-ui from local:
