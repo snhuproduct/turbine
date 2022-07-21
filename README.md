@@ -51,9 +51,9 @@ Libraries are shareable across libraries and applications. They can be imported 
 
 Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
-#### Code scaffolding
+#### Generate a component
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+- nx generate @nrwl/angular:component user/components/create-user --project=toboggan-app
 
 #### Build
 
