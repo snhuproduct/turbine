@@ -11,7 +11,6 @@
   },
   "private": true,
   "dependencies": {
-    "@snhuproduct/toboggan-ui-components-library": "^1.4.0",
     "@angular/animations": "~14.0.0",
     "@angular/common": "~14.0.0",
     "@angular/compiler": "~14.0.0",
@@ -24,6 +23,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nrwl/angular": "14.4.3",
+    "@snhuproduct/toboggan-ui-components-library": "^1.4.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
