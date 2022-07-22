@@ -1,4 +1,3 @@
-{{ bannerService.banner | json }}
 <div *ngIf="bannerService.banner" class="banner-container">
   <gp-banner-alert
     [alertType]="bannerService.banner.type"
@@ -7,13 +6,14 @@
     <p gp-alert-msg *ngIf="bannerService.banner.message">
       {{ bannerService.banner.message }}
     </p>
+
     <button
-      *ngIf="bannerService.banner.button"
+      *ngIf="bannerService.banner.button?.action"
       gp-button
+      (click)="bannerService.banner.button?.action()"
       styleType="primary"
-      (click)="(bannerService.banner.button.action)"
     >
-      {{ bannerService.banner.button.label }}
+      {{ bannerService.banner.button?.label }}
     </button>
   </gp-banner-alert>
 </div>
