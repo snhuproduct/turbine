@@ -1,19 +1,37 @@
-# Notes:
-- https://github.com/nrwl/nx/issues/11138
-- put common object types @common-data project? (between app and api)
-
-
----------------
-
 # TobogganWs
 
-This project was generated using [Nx](https://nx.dev).
+This README file contains instructions regarding our main project dependencies (Nx, storybook and etc) and also some common issues troubleshooting.
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Overview
 
-🔎 **Smart, Fast and Extensible Build System**
+- [Environment Setup Review](https://drive.google.com/file/d/1gbKBwPrOcju0hHzaR9aFWiOdxlxPf0ie/view)
 
-## Quick Start & Documentation
+## Requirements
+
+- This project requires you to have a .npmrc file on the root path with your credentials setup. It should look similar to this:
+
+```
+//npm.pkg.github.com/:_authToken=ASK_THIS_TOKEN_IN_OUR_SLACK_CHANNEL
+@snhuproduct:registry=https://npm.pkg.github.com/
+
+//npm.pkg.github.com/:_authToken=GITHUB_PERSONAL_ACCESS_TOKEN_HERE
+```
+
+- If this is not setup properly, you'll have a 401 error while running npm install, due to our toboggan-ui module.
+
+## Storybook
+
+#### Importing toboggan-ui from local:
+
+The following should be run in your toboggan-ui project:
+
+- nx run stories:build-storybook
+- cd to dist/libs/stories
+- npm pack --> this will create file
+- snhuproduct-toboggan-ui-components-library-1.4.1.tgz
+- In the toboggan-ws do npm install [full path to tgz file]
+
+## Nx
 
 [Nx Documentation](https://nx.dev/angular)
 
@@ -21,30 +39,12 @@ This project was generated using [Nx](https://nx.dev).
 
 [Interactive Tutorial](https://nx.dev/react-tutorial/01-create-application)
 
-## Adding capabilities to your workspace
+#### Useful extensions for VSCode:
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+- [NX Console](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
+  - Easily generate NX Commands
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are our core plugins:
-
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
-
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-## Generate an application
+#### Generate an application
 
 Run `ng g @nrwl/angular:app my-app` to generate an application.
 
@@ -52,7 +52,7 @@ Run `ng g @nrwl/angular:app my-app` to generate an application.
 
 When using Nx, you can create multiple applications and libraries in the same workspace.
 
-## Generate a library
+#### Generate a library
 
 Run `ng g @nrwl/angular:lib my-lib` to generate a library.
 
@@ -60,51 +60,34 @@ Run `ng g @nrwl/angular:lib my-lib` to generate a library.
 
 Libraries are shareable across libraries and applications. They can be imported from `@toboggan-ws/mylib`.
 
-## Development server
+#### Development server
 
 Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+#### Generate a component
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+- nx generate @nrwl/angular:component user/components/create-user --project=toboggan-app
 
-## Build
+#### Build
 
 Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+#### Running unit tests
 
 Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
-## Running end-to-end tests
+#### Running end-to-end tests
 
 Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
-## Understand your workspace
+#### Understand your workspace
 
 Run `nx graph` to see a diagram of the dependencies of your projects.
 
-## Further help
+#### Further help
 
 Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-
-
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
