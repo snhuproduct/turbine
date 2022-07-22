@@ -1,1 +1,22 @@
-<p>create-user works!</p>
+<form [formGroup]="userForm">
+    <p class="gp-paragraph">Share some information about the new user. You can always edit these details
+        later.</p>
+    <gp-input
+        label="First Name"
+        [error]="hasRequiredError('firstName')"
+        errorMessage="First name is required">
+        <input type="text" formControlName="firstName">
+    </gp-input>
+    <gp-input
+        label="Last Name"
+        [error]="hasRequiredError('lastName')"
+        errorMessage="Last name is required">
+        <input type="text" formControlName="lastName">
+    </gp-input>
+    <gp-input
+        label="Email Address"
+        [error]="hasRequiredError('email')"
+        errorMessage="Email Address is required">
+        <input type="text" formControlName="email">
+    </gp-input>
+</form>

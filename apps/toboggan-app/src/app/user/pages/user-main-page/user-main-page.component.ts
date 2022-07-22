@@ -8,6 +8,8 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
   styleUrls: ['./user-main-page.component.css'],
 })
 export class UserMainPageComponent {
+  createUserDialogTitle = "Add New User";  
+
   createUserComponent?: CreateUserComponent;
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
@@ -18,21 +20,21 @@ export class UserMainPageComponent {
     {
       title: 'Add New User',
       onClick: () => this.handleAddNewUserModalButton(),
-      style: "secondary"
+      style: "primary"
     }
 ];
 
-  constructor() {}
+  updateUserModalTitle(title: string){
+    this.createUserDialogTitle = title;
+  }
 
-  ngOnInit(): void {}
 
-  // methods for Create User Modal
   handleCancelCreateUserModalButton(){
     return true;
   }
 
-  handleAddNewUserModalButton() {
-    return true;
+  handleAddNewUserModalButton() {    
+    return this.createUserComponent ? this.createUserComponent.handleAddNewUserModalButton() : false;
   }
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {
