@@ -1,3 +1,14 @@
 <gp-page [loggedin]="true">
-  <p>[MAIN USER PAGE PLACEHOLDER]</p>
+  <main>
+    <div class="row">
+      <div class="col">
+        <button gp-button gp-modal-trigger [modalTemplate]="createusertemplate" [modalTitle]="createUserDialogTitle"
+          [modalButtons]="createUserModalButtonsConfig" aria-label="blomp">Add New User</button>
+        <ng-template #createusertemplate>
+          <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
+          </toboggan-ws-create-user>
+        </ng-template>
+      </div>
+    </div>
+  </main>
 </gp-page>

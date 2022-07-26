@@ -2275,10 +2275,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@snhuproduct/toboggan-ui-components-library@^1.4.1":
-  "integrity" "sha512-LmhGb5uq8RKNl0SZuG5ZYTqTHb2OBqoZjD8jiskBnhaUybdZ/e6Hj1CaLTiFWsJt2yLNXkPXk8MYMkNJKFgn8g=="
-  "resolved" "https://npm.pkg.github.com/download/@snhuproduct/toboggan-ui-components-library/1.4.1/a38a26665b9dc5e944807d5bf903362d4a878eadfd75e0ef84a6dd70903a7f7b"
-  "version" "1.4.1"
+"@snhuproduct/toboggan-ui-components-library@^1.4.3":
+  "integrity" "sha512-9MbEBxAA6SSXFSznyYxAPAiLG616xEuDqF7PduBZhLgnoeOgA2flt0Cu6pOYK6fqUt+iJ/VkVSXdP64CyZ4Rzg=="
+  "resolved" "https://npm.pkg.github.com/download/@snhuproduct/toboggan-ui-components-library/1.4.3/cc754d0bced0487a4ee1b896464c07fe2ace081518a0d122f017bde674fb2031"
+  "version" "1.4.3"
   dependencies:
     "tslib" "^2.3.0"
 
@@ -3954,6 +3954,11 @@
   dependencies:
     "color-name" "~1.1.4"
 
+"color-name@^1.1.4":
+  "integrity" "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA=="
+  "resolved" "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz"
+  "version" "1.1.4"
+
 "color-name@~1.1.4":
   "integrity" "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA=="
   "resolved" "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz"
@@ -4324,6 +4329,11 @@
   "integrity" "sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg=="
   "resolved" "https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz"
   "version" "3.0.0"
+
+"cssfontparser@^1.2.1":
+  "integrity" "sha512-6tun4LoZnj7VN6YeegOVb67KBX/7JJsqvj+pv3ZA7F878/eN33AbGa5b/S/wXxS/tcp8nc40xRUrsPlxIyNUPg=="
+  "resolved" "https://registry.npmjs.org/cssfontparser/-/cssfontparser-1.2.1.tgz"
+  "version" "1.2.1"
 
 "cssnano-preset-default@^5.2.12":
   "integrity" "sha512-OyCBTZi+PXgylz9HAA5kHyoYhfGcYdwFmyaJzWnzxuGRtnMw/kR6ilW9XzlzlRAtB6PLT/r+prYgkef7hngFew=="
@@ -6432,6 +6442,14 @@
   dependencies:
     "lodash" "^4.17.20"
 
+"jest-canvas-mock@^2.4.0":
+  "integrity" "sha512-mmMpZzpmLzn5vepIaHk5HoH3Ka4WykbSoLuG/EKoJd0x0ID/t+INo1l8ByfcUJuDM+RIsL4QDg/gDnBbrj2/IQ=="
+  "resolved" "https://registry.npmjs.org/jest-canvas-mock/-/jest-canvas-mock-2.4.0.tgz"
+  "version" "2.4.0"
+  dependencies:
+    "cssfontparser" "^1.2.1"
+    "moo-color" "^1.0.2"
+
 "jest-changed-files@^27.5.1":
   "integrity" "sha512-buBLMiByfWGCoMsLLzGUUSpAmIAGnbR2KJoMN10ziLhOLvP4e0SlypHnAel8iqQXTrcbmfEY9sSqae5sgUsTvw=="
   "resolved" "https://registry.npmjs.org/jest-changed-files/-/jest-changed-files-27.5.1.tgz"
@@ -7221,6 +7239,11 @@
     "slice-ansi" "^4.0.0"
     "wrap-ansi" "^6.2.0"
 
+"lottie-web-light@^1.1.0":
+  "integrity" "sha512-4DS7AdcRywHCuDJTm1/R3Rna6yg1GH4UCRsbBDjzmg3Zxuu8plGCcXqQdFQoxyEvJqiRSW866PVQLislf1b6MQ=="
+  "resolved" "https://registry.npmjs.org/lottie-web-light/-/lottie-web-light-1.1.0.tgz"
+  "version" "1.1.0"
+
 "lru-cache@^6.0.0":
   "integrity" "sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA=="
   "resolved" "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz"
@@ -7540,6 +7563,13 @@
   "integrity" "sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw=="
   "resolved" "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
+
+"moo-color@^1.0.2":
+  "integrity" "sha512-i/+ZKXMDf6aqYtBhuOcej71YSlbjT3wCO/4H1j8rPvxDJEifdwgg5MaFyu6iYAT8GBZJg2z0dkgK4YMzvURALQ=="
+  "resolved" "https://registry.npmjs.org/moo-color/-/moo-color-1.0.3.tgz"
+  "version" "1.0.3"
+  dependencies:
+    "color-name" "^1.1.4"
 
 "mri@^1.1.5":
   "integrity" "sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA=="
