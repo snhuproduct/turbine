@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { UserMainPageComponent } from './user-main-page.component';
 
@@ -8,6 +11,7 @@ describe('UserMainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [StoriesModule, BrowserAnimationsModule, SharedModule],
       declarations: [UserMainPageComponent],
     }).compileComponents();
 
