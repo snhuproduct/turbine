@@ -13,17 +13,14 @@ export class CreateUserComponent implements AfterViewInit {
   userForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
+    email: new FormControl('', [ Validators.required, Validators.email]),
 })
-
-  constructor() {}
 
   ngAfterViewInit(): void {
         // provide own handle to the hosting component
         if(this.returnHandle){
             this.returnHandle(this);
         }
-        this.changeTitle.emit("I changed title");
    }
 
    handleAddNewUserModalButton() {
@@ -31,12 +28,23 @@ export class CreateUserComponent implements AfterViewInit {
         return this.userForm.valid;
     }
 
-    hasRequiredError(controlName: string) {
-        console.log('has required error', controlName);
-        const control = this.userForm.get(controlName);
-        if(control){
-            return !control.valid && (control.dirty || control.touched);
-        }
-        return false;
+    hasError(controlName: string){
+      const control = this.userForm.get(controlName);
+      if(control){
+        return !control.valid && (control.dirty || control.touched);
+      }
+      return false;
     }
-}
+
+    getErrorMessage(controlName: string, friendlyName: string){
+      const control = this.userForm.get(controlName);
+      if(control)
+        if(control.hasError('required')){
+          return friendlyName + ' is required';
+        }
+        else if(control.hasError('email')){
+          return friendlyName + ' format is invalid';
+        }
+        return '';
+      }      
+  }

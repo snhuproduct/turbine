@@ -3,20 +3,20 @@
         later.</p>
     <gp-input
         label="First Name"
-        [error]="hasRequiredError('firstName')"
-        errorMessage="First name is required">
+        [error]="hasError('firstName')"
+        [errorMessage]="getErrorMessage('firstName', 'First Name')">
         <input type="text" formControlName="firstName">
     </gp-input>
     <gp-input
         label="Last Name"
-        [error]="hasRequiredError('lastName')"
-        errorMessage="Last name is required">
+        [error]="hasError('lastName')"
+        [errorMessage]="getErrorMessage('lastName', 'Last Name')">
         <input type="text" formControlName="lastName">
     </gp-input>
     <gp-input
         label="Email Address"
-        [error]="hasRequiredError('email')"
-        errorMessage="Email Address is required">
-        <input type="text" formControlName="email">
+        [error]="hasError('email')"
+        [errorMessage]="getErrorMessage('email', 'Email')">
+        <input type="email" formControlName="email">
     </gp-input>
 </form>
