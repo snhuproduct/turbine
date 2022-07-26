@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { BannerService } from '../../services/banner/banner.service';
 import { IBanner } from '../../services/banner/banner.types';
+import { SharedModule } from '../../shared.module';
 
 import { BannerComponent } from './banner.component';
 
@@ -13,7 +13,7 @@ describe('BannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoriesModule],
+      imports: [SharedModule],
       declarations: [BannerComponent],
       providers: [BannerService],
     }).compileComponents();
