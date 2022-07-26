@@ -8,7 +8,9 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "app:lint": "nx run toboggan-app:lint --fix",
+    "api:lint": "nx run toboggan-api:lint --fix"
   },
   "private": true,
   "dependencies": {
