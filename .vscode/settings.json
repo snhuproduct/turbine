@@ -2,5 +2,11 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
-  }
+  },
+  "testing.autoRun.mode": "all",
+  "jest.showCoverageOnLoad": true,
+  "jest.coverageFormatter": "GutterFormatter",
+  "jest.jestCommandLine": "npm run test --"
 }
+
+

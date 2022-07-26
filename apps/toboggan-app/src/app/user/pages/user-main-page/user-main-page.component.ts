@@ -24,11 +24,6 @@ export class UserMainPageComponent {
     }
 ];
 
-  updateUserModalTitle(title: string){
-    this.createUserDialogTitle = title;
-  }
-
-
   handleCancelCreateUserModalButton(){
     return true;
   }
