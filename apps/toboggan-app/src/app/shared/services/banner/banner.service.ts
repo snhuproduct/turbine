@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IBanner } from './banner.types';
+import { IBanner, INewBanner } from './banner.types';
 
 @Injectable({
   providedIn: 'root',
@@ -7,11 +7,14 @@ import { IBanner } from './banner.types';
 export class BannerService {
   public banners: IBanner[] = [];
 
-  public showBanner(banner: IBanner): void {
-    this.banners.push(banner);
+  public showBanner(banner: INewBanner): void {
+    this.banners.push({
+      id: this.banners.length,
+      ...banner,
+    });
   }
 
   public hideBanner(index: number): void {
-    this.banners.splice(index, 1);
+    this.banners = this.banners.filter((banner) => banner.id !== index);
   }
 }

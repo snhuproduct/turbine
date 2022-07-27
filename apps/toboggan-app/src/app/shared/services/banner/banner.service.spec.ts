@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BannerService } from './banner.service';
-import { IBanner } from './banner.types';
+import { INewBanner } from './banner.types';
 
 describe('BannerService', () => {
   let service: BannerService;
-  let banner: IBanner;
+  let banner: INewBanner;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -24,7 +24,12 @@ describe('BannerService', () => {
 
   it('should update the banner variable, when showBanner is called', () => {
     service.showBanner(banner);
-    expect(service.banners).toEqual([banner]);
+    expect(service.banners).toEqual([
+      {
+        id: 0,
+        ...banner,
+      },
+    ]);
   });
 
   it('should properly clear the banner variable, when hideBanner is called', () => {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BannerService } from '../../services/banner/banner.service';
-import { IBanner } from '../../services/banner/banner.types';
+import { INewBanner } from '../../services/banner/banner.types';
 import { SharedModule } from '../../shared.module';
 
 import { BannerComponent } from './banner.component';
@@ -9,7 +9,7 @@ describe('BannerComponent', () => {
   let component: BannerComponent;
   let fixture: ComponentFixture<BannerComponent>;
   let bannerService: BannerService;
-  let testBanner: IBanner;
+  let testBanner: INewBanner;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

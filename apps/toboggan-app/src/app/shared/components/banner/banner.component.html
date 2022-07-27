@@ -9,7 +9,7 @@
         <button
           *ngIf="banner.button?.action"
           gp-button
-          (click)="banner.button?.action()"
+          (click)="banner.button?.action(banner.id)"
           styleType="primary"
         >
           {{ banner.button?.label }}
