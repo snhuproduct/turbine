@@ -5,13 +5,13 @@ import { IBanner } from './banner.types';
   providedIn: 'root',
 })
 export class BannerService {
-  public banner: IBanner | null = null;
+  public banners: IBanner[] = [];
 
   public showBanner(banner: IBanner): void {
-    this.banner = banner;
+    this.banners.push(banner);
   }
 
-  public hideBanner(): void {
-    this.banner = null;
+  public hideBanner(index: number): void {
+    this.banners.splice(index, 1);
   }
 }

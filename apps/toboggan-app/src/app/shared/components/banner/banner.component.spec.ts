@@ -46,7 +46,7 @@ describe('BannerComponent', () => {
 
   it("shouldn't display a banner if we call bannerService.hideBanner", () => {
     bannerService.showBanner(testBanner);
-    bannerService.hideBanner();
+    bannerService.hideBanner(0);
 
     fixture.detectChanges();
 

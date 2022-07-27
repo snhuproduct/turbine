@@ -24,12 +24,12 @@ describe('BannerService', () => {
 
   it('should update the banner variable, when showBanner is called', () => {
     service.showBanner(banner);
-    expect(service.banner).toEqual(banner);
+    expect(service.banners).toEqual([banner]);
   });
 
   it('should properly clear the banner variable, when hideBanner is called', () => {
     service.showBanner(banner);
-    service.hideBanner();
-    expect(service.banner).toBeNull();
+    service.hideBanner(0);
+    expect(service.banners.length).toBe(0);
   });
 });

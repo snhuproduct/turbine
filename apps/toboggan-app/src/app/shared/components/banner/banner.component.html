@@ -1,19 +1,20 @@
-<div *ngIf="bannerService.banner" class="banner-container">
-  <gp-banner-alert
-    [alertType]="bannerService.banner.type"
-    [heading]="bannerService.banner.heading"
-  >
-    <p gp-alert-msg *ngIf="bannerService.banner.message">
-      {{ bannerService.banner.message }}
-    </p>
+<div *ngIf="bannerService.banners.length > 0" class="banner-container">
+  <div *ngFor="let banner of bannerService.banners">
+    <div class="banner">
+      <gp-banner-alert [alertType]="banner.type" [heading]="banner.heading">
+        <p gp-alert-msg *ngIf="banner.message">
+          {{ banner.message }}
+        </p>
 
-    <button
-      *ngIf="bannerService.banner.button?.action"
-      gp-button
-      (click)="bannerService.banner.button?.action()"
-      styleType="primary"
-    >
-      {{ bannerService.banner.button?.label }}
-    </button>
-  </gp-banner-alert>
+        <button
+          *ngIf="banner.button?.action"
+          gp-button
+          (click)="banner.button?.action()"
+          styleType="primary"
+        >
+          {{ banner.button?.label }}
+        </button>
+      </gp-banner-alert>
+    </div>
+  </div>
 </div>
