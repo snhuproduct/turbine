@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Group, User } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  users: User[] = [];
-  groups: Group[] = [];
+  users: IUser[] = [];
+  groups: IGroup[] = [];
 
   constructor(private http: HttpClient) {
     this.fetchUsers();
@@ -25,7 +25,7 @@ export class UserService {
   //
 
   fetchUsers() {
-    this.http.get<User[]>('/api/users').subscribe((u) => (this.users = u));
+    this.http.get<IUser[]>('/api/users').subscribe((u) => (this.users = u));
   }
 
   // creates users and refetches list (TODO: we need to clarify if we need to refetch list)
@@ -58,7 +58,7 @@ export class UserService {
 
   // groups handlers
   fetchGroups() {
-    this.http.get<Group[]>('/api/groups').subscribe((g) => (this.groups = g));
+    this.http.get<IGroup[]>('/api/groups').subscribe((g) => (this.groups = g));
   }
 
   // creates users and refetches list (TODO: we need to clarify if we need to refetch list)

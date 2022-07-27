@@ -2,15 +2,15 @@ export function tobogganCommon(): string {
   return 'toboggan-common';
 }
 
-export interface Group {
-  groupname: string;
+export interface IGroup {
+  groupName: string;
   type: number;
 }
 
-export interface User {
-    username: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    groups: Group[];
-  }
+export interface IUser {
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  groups: IGroup[];
+}
