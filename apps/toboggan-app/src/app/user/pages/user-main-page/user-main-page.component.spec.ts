@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { SharedModule } from '../../../shared/shared.module';
+import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
 import { UserMainPageComponent } from './user-main-page.component';
 
@@ -10,8 +16,14 @@ describe('UserMainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedModule, BrowserAnimationsModule],
-      declarations: [UserMainPageComponent],
+      declarations: [UserMainPageComponent, CreateUserComponent],
+      imports: [
+        StoriesModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserMainPageComponent);
@@ -21,5 +33,51 @@ describe('UserMainPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Modal buttons should be configured', () => {
+    const addNewUserButton = component.createUserModalButtonsConfig.find(
+      (button) => button.title === 'Add New User'
+    );
+    expect(addNewUserButton).toBeTruthy();
+
+    const cancelButton = component.createUserModalButtonsConfig.find(
+      (button) => button.title === 'Cancel'
+    );
+    expect(cancelButton).toBeTruthy();
+  });
+
+  it('Add New User modal button calls handleAddNewUserModalButton on User Component', () => {
+    // arrange
+    const createUserFixture = TestBed.createComponent(CreateUserComponent);
+    const createUserComponent = createUserFixture.componentInstance;
+    createUserFixture.detectChanges();
+    component.createUserComponent = createUserComponent;
+    const addNewUserButton = component.createUserModalButtonsConfig.find(
+      (button) => button.title === 'Add New User'
+    );
+    const spy = jest.spyOn(
+      component.createUserComponent,
+      'handleAddNewUserModalButton'
+    );
+
+    // act
+    addNewUserButton?.onClick();
+
+    // assert
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('handleCancelCreateUserModalButton true to close the modal', () => {
+    expect(component.handleCancelCreateUserModalButton()).toBeTruthy();
+  });
+
+  it('Cancel modal button is configured to call handleCancelCreateUserModalButton', () => {
+    const cancelButton = component.createUserModalButtonsConfig.find(
+      (button) => button.title === 'Cancel'
+    );
+    const spy = jest.spyOn(component, 'handleCancelCreateUserModalButton');
+    cancelButton?.onClick();
+    expect(spy).toHaveBeenCalled();
   });
 });
