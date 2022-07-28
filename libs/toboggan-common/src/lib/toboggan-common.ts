@@ -8,7 +8,7 @@ export interface IGroup {
 }
 
 export interface IUser {
-  username: string;
+  userName: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -6,6 +6,8 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
+    "start:app": "nx serve",
+    "start:api": "nx run toboggan-app:serve:development",
     "build": "nx build",
     "test": "nx test",
     "prepare": "husky install",

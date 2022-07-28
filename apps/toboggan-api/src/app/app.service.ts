@@ -1,65 +1,62 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@toboggan-ws/toboggan-common'
-import { Group } from '@toboggan-ws/toboggan-common'
-
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
 @Injectable()
 export class AppService {
-
-
-  groups: Group[] = [{
-    groupname: 'group1',
-    type: 0
-  }]
-  
-  // 
-  // some fake test users 
-  // 
-  users: User[] = [{ 
-    username: 'user1', 
-    firstname: 'name1', 
-    lastname: 'last1', 
-    email: 'email1@sada.com',
-    groups: this.groups,
-   }, { 
-    username: 'user2', 
-    firstname: 'name2', 
-    lastname: 'last2', 
-    email: 'email2@sada.com',
-    groups: this.groups,
-   }
+  groups: IGroup[] = [
+    {
+      groupName: 'group1',
+      type: 0,
+    },
   ];
 
-  // 
-  // 
-  // 
-  getUsers(): User[] {
+  //
+  // some fake test users
+  //
+  users: IUser[] = [
+    {
+      userName: 'user1',
+      firstName: 'name1',
+      lastName: 'last1',
+      email: 'email1@sada.com',
+      groups: this.groups,
+    },
+    {
+      userName: 'user2',
+      firstName: 'name2',
+      lastName: 'last2',
+      email: 'email2@sada.com',
+      groups: this.groups,
+    },
+  ];
+
+  getUsers(): IUser[] {
     return this.users;
   }
 
-  // 
+  //
   // create user button
-  // 
+  //
   createUser() {
-    this.users.push({ 
-      username: 'user3', 
-      firstname: 'name3', 
-      lastname: 'last3', 
+    this.users.push({
+      userName: 'user3',
+      firstName: 'name3',
+      lastName: 'last3',
       email: 'email3@sada.com',
       groups: this.groups,
-     });
+    });
   }
 
   updateUser(id) {
-    console.log("unimplemented")
+    console.log('unimplemented');
   }
 
   enableUser(id) {
-    console.log("unimplemented")
+    console.log('unimplemented');
   }
 
   disableUser(id) {
-    console.log("unimplemented")
+    console.log('unimplemented');
   }
 
   getGroups() {
@@ -67,11 +64,10 @@ export class AppService {
   }
 
   createGroup() {
-    console.log("unimplemented")
+    console.log('unimplemented');
   }
 
   updateGroup(id) {
-    console.log("unimplemented")
+    console.log('unimplemented');
   }
-
 }
