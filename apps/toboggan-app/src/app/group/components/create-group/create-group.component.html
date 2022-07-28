@@ -1,13 +1,22 @@
 <p>Share some information about the group you want to create. You can always edit these details later.</p>
 <p>All fields are <strong>required</strong></p>
-<gp-input size="default" label="User group name" errorMessage="There is an error!" [withIcon]="false" [error]="false"
-    [submitButton]="false" [dark]="false">
-    <input aria-label="input" placeholder="placeholder" [required]="false" type="text" />
-</gp-input><br />
-<gp-text-area size="default" label="User group description" [error]="false">
-    <textarea aria-label="input" placeholder="You might explain what makes this group unique, or why you're creating it"
-        [required]="false"></textarea>
-</gp-text-area><br />
-<gp-checkbox label="Add users in next step" size="default">
-    <input type="checkbox" formControlName="addUser" />
-</gp-checkbox><br />
+<form [formGroup]="createGroupForm">
+    <gp-input size="default" label="User group name" [withIcon]="false"
+        [error]="createGroupForm.controls['name'].invalid && createGroupForm.controls['name'].touched"
+        [errorMessage]="getGroupFormError('name')">
+        <input aria-label="input" placeholder="placeholder" required type="text"
+            formControlName="name" />
+    </gp-input><br />
+
+    <gp-text-area size="default" label="User group description"
+        [error]="createGroupForm.controls['description'].invalid && createGroupForm.controls['description'].touched"
+        [errorMessage]="getGroupFormError('description')">
+        <textarea aria-label="input"
+            placeholder="You might explain what makes this group unique, or why you're creating it"
+            formControlName="description" required></textarea>
+    </gp-text-area><br />
+
+    <gp-checkbox label="Add users in next step" size="default">
+        <input type="checkbox" formControlName="addUser" />
+    </gp-checkbox><br />
+</form>
