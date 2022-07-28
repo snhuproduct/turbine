@@ -42,7 +42,7 @@ export class CreateUserComponent implements AfterViewInit {
           try{
             const userObj: IUser = this.userForm.getRawValue(); 
             this.isLoading = true;
-            // await delay(5000); // add delay if need to demo loader
+            await delay(60000); // add delay if need to demo loader
             await this.userService.createUser(userObj);
             console.log('User created');
             return true;
