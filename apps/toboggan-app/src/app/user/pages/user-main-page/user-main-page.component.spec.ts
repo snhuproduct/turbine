@@ -2,18 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { mock, MockProxy } from 'jest-mock-extended';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
+import { UserService } from '../../services/user.service';
 
 import { UserMainPageComponent } from './user-main-page.component';
 
 describe('UserMainPageComponent', () => {
   let component: UserMainPageComponent;
   let fixture: ComponentFixture<UserMainPageComponent>;
+  const mockUserService: MockProxy<UserService> = mock<UserService>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserMainPageComponent, CreateUserComponent],
-      imports: [StoriesModule, NoopAnimationsModule,ReactiveFormsModule]
+      imports: [StoriesModule, NoopAnimationsModule,ReactiveFormsModule],
+      providers: [{ provide: UserService, useValue: mockUserService }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserMainPageComponent);
