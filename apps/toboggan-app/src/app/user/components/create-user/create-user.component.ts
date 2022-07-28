@@ -1,26 +1,39 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../shared/services/user/user.service';
+
+export enum InterstitialLoaderType {
+  Tiny = "tiny",
+  Small = "small",
+  Medium = "medium",
+  Large = "large",
+  ExtraLarge = "extra-large"
+}
 
 @Component({
   selector: 'toboggan-ws-create-user',
   templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css'],
+  styleUrls: ['./create-user.component.scss'],
 })
 export class CreateUserComponent implements AfterViewInit {
   @Output() changeTitle = new EventEmitter<string>();
   @Input() returnHandle?: (hendle: CreateUserComponent) => void;
   
   isLoading = false;
-  loaderType = InterstitialLoaderType
+  loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required), 
-    email: new FormControl('', [ Validators.required, Validators.email]),
-})
+    lastName: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
 
   constructor(public userService: UserService) {
 
@@ -42,7 +55,7 @@ export class CreateUserComponent implements AfterViewInit {
           try{
             const userObj: IUser = this.userForm.getRawValue(); 
             this.isLoading = true;
-            await delay(60000); // add delay if need to demo loader
+            await delay(400); // add delay if need to demo loader
             await this.userService.createUser(userObj);
             console.log('User created');
             return true;
@@ -61,24 +74,22 @@ export class CreateUserComponent implements AfterViewInit {
         }
     }
 
-    hasError(controlName: string){
-      const control = this.userForm.get(controlName);
-      if(control){
-        return !control.valid && (control.dirty || control.touched);
-      }
-      return false;
+  hasError(controlName: string) {
+    const control = this.userForm.get(controlName);
+    if (control) {
+      return !control.valid && (control.dirty || control.touched);
     }
-
-    getErrorMessage(controlName: string, friendlyName: string){
-      const control = this.userForm.get(controlName);
-      if(control)
-        if(control.hasError('required')){
-          return friendlyName + ' is required';
-        }
-        else if(control.hasError('email')){
-          return friendlyName + ' format is invalid';
-        }
-        return '';
-      }     
-      
+    return false;
   }
+
+  getErrorMessage(controlName: string, friendlyName: string) {
+    const control = this.userForm.get(controlName);
+    if (control)
+      if (control.hasError('required')) {
+        return friendlyName + ' is required';
+      } else if (control.hasError('email')) {
+        return friendlyName + ' format is invalid';
+      }
+    return '';
+  }
+}

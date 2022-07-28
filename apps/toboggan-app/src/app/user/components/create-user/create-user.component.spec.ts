@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy, mockReset } from "jest-mock-extended";
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../shared/services/user/user.service';
 import { CreateUserComponent } from './create-user.component';
 
 describe('CreateUserComponent', () => {

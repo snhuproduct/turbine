@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalButtonConfig } from "@snhuproduct/toboggan-ui-components-library";
+import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
 @Component({
@@ -8,20 +8,20 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
   styleUrls: ['./user-main-page.component.scss'],
 })
 export class UserMainPageComponent {
-  createUserDialogTitle = "Add New User";  
+  createUserDialogTitle = 'Add New User';
 
   createUserComponent?: CreateUserComponent;
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
-        title: 'Cancel',
-        onClick: async () => this.handleCancelCreateUserModalButton(),
-        style: "secondary"
+      title: 'Cancel',
+      onClick: () => this.handleCancelCreateUserModalButton(),
+      style: 'secondary',
     },
     {
       title: 'Add New User',
-      onClick: async () => this.handleAddNewUserModalButton(),
-      style: "primary"
-    }
+      onClick: () => this.handleAddNewUserModalButton(),
+      style: 'primary',
+    },
 ];
 
   async handleCancelCreateUserModalButton(){
@@ -33,11 +33,10 @@ export class UserMainPageComponent {
       return false;
     } 
     const result =  await this.createUserComponent.handleAddNewUserModalButton();
-    return result;
+    return result;      
   }
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {
-      this.createUserComponent = handle;
-  }
+    this.createUserComponent = handle;
+  };
 }
-
