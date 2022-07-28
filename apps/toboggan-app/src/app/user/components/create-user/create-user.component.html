@@ -1,3 +1,6 @@
+<div *ngIf="isLoading">
+    <gp-interstitial-loader [isOverlayVisible]="false" [type]="loaderType.Medium"></gp-interstitial-loader>
+</div>
 <form [formGroup]="userForm">
     <p class="gp-paragraph">Share some information about the new user. You can always edit these details
         later.</p>

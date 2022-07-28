@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +29,8 @@ export class UserService {
     this.http.get<IUser[]>('/api/users').subscribe((u) => (this.users = u));
   }
 
-  // creates users and refetches list (TODO: we need to clarify if we need to refetch list)
-  createUser() {
-    this.http.post('/api/users', {}).subscribe(() => {
-      this.fetchUsers();
-    });
+  createUser(user: IUser) : Promise<unknown> {
+    return firstValueFrom(this.http.post('/api/users', user));
   }
 
   // updates user

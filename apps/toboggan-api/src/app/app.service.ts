@@ -1,30 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@toboggan-ws/toboggan-common'
-import { Group } from '@toboggan-ws/toboggan-common'
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
 
 @Injectable()
 export class AppService {
 
 
-  groups: Group[] = [{
-    groupname: 'group1',
+  groups: IGroup[] = [{
+    groupName: 'group1',
     type: 0
   }]
   
   // 
   // some fake test users 
   // 
-  users: User[] = [{ 
-    username: 'user1', 
-    firstname: 'name1', 
-    lastname: 'last1', 
+  users: IUser[] = [{ 
+    firstName: 'name1', 
+    lastName: 'last1', 
     email: 'email1@sada.com',
     groups: this.groups,
    }, { 
-    username: 'user2', 
-    firstname: 'name2', 
-    lastname: 'last2', 
+    firstName: 'name2', 
+    lastName: 'last2', 
     email: 'email2@sada.com',
     groups: this.groups,
    }
@@ -33,21 +30,12 @@ export class AppService {
   // 
   // 
   // 
-  getUsers(): User[] {
+  getUsers(): IUser[] {
     return this.users;
   }
 
-  // 
-  // create user button
-  // 
-  createUser() {
-    this.users.push({ 
-      username: 'user3', 
-      firstname: 'name3', 
-      lastname: 'last3', 
-      email: 'email3@sada.com',
-      groups: this.groups,
-     });
+  createUser(user: IUser) {
+    this.users.push(user);
   }
 
   updateUser(id) {

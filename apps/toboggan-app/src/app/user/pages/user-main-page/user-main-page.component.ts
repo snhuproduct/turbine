@@ -14,22 +14,26 @@ export class UserMainPageComponent {
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
         title: 'Cancel',
-        onClick: () => this.handleCancelCreateUserModalButton(),
+        onClick: async () => this.handleCancelCreateUserModalButton(),
         style: "secondary"
     },
     {
       title: 'Add New User',
-      onClick: () => this.handleAddNewUserModalButton(),
+      onClick: async () => this.handleAddNewUserModalButton(),
       style: "primary"
     }
 ];
 
-  handleCancelCreateUserModalButton(){
+  async handleCancelCreateUserModalButton(){
     return true;
   }
 
-  handleAddNewUserModalButton() {    
-    return this.createUserComponent ? this.createUserComponent.handleAddNewUserModalButton() : false;
+  async handleAddNewUserModalButton() {        
+    if(!this.createUserComponent){
+      return false;
+    } 
+    const result =  await this.createUserComponent.handleAddNewUserModalButton();
+    return result;
   }
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {
