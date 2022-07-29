@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
+import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
 @Component({
   selector: 'toboggan-ws-user-main-page',
@@ -6,7 +8,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-main-page.component.scss'],
 })
 export class UserMainPageComponent {
-  constructor() {}
+  createUserDialogTitle = 'Add New User';
 
-  ngOnInit(): void {}
+  createUserComponent?: CreateUserComponent;
+  createUserModalButtonsConfig: ModalButtonConfig[] = [
+    {
+      title: 'Cancel',
+      onClick: () => this.handleCancelCreateUserModalButton(),
+      style: 'secondary',
+    },
+    {
+      title: 'Add New User',
+      onClick: () => this.handleAddNewUserModalButton(),
+      style: 'primary',
+    },
+  ];
+
+  handleCancelCreateUserModalButton() {
+    return true;
+  }
+
+  handleAddNewUserModalButton() {
+    return this.createUserComponent
+      ? this.createUserComponent.handleAddNewUserModalButton()
+      : false;
+  }
+
+  receiveCreateUserHandle = (handle: CreateUserComponent) => {
+    this.createUserComponent = handle;
+  };
 }

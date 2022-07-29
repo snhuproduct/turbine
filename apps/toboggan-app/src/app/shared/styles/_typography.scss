@@ -1,0 +1,14 @@
+// Font sizes
+
+$fontSmall: 12px;
+$fontMedium: 16px;
+$fontLarge: 32px;
+
+h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: $fontLarge;
+  font-weight: 700;
+  color: $primaryBlue;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
