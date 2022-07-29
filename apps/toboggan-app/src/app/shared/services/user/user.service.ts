@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class UserService {
     this.http.get<IUser[]>('/api/users').subscribe((u) => (this.users = u));
   }
 
-  createUser(user: IUser) : Promise<unknown> {
+  createUser(user: INewUser): Promise<unknown> {
     return firstValueFrom(this.http.post('/api/users', user));
   }
 

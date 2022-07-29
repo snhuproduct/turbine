@@ -3,7 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -21,7 +21,7 @@ export class CreateUserComponent implements AfterViewInit {
   @Input() returnHandle?: (hendle: CreateUserComponent) => void;
 
   failedToAddUser = false; //indicated wether error banner is shown
-  
+
   isLoading = false;
   loaderType = InterstitialLoaderType.Large;
 
@@ -31,55 +31,55 @@ export class CreateUserComponent implements AfterViewInit {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
-  constructor(public userService: UserService, private bannerService: BannerService) {
-
-  }
+  constructor(
+    public userService: UserService,
+    private bannerService: BannerService
+  ) {}
 
   ngAfterViewInit(): void {
-        // provide own handle to the hosting component
-        if(this.returnHandle){
-            this.returnHandle(this);
-        }
-   }
-
-   async handleAddNewUserModalButton() {        
-        const delay = (ms: number) => {
-          return new Promise( resolve => setTimeout(resolve, ms) );
-        }    
-        this.userForm.markAllAsTouched();
-        if(this.userForm.valid){
-          try{
-            this.failedToAddUser = false; //reset if there is an error from previous attempt
-            const userObj: IUser = this.userForm.getRawValue(); 
-            this.isLoading = true;
-            await delay(400); // add delay if need to demo loader
-            await this.userService.createUser(userObj);
-            console.log('User created');
-            this.bannerService.showBanner({              
-              type: 'success',
-              heading: `${userObj.firstName} ${userObj.lastName}`,
-              message: 'has been added as user',
-              button: {
-                label: 'Dismiss',
-                action: (bannerId: number) => this.bannerService.hideBanner(bannerId)
-              }
-            })
-            return true;
-          }
-          catch(error) {
-            console.log('Failed creating user', error);
-            this.failedToAddUser = true;
-            return false;
-          }
-          finally{
-            this.isLoading = false;
-          }
-        }
-        else{
-          // don't close modal 
-          return false;
-        }
+    // provide own handle to the hosting component
+    if (this.returnHandle) {
+      this.returnHandle(this);
     }
+  }
+
+  async handleAddNewUserModalButton() {
+    const delay = (ms: number) => {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    };
+    this.userForm.markAllAsTouched();
+    if (this.userForm.valid) {
+      try {
+        this.failedToAddUser = false; //reset if there is an error from previous attempt
+        const userObj = this.userForm.getRawValue() as IUser;
+        this.isLoading = true;
+
+        await delay(400); // add delay if need to demo loader
+        await this.userService.createUser(userObj);
+        console.log('User created');
+        this.bannerService.showBanner({
+          type: 'success',
+          heading: `${userObj.firstName} ${userObj.lastName}`,
+          message: 'has been added as user',
+          button: {
+            label: 'Dismiss',
+            action: (bannerId: number) =>
+              this.bannerService.hideBanner(bannerId),
+          },
+        });
+        return true;
+      } catch (error) {
+        console.log('Failed creating user', error);
+        this.failedToAddUser = true;
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    } else {
+      // don't close modal
+      return false;
+    }
+  }
 
   hasError(controlName: string) {
     const control = this.userForm.get(controlName);

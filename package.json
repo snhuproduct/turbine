@@ -6,6 +6,8 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
+    "start:app": "nx serve",
+    "start:api": "nx run toboggan-api:serve:development",
     "build": "nx build",
     "test": "nx test",
     "prepare": "husky install",
@@ -14,6 +16,10 @@
     "tsc": "yarn app:tsc && yarn api:tsc",
     "app:tsc": "tsc -p apps/toboggan-app/tsconfig.json --noEmit --incremental",
     "api:tsc": "tsc -p apps/toboggan-api/tsconfig.json --noEmit --incremental"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.0.0"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +43,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
