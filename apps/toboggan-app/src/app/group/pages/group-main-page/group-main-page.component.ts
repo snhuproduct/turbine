@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ModalButtonConfig, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
 import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
@@ -8,7 +8,7 @@ import { CreateGroupComponent } from '../../components/create-group/create-group
   templateUrl: './group-main-page.component.html',
   styleUrls: ['./group-main-page.component.scss'],
 })
-export class GroupMainPageComponent implements OnInit, AfterViewInit {
+export class GroupMainPageComponent  {
   @ViewChild(CreateGroupComponent) createGroupComponent!: CreateGroupComponent;
   @ViewChild('addUsers') addUsersTemplRef?: ElementRef;
   @ViewChild(AddUsersComponent) addUserComponent?: AddUsersComponent;
@@ -25,7 +25,10 @@ export class GroupMainPageComponent implements OnInit, AfterViewInit {
       "title": "Create user group",
       "style": "primary",
       onClick: () => {
-        this.createGroupComponent.createGroup()
+        this.createGroupComponent.createGroup();
+        if(this.createGroupComponent.createGroupForm.value?.addUser) {
+          this.openAddUserModal();
+        }
         return false
       }
     }
@@ -35,13 +38,7 @@ export class GroupMainPageComponent implements OnInit, AfterViewInit {
   
   
   constructor(private modalService: BsModalService) { }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
-  ngAfterViewInit(): void {
-    this.openAddUserModal();
-  }
-
+  
   openAddUserModal() {
     this.addUserModalState = {
       initialState: {
