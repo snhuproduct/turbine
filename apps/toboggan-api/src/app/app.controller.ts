@@ -8,8 +8,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 import { AppService } from './app.service';
 
 @Controller()

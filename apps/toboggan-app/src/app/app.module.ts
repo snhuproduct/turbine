@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -20,7 +21,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     StoriesModule,
   ],
-  providers: [],
+  providers: [{ provide: "BASE_API_URL", useValue: environment.baseApiUrl }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -13,10 +13,10 @@ export type INewGroup = Omit<IGroup, 'id'>;
 export interface IUser {
   id: string;
   userName: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  groups: IGroup[];
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  groups?: IGroup[];
   enabled: boolean;
 }
 
