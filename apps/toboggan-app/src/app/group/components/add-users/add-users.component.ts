@@ -15,7 +15,6 @@ export class AddUsersComponent implements OnInit {
     groupId: new FormControl(''),
     user: new FormControl('', [Validators.required, Validators.email])
   });
-  selected = '';
   users: IUser[] = [];
 
   constructor(private userService: UserService, private groupService: GroupService){}
@@ -53,17 +52,18 @@ export class AddUsersComponent implements OnInit {
 
   getFormError(field: string): string {
     const control = this.addUserForm.get(field);
-    const emailArray = this.users.map(user => user.email);
+    const userEmails = this.users.map(user => user.email);
     if(control?.hasError('required')) {
       return 'This field can’t be empty'
-    } else if(control?.hasError('email')) {
-      return 'Check email format';
-    } else if(!emailArray.includes(control?.value)) {
-      return 'This user not available'
-    } else {
-      return '';
     } 
+    if(control?.hasError('email')) {
+      return 'Check email format';
+    } 
+    if(!userEmails.includes(control?.value)) {
+      return 'This user not available'
+    } 
+    return '';
+     
   }
-
   
 }
