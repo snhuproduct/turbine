@@ -19,4 +19,8 @@ describe('CreateGroupComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('hasError should return false if control name is not found in the form', () => {
+    expect(component.hasError('nonExistingControlName')).toBeFalsy();
+  })
 });

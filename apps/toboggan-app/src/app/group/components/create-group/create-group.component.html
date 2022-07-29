@@ -2,15 +2,14 @@
 <p>All fields are <strong>required</strong></p>
 <form [formGroup]="createGroupForm">
     <gp-input size="default" label="User group name" [withIcon]="false"
-        [error]="createGroupForm.controls['name'].invalid && createGroupForm.controls['name'].touched"
-        [errorMessage]="getGroupFormError('name')">
-        <input aria-label="input" placeholder="placeholder" required type="text"
-            formControlName="name" />
+        [error]="hasError('name')"
+        [errorMessage]="getErrorMessage('name','User group name')">
+        <input aria-label="input" placeholder="placeholder" required type="text" formControlName="name" />
     </gp-input><br />
 
     <gp-text-area size="default" label="User group description"
-        [error]="createGroupForm.controls['description'].invalid && createGroupForm.controls['description'].touched"
-        [errorMessage]="getGroupFormError('description')">
+        [error]="hasError('description')"
+        [errorMessage]="getErrorMessage('description','User group description')">
         <textarea aria-label="input"
             placeholder="You might explain what makes this group unique, or why you're creating it"
             formControlName="description" required></textarea>

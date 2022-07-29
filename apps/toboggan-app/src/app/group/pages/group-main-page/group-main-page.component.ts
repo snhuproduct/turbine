@@ -36,10 +36,9 @@ export class GroupMainPageComponent implements OnInit, AfterViewInit {
   
   constructor(private modalService: BsModalService) { }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
   }
+  
   ngAfterViewInit(): void {
-    this.openAddUserModal();
   }
 
   openAddUserModal() {

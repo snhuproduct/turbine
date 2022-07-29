@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
 
@@ -13,48 +13,49 @@ export class CreateGroupComponent implements OnInit {
   constructor(private fb: FormBuilder, private groupService: GroupService) { }
 
   ngOnInit(): void {
-    this.createGroupForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
-      description: ['', [Validators.required]],
-      addUser: false
+    this.createGroupForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]),
+      addUser: new FormControl(false),
     });
   }
 
-  get groupFormControls() {
-    return this.createGroupForm.controls;
+  getErrorMessage(controlName: string, friendlyName: string) {
+    const control = this.createGroupForm.get(controlName);
+    if (control)
+      if (control.hasError('required')) {
+        return friendlyName + ' is required';
+      } else if (control.hasError('pattern')) {
+        return friendlyName + ' use only letters and numbers';
+      }
+    return '';
   }
 
-  getGroupFormError(field: string) {
-
-    let errorMessage = "";
-    const control = this.groupFormControls[field];
-    if (control?.errors) {
-      if (control?.errors['required'])
-        errorMessage += "This field can’t be empty";
-      if (control?.errors['pattern'])
-        errorMessage += "Use only letters and numbers";
+  hasError(controlName: string) {
+    const control = this.createGroupForm.get(controlName);
+    if (control) {
+      return !control.valid && (control.dirty || control.touched);
     }
-    return errorMessage;
-
+    return false;
   }
 
   createGroup() {
     this.createGroupForm.markAllAsTouched();
-    if(this.createGroupForm.valid) {
+    if (this.createGroupForm.valid) {
       const group: IGroup = {
         name: this.createGroupForm.value.name,
-        description : this.createGroupForm.value.description,
+        description: this.createGroupForm.value.description,
       }
-      this.groupService.createGroup(group).subscribe( {
-        next : (response) =>  { 
+      this.groupService.createGroup(group).subscribe({
+        next: (response) => {
           // handle success
         },
         error: (error) => { // handle error scenario
         }
-        
+
       });
     }
-    
+
   }
 
 }
