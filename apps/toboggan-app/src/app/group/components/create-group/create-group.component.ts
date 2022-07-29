@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IGroup } from '@toboggan-ws/toboggan-common';
+import { GroupService } from '../../services/group.service';
 
 @Component({
   selector: 'toboggan-ws-create-group',
@@ -8,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CreateGroupComponent implements OnInit {
   createGroupForm!: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private groupService: GroupService) { }
 
   ngOnInit(): void {
     this.createGroupForm = this.fb.group({
@@ -35,4 +37,24 @@ export class CreateGroupComponent implements OnInit {
     return errorMessage;
 
   }
+
+  createGroup() {
+    this.createGroupForm.markAllAsTouched();
+    if(this.createGroupForm.valid) {
+      const group: IGroup = {
+        name: this.createGroupForm.value.name,
+        description : this.createGroupForm.value.description,
+      }
+      this.groupService.createGroup(group).subscribe( {
+        next : (response) =>  { 
+          // handle success
+        },
+        error: (error) => { // handle error scenario
+        }
+        
+      });
+    }
+    
+  }
+
 }

@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Put, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 
-import { AppService } from './app.service';
+import { AppService, IAddUsertoGroup } from './app.service';
 
 @Controller()
 export class AppController {
@@ -39,12 +40,17 @@ export class AppController {
   }
 
   @Post('groups')
-  createGroup() {
-    return this.appService.createGroup();
+  createGroup(@Body() request: IGroup) {
+    return this.appService.createGroup(request);
   }
 
   @Put('groups/:id')
   updateGroup(@Param('id') id) {
     return this.appService.updateGroup(id);
+  }
+
+  @Post('addusertogroup')
+  addUserstoGroup(@Body() request: IAddUsertoGroup) {
+    return this.appService.addUserstoGroup(request);
   }
 }

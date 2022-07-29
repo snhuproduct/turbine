@@ -1,30 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@toboggan-ws/toboggan-common'
-import { Group } from '@toboggan-ws/toboggan-common'
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
+export interface IAddUsertoGroup {
+  groupId: string;
+  email: string;
+}
 
 @Injectable()
 export class AppService {
 
 
-  groups: Group[] = [{
-    groupname: 'group1',
-    type: 0
-  }]
+  groups: IGroup[] = [{
+    groupId: '2AE9GWE5E1A9',
+    name: 'Admin',
+    type: 0,
+    description: ''
+  }] 
   
   // 
   // some fake test users 
   // 
-  users: User[] = [{ 
+  users: IUser[] = [{ 
     username: 'user1', 
-    firstname: 'name1', 
-    lastname: 'last1', 
+    firstName: 'name1', 
+    lastName: 'last1', 
     email: 'email1@sada.com',
     groups: this.groups,
    }, { 
     username: 'user2', 
-    firstname: 'name2', 
-    lastname: 'last2', 
+    firstName: 'name2', 
+    lastName: 'last2', 
     email: 'email2@sada.com',
     groups: this.groups,
    }
@@ -33,7 +38,7 @@ export class AppService {
   // 
   // 
   // 
-  getUsers(): User[] {
+  getUsers(): IUser[] {
     return this.users;
   }
 
@@ -43,8 +48,8 @@ export class AppService {
   createUser() {
     this.users.push({ 
       username: 'user3', 
-      firstname: 'name3', 
-      lastname: 'last3', 
+      firstName: 'name3', 
+      lastName: 'last3', 
       email: 'email3@sada.com',
       groups: this.groups,
      });
@@ -66,12 +71,16 @@ export class AppService {
     return this.groups;
   }
 
-  createGroup() {
-    console.log("unimplemented")
+  createGroup(group) {
+    console.log(group);
   }
 
   updateGroup(id) {
     console.log("unimplemented")
+  }
+
+  addUserstoGroup(requestBody) {
+    console.log(requestBody);
   }
 
 }

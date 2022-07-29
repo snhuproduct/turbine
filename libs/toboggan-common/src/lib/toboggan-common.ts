@@ -3,8 +3,10 @@ export function tobogganCommon(): string {
 }
 
 export interface IGroup {
-  groupName: string;
-  type: number;
+  groupId?: string;
+  name: string;
+  type?: number;
+  description: string;
 }
 
 export interface IUser {

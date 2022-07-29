@@ -11,7 +11,6 @@ export class UserService {
 
   constructor(private http: HttpClient) {
     this.fetchUsers();
-    this.fetchGroups();
   }
 
   // user handlers
@@ -25,7 +24,7 @@ export class UserService {
   //
 
   fetchUsers() {
-    this.http.get<IUser[]>('/api/users').subscribe((u) => (this.users = u));
+    return this.http.get<IUser[]>('/api/users');
   }
 
   // creates users and refetches list (TODO: we need to clarify if we need to refetch list)
@@ -56,22 +55,5 @@ export class UserService {
     });
   }
 
-  // groups handlers
-  fetchGroups() {
-    this.http.get<IGroup[]>('/api/groups').subscribe((g) => (this.groups = g));
-  }
-
-  // creates users and refetches list (TODO: we need to clarify if we need to refetch list)
-  createGroup() {
-    this.http.post('/api/groups', {}).subscribe(() => {
-      this.fetchGroups();
-    });
-  }
-
-  // updates user
-  updateGroup() {
-    this.http.put('/api/groups/:id', {}).subscribe(() => {
-      this.fetchGroups();
-    });
-  }
+    
 }
