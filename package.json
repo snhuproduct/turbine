@@ -17,6 +17,10 @@
     "app:tsc": "tsc -p apps/toboggan-app/tsconfig.json --noEmit --incremental",
     "api:tsc": "tsc -p apps/toboggan-api/tsconfig.json --noEmit --incremental"
   },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.0.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~14.0.0",
