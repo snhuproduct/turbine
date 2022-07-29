@@ -22,16 +22,18 @@ export class UserMainPageComponent {
       onClick: () => this.handleAddNewUserModalButton(),
       style: 'primary',
     },
-  ];
+];
 
-  handleCancelCreateUserModalButton() {
+  async handleCancelCreateUserModalButton(){
     return true;
   }
 
-  handleAddNewUserModalButton() {
-    return this.createUserComponent
-      ? this.createUserComponent.handleAddNewUserModalButton()
-      : false;
+  async handleAddNewUserModalButton() {        
+    if(!this.createUserComponent){
+      return false;
+    } 
+    const result =  await this.createUserComponent.handleAddNewUserModalButton();
+    return result;      
   }
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {

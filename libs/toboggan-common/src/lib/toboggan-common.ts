@@ -8,9 +8,8 @@ export interface IGroup {
 }
 
 export interface IUser {
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  groups: IGroup[];
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  groups?: IGroup[];
 }

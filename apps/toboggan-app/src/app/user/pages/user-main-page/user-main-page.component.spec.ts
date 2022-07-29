@@ -2,9 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserAnimationsModule,
-  NoopAnimationsModule,
+  NoopAnimationsModule
 } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { mock, MockProxy } from 'jest-mock-extended';
+import { UserService } from '../../../shared/services/user/user.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
@@ -13,10 +15,11 @@ import { UserMainPageComponent } from './user-main-page.component';
 describe('UserMainPageComponent', () => {
   let component: UserMainPageComponent;
   let fixture: ComponentFixture<UserMainPageComponent>;
+  const mockUserService: MockProxy<UserService> = mock<UserService>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserMainPageComponent, CreateUserComponent],
+      declarations: [UserMainPageComponent, CreateUserComponent],     
       imports: [
         StoriesModule,
         NoopAnimationsModule,
@@ -24,6 +27,7 @@ describe('UserMainPageComponent', () => {
         SharedModule,
         BrowserAnimationsModule,
       ],
+      providers: [{ provide: UserService, useValue: mockUserService }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserMainPageComponent);

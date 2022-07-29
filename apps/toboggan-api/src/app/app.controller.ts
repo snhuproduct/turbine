@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Put, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 
+import { IUser } from '@toboggan-ws/toboggan-common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -12,8 +13,8 @@ export class AppController {
   }
 
   @Post('users')
-  createUser() {
-    return this.appService.createUser();
+  createUser(@Body() user: IUser) {
+    return this.appService.createUser(user);
   }
 
   @Put('users/:id')
