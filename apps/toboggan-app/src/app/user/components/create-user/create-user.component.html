@@ -1,6 +1,8 @@
 <div *ngIf="isLoading">
     <gp-interstitial-loader [isOverlayVisible]="true" [type]="loaderType"></gp-interstitial-loader>
 </div>
+<p *ngIf="failedToAddUser" class="gp-paragraph error-message"><strong>Add New User</strong> couldn't be completed</p>
+
 <form [formGroup]="userForm">
     <p class="gp-paragraph">Share some information about the new user. You can always edit these details
         later.</p>
