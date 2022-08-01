@@ -27,13 +27,18 @@ const mockUsers = [{
  }
 ];
 
+const mockModalService = { 
+  show: jest.fn(),
+  _hideModal: jest.fn()
+};
+
 const mockUserService = { 
   fetchUsers: jest.fn().mockReturnValue(of(mockUsers))
 };
 
 const mockGroupService = {
   createGroup: jest.fn(),
-  addUsertoGroup: jest.fn()
+  addUsertoGroup: jest.fn().mockReturnValue(of({}))
 }
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;
@@ -42,7 +47,7 @@ describe('GroupMainPageComponent', () => {
   let createGroupComponent: CreateGroupComponent;
   let createGroupButton: ModalButtonConfig;
   let cancelButton: ModalButtonConfig;
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports : [
@@ -70,8 +75,7 @@ describe('GroupMainPageComponent', () => {
     createGroupFixture = TestBed.createComponent(CreateGroupComponent);
     createGroupComponent = createGroupFixture.componentInstance;
     component.createGroupComponent = createGroupComponent;
-
-    
+   
     createGroupButton =  component.modalButtons.find(
       (button) => button.title === 'Create user group'
     ) as ModalButtonConfig;
@@ -123,6 +127,7 @@ describe('GroupMainPageComponent', () => {
     expect(openAddUserModalSpy).toHaveBeenCalled();
   });
 
+  
   it('should call submit function when user clicks on "Add user" button ',(()=>{
     const modalSpy = jest.spyOn(component, 'openAddUserModal');
     component.openAddUserModal();
@@ -144,11 +149,10 @@ describe('GroupMainPageComponent', () => {
     expect(addUsertoGroupSpy).toHaveBeenCalled();
 
     // Check if whether API call is fired
-    const apiCallspy = jest.spyOn(component.addUserComponent.groupService,'addUsertoGroup');
+    const apiCallspy = jest.spyOn(mockGroupService,'addUsertoGroup');
     expect(apiCallspy).toHaveBeenCalled();
 
   }));
-
 
   
 });
