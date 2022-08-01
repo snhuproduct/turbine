@@ -17,9 +17,7 @@ export class GroupMainPageComponent  {
     {
       "title": "Cancel",
       "style": "secondary",
-      onClick: () => {
-        return true
-      }
+      onClick: this.hideModal
     },
     {
       "title": "Create user group",
@@ -40,6 +38,7 @@ export class GroupMainPageComponent  {
   constructor(private modalService: BsModalService) { }
   
   openAddUserModal() {
+    this.modalService._hideModal();
     this.addUserModalState = {
       initialState: {
           templateRef: this.addUsersTemplRef,
@@ -66,5 +65,10 @@ export class GroupMainPageComponent  {
       ModalComponent, 
       this.addUserModalState
     )
+  }
+  
+  
+  hideModal() {
+    return true;
   }
 }

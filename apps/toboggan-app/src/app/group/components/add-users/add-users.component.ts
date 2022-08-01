@@ -25,7 +25,6 @@ export class AddUsersComponent implements OnInit {
 
   getUsers() :void {
     this.userService.fetchUsers().subscribe((users:IUser[]) => this.users = users);
-    console.log(this.users);
   }
   
   addUsertoGroup() {
