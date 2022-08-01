@@ -17,7 +17,7 @@ export class GroupMainPageComponent  {
     {
       "title": "Cancel",
       "style": "secondary",
-      onClick: this.hideModal
+      onClick: () => this.hideModal()
     },
     {
       "title": "Create user group",
@@ -47,7 +47,7 @@ export class GroupMainPageComponent  {
             {
               "title": "Cancel",
               "style": "secondary",
-              onClick: () => true
+              onClick: () => this.hideModal()
             },
             {
               "title": "Add user",

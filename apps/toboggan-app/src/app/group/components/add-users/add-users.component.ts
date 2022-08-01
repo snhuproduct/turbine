@@ -10,12 +10,12 @@ import { GroupService } from '../../services/group.service';
   styleUrls: ['./add-users.component.scss'],
 })
 export class AddUsersComponent implements OnInit {
-  isFormSubmited = false;
   addUserForm: FormGroup = new FormGroup( {
     groupId: new FormControl(''),
     user: new FormControl('', [Validators.required, Validators.email])
   });
   users: IUser[] = [];
+  userEmails: string[] = [];
 
   constructor(private userService: UserService, private groupService: GroupService){}
 
@@ -24,14 +24,15 @@ export class AddUsersComponent implements OnInit {
   }
 
   getUsers() :void {
-    this.userService.fetchUsers().subscribe((users:IUser[]) => this.users = users);
+    this.userService.fetchUsers().subscribe((users:IUser[]) => {
+      this.users = users;
+      this.userEmails = this.users.map(user => user.email);
+    });
   }
   
   addUsertoGroup() {
-    this.isFormSubmited = true;
-    const emailArray = this.users.map(user => user.email);
     const userEmail = this.addUserForm.value.user;
-    if(!emailArray.includes(userEmail)) {
+    if(!this.userEmails.includes(userEmail)) {
       this.addUserForm.get('user')?.setErrors({'incorrect': true});
       return;
     } 
@@ -47,19 +48,26 @@ export class AddUsersComponent implements OnInit {
     }
     
     return false;
-  } 
-
+  }
+  
+  hasError(controlName: string) {
+    const control = this.addUserForm.get(controlName);
+    if (control) {
+      return (!control.valid ||  !this.userEmails.includes(control?.value)) && (control.dirty || control.touched)  ;
+    }
+    return false;
+  }
+  
   getFormError(field: string): string {
     const control = this.addUserForm.get(field);
-    const userEmails = this.users.map(user => user.email);
     if(control?.hasError('required')) {
-      return 'This field can’t be empty'
+      return "This field can't be empty"
     } 
     if(control?.hasError('email')) {
-      return 'Check email format';
+      return "Check email format";
     } 
-    if(!userEmails.includes(control?.value)) {
-      return 'This user not available'
+    if(!this.userEmails.includes(control?.value)) {
+      return "This email doesn't exist"
     } 
     return '';
      

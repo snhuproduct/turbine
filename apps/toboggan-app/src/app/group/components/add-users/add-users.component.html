@@ -7,7 +7,7 @@
       [errorMessage]="getFormError('user')"
       [withIcon]="false"
       iconId="gp-icon-edit"
-      [error]="isFormSubmited && addUserForm.get('user')?.invalid! && addUserForm.get('user')?.touched!"
+      [error]="hasError('user')"
       [submitButton]="false"
       [dark]="false"
     >
