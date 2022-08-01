@@ -26,7 +26,7 @@ export class CreateGroupComponent implements OnInit {
       if (control.hasError('required')) {
         return friendlyName + ' is required';
       } else if (control.hasError('pattern')) {
-        return friendlyName + ' use only letters and numbers';
+        return `${friendlyName} use only letters and numbers. Don't use these characters: ! @ # $`;
       }
     return '';
   }
