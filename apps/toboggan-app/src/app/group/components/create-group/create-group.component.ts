@@ -14,7 +14,7 @@ export class CreateGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.createGroupForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]),
+      name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$'), this.specialCharactersValidation]),
       description: new FormControl('', [Validators.required]),
       addUser: new FormControl(false),
     });
@@ -25,10 +25,25 @@ export class CreateGroupComponent implements OnInit {
     if (control)
       if (control.hasError('required')) {
         return friendlyName + ' is required';
+      } else if (control.hasError('specialCharacters')) {
+        return `Don't use these characters: ! @ # $`;
       } else if (control.hasError('pattern')) {
-        return `${friendlyName} use only letters and numbers. Don't use these characters: ! @ # $`;
+        return `Use only letters and numbers.`;
       }
     return '';
+  }
+
+  specialCharactersValidation(control: FormControl) {
+    let value = control.value;
+    let spChars = /[!@#$]+/;
+    if (spChars.test(value)) {
+      return {
+        specialCharacters: {
+          errors: true
+        }
+      }
+    }
+    return null;
   }
 
   hasError(controlName: string) {
