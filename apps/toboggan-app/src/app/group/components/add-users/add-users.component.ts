@@ -29,7 +29,7 @@ export class AddUsersComponent implements OnInit {
   getUsers(): void {
     this.userService.fetchUsers().subscribe((users: IUser[]) => {
       this.users = users;
-      this.userEmails = this.users.map((user) => user.email);
+      this.userEmails = this.users.map((user) => user.email as string);
     });
   }
 

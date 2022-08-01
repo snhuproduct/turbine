@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { IGroup } from '@toboggan-ws/toboggan-common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 
-import { AppService, IAddUsertoGroup } from './app.service';
+import { IAddUsertoGroup, IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
@@ -13,26 +22,24 @@ export class AppController {
   }
 
   @Post('users')
-  createUser() {
-    return this.appService.createUser();
+  createUser(@Body() user: IUser) {
+    return this.appService.createUser(user);
   }
 
   @Put('users/:id')
-  updateUser(@Param('id') id) {
-    return this.appService.updateUser(id);
+  updateUser(@Param('id') id, @Body() user: IUser) {
+    return this.appService.updateUser(id, user);
   }
 
-  @Put('users/:id/enable')
-  enableUser(@Param('id') id) {
-    return this.appService.enableUser(id);
+  @Patch('users/:id')
+  patchUser(@Param('id') id, @Body() user: IUser) {
+    return this.appService.patchUser(id, user);
   }
 
-  @Put('users/:id/disable')
-  disableUser(@Param('id') id) {
-    return this.appService.disableUser(id);
+  @Delete('users/:id')
+  deleteUser(@Param('id') id) {
+    return this.appService.deleteUser(id);
   }
-
-
 
   @Get('groups')
   getGroups() {
@@ -40,13 +47,23 @@ export class AppController {
   }
 
   @Post('groups')
-  createGroup(@Body() request: IGroup) {
-    return this.appService.createGroup(request);
+  createGroup(@Body() group: IGroup) {
+    return this.appService.createGroup(group);
   }
 
   @Put('groups/:id')
-  updateGroup(@Param('id') id) {
-    return this.appService.updateGroup(id);
+  updateGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+    return this.appService.updateGroup(id, updatedGroup);
+  }
+
+  @Patch('groups/:id')
+  patchGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+    return this.appService.patchGroup(id, updatedGroup);
+  }
+
+  @Delete('groups/:id')
+  deleteGroup(@Param('id') id) {
+    return this.appService.deleteGroup(id);
   }
 
   @Post('addusertogroup')

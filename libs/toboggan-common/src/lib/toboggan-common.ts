@@ -3,16 +3,27 @@ export function tobogganCommon(): string {
 }
 
 export interface IGroup {
-  groupId?: string;
+  id: string;
   name: string;
   type?: number;
-  description: string;
+  description: string | null;
 }
 
+export type INewGroup = Omit<IGroup, 'id'>;
+
 export interface IUser {
-  username: string;
-  firstName: string;
-  lastName: string;
+  id: string;
+  userName: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  groups?: IGroup[];
+  enabled: boolean;
+}
+
+export type INewUser = Omit<IUser, 'id'>;
+
+export interface IAddUsertoGroup {
+  groupId: string;
   email: string;
-  groups: IGroup[];
 }
