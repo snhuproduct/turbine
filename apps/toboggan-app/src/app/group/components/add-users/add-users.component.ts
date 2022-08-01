@@ -17,7 +17,7 @@ export class AddUsersComponent implements OnInit {
   users: IUser[] = [];
   userEmails: string[] = [];
 
-  constructor(private userService: UserService, private groupService: GroupService){}
+  constructor(private userService: UserService, public groupService: GroupService){}
 
   ngOnInit(): void {
       this.getUsers();

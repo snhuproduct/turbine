@@ -27,17 +27,13 @@ const mockUsers = [{
  }
 ];
 
-const mockModalService = { 
-  show: jest.fn(),
-  _hideModal: jest.fn()
-};
-
 const mockUserService = { 
   fetchUsers: jest.fn().mockReturnValue(of(mockUsers))
 };
 
 const mockGroupService = {
-  createGroup: jest.fn()
+  createGroup: jest.fn(),
+  addUsertoGroup: jest.fn()
 }
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;
@@ -46,7 +42,7 @@ describe('GroupMainPageComponent', () => {
   let createGroupComponent: CreateGroupComponent;
   let createGroupButton: ModalButtonConfig;
   let cancelButton: ModalButtonConfig;
-
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports : [
@@ -74,7 +70,8 @@ describe('GroupMainPageComponent', () => {
     createGroupFixture = TestBed.createComponent(CreateGroupComponent);
     createGroupComponent = createGroupFixture.componentInstance;
     component.createGroupComponent = createGroupComponent;
-   
+
+    
     createGroupButton =  component.modalButtons.find(
       (button) => button.title === 'Create user group'
     ) as ModalButtonConfig;
@@ -133,14 +130,25 @@ describe('GroupMainPageComponent', () => {
     const addUserFixture = TestBed.createComponent(AddUsersComponent);
     const addUserComponent = addUserFixture.componentInstance;
     component.addUserComponent = addUserComponent;
+    component.addUserComponent.ngOnInit();
+    addUserComponent.addUserForm.setValue({
+      "user": "email2@sada.com", 
+      "groupId": "2AE9GWE5E1A9",
+    });
     const addUsertoGroupSpy = jest.spyOn(component.addUserComponent, 'addUsertoGroup');
     addUserFixture.detectChanges();
     const button  = document.querySelector('modal-container button.gp-button-primary');
     button?.dispatchEvent(new Event('click'));
+    
     addUserFixture.detectChanges();
     expect(addUsertoGroupSpy).toHaveBeenCalled();
 
+    // Check if whether API call is fired
+    const apiCallspy = jest.spyOn(component.addUserComponent.groupService,'addUsertoGroup');
+    expect(apiCallspy).toHaveBeenCalled();
+
   }));
+
 
   
 });
