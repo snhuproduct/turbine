@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INewGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
 
@@ -10,30 +10,52 @@ import { GroupService } from '../../services/group.service';
 })
 export class CreateGroupComponent implements OnInit {
   createGroupForm!: FormGroup;
-  constructor(private fb: FormBuilder, private groupService: GroupService) {}
+  constructor(private groupService: GroupService) {}
 
   ngOnInit(): void {
-    this.createGroupForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
-      description: ['', [Validators.required]],
-      addUser: false,
+    this.createGroupForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9]*$'),
+        this.specialCharactersValidation,
+      ]),
+      description: new FormControl('', [Validators.required]),
+      addUser: new FormControl(false),
     });
   }
 
-  get groupFormControls() {
-    return this.createGroupForm.controls;
+  getErrorMessage(controlName: string, friendlyName: string) {
+    const control = this.createGroupForm.get(controlName);
+    if (control)
+      if (control.hasError('required')) {
+        return friendlyName + ' is required';
+      } else if (control.hasError('specialCharacters')) {
+        return `Don't use these characters: ! @ # $`;
+      } else if (control.hasError('pattern')) {
+        return `Use only letters and numbers.`;
+      }
+    return '';
   }
 
-  getGroupFormError(field: string) {
-    let errorMessage = '';
-    const control = this.groupFormControls[field];
-    if (control?.errors) {
-      if (control?.errors['required'])
-        errorMessage += 'This field can’t be empty';
-      if (control?.errors['pattern'])
-        errorMessage += 'Use only letters and numbers';
+  specialCharactersValidation(control: FormControl) {
+    const value = control.value;
+    const spChars = /[!@#$]+/;
+    if (spChars.test(value)) {
+      return {
+        specialCharacters: {
+          errors: true,
+        },
+      };
     }
-    return errorMessage;
+    return null;
+  }
+
+  hasError(controlName: string) {
+    const control = this.createGroupForm.get(controlName);
+    if (control) {
+      return !control.valid && (control.dirty || control.touched);
+    }
+    return false;
   }
 
   createGroup() {
