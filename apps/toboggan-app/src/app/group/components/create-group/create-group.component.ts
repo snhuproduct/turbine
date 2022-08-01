@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
 
@@ -10,7 +10,7 @@ import { GroupService } from '../../services/group.service';
 })
 export class CreateGroupComponent implements OnInit {
   createGroupForm!: FormGroup;
-  constructor(private fb: FormBuilder, private groupService: GroupService) { }
+  constructor(private groupService: GroupService) { }
 
   ngOnInit(): void {
     this.createGroupForm = new FormGroup({
