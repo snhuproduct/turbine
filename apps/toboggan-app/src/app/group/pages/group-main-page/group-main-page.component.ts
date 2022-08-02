@@ -1,6 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ModalButtonConfig, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
-import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
+import {
+  ModalButtonConfig,
+  ModalComponent,
+} from '@snhuproduct/toboggan-ui-components-library';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { CreateGroupComponent } from '../../components/create-group/create-group.component';
 @Component({
@@ -8,67 +11,65 @@ import { CreateGroupComponent } from '../../components/create-group/create-group
   templateUrl: './group-main-page.component.html',
   styleUrls: ['./group-main-page.component.scss'],
 })
-export class GroupMainPageComponent  {
+export class GroupMainPageComponent {
   @ViewChild(CreateGroupComponent) createGroupComponent!: CreateGroupComponent;
   @ViewChild('addUsers') addUsersTemplRef?: ElementRef;
   @ViewChild(AddUsersComponent) addUserComponent?: AddUsersComponent;
-  title = 'Create user group'
+  title = 'Create user group';
   modalButtons: ModalButtonConfig[] = [
     {
-      "title": "Cancel",
-      "style": "secondary",
-      onClick: this.hideModal
+      title: 'Cancel',
+      style: 'secondary',
+      onClick: () => this.hideModal(),
     },
     {
-      "title": "Create user group",
-      "style": "primary",
-      onClick: () => {
+      title: 'Create user group',
+      style: 'primary',
+      onClick: async () => {
         this.createGroupComponent.createGroup();
-        if(this.createGroupComponent.createGroupForm.value?.addUser) {
+        if (this.createGroupComponent.createGroupForm.value?.addUser) {
           this.openAddUserModal();
         }
-        return false
-      }
-    }
-  ]
+        return false;
+      },
+    },
+  ];
   addUserModalRef?: BsModalRef | null;
   addUserModalState!: ModalOptions;
-  
-  
-  constructor(private modalService: BsModalService) { }
-  
+
+  constructor(private modalService: BsModalService) {}
+
   openAddUserModal() {
     this.modalService._hideModal();
     this.addUserModalState = {
       initialState: {
-          templateRef: this.addUsersTemplRef,
-          title: 'Add user to this group',
-          modalButtons: [
-            {
-              "title": "Cancel",
-              "style": "secondary",
-              onClick: () => true
+        templateRef: this.addUsersTemplRef,
+        title: 'Add user to this group',
+        modalButtons: [
+          {
+            title: 'Cancel',
+            style: 'secondary',
+            onClick: () => this.hideModal(),
+          },
+          {
+            title: 'Add user',
+            style: 'primary',
+            onClick: () => {
+              this.addUserComponent?.addUsertoGroup();
+              return false;
             },
-            {
-              "title": "Add user",
-              "style": "primary",
-              onClick: () => {
-                this.addUserComponent?.addUsertoGroup();
-                return false;
-              }
-            }
-          ]
+          },
+        ],
       },
-    class: 'gp-modal'
+      class: 'gp-modal',
     };
     this.addUserModalRef = this.modalService.show(
-      ModalComponent, 
+      ModalComponent,
       this.addUserModalState
-    )
+    );
   }
-  
-  
-  hideModal() {
+
+  async hideModal() {
     return true;
   }
 }

@@ -6,7 +6,20 @@
   "testing.autoRun.mode": "all",
   "jest.showCoverageOnLoad": true,
   "jest.coverageFormatter": "GutterFormatter",
-  "jest.jestCommandLine": "npm run test --"
+  "jest.jestCommandLine": "npm run test --",
+
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "version": "v1"
+    },
+    "development": {
+      "baseUrl": "http://localhost:3333/api",
+      "authToken": ""
+    },
+    "production": {
+      "baseUrl": "http://localhost:3333/api", //!Warning: Add when available!
+      "authToken": ""
+    }
+  },
+  "editor.formatOnSave": true
 }
-
-

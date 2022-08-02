@@ -1,0 +1,46 @@
+
+## Groups :: Get all groups
+
+GET {{baseUrl}}/groups HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+## Groups :: Create a group
+
+POST {{baseUrl}}/groups HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "groupName": "My Group",
+  "type": "This is my group"
+}
+
+###
+
+## Groups :: Update a group
+
+PUT {{baseUrl}}/groups/e59b03ab-e304-41cf-9fc4-22bbbb32531f HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "groupName": "Updated group",
+  "type": "This is my UPDATED group"
+}
+
+###
+
+## Groups :: Patch a group
+
+PATCH {{baseUrl}}/groups/e59b03ab-e304-41cf-9fc4-22bbbb32531f HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "type": "This is NOT my group"
+}
+
+

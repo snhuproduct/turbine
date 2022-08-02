@@ -10,59 +10,76 @@ import { GroupService } from '../../services/group.service';
   styleUrls: ['./add-users.component.scss'],
 })
 export class AddUsersComponent implements OnInit {
-  isFormSubmited = false;
-  addUserForm: FormGroup = new FormGroup( {
+  addUserForm: FormGroup = new FormGroup({
     groupId: new FormControl(''),
-    user: new FormControl('', [Validators.required, Validators.email])
+    user: new FormControl('', [Validators.required, Validators.email]),
   });
   users: IUser[] = [];
+  userEmails: string[] = [];
 
-  constructor(private userService: UserService, private groupService: GroupService){}
+  constructor(
+    private userService: UserService,
+    private groupService: GroupService
+  ) {}
 
   ngOnInit(): void {
-      this.getUsers();
+    this.getUsers();
   }
 
-  getUsers() :void {
-    this.userService.fetchUsers().subscribe((users:IUser[]) => this.users = users);
+  getUsers(): void {
+    this.userService.fetchUsers().subscribe((users: IUser[]) => {
+      this.users = users;
+      this.userEmails = this.users.map((user) => user.email as string);
+    });
   }
-  
+
   addUsertoGroup() {
-    this.isFormSubmited = true;
-    const emailArray = this.users.map(user => user.email);
     const userEmail = this.addUserForm.value.user;
-    if(!emailArray.includes(userEmail)) {
-      this.addUserForm.get('user')?.setErrors({'incorrect': true});
+    if (!this.userEmails.includes(userEmail)) {
+      this.addUserForm.get('user')?.setErrors({ incorrect: true });
       return;
-    } 
-    if(this.addUserForm.valid ) {
-      this.groupService.addUsertoGroup(this.addUserForm.value.groupId, this.addUserForm.value.user).subscribe( {
-        next : (response) =>  { 
-          // handle success
-        },
-        error: (error) => { // handle error scenario
-        }
-        
-      });
     }
-    
+    if (this.addUserForm.valid) {
+      this.groupService
+        .addUsertoGroup(
+          this.addUserForm.value.groupId,
+          this.addUserForm.value.user
+        )
+        .subscribe({
+          next: (response) => {
+            // handle success
+          },
+          error: (error) => {
+            // handle error scenario
+          },
+        });
+    }
+
     return false;
-  } 
+  }
+
+  hasError(controlName: string) {
+    const control = this.addUserForm.get(controlName);
+    if (control) {
+      return (
+        (!control.valid || !this.userEmails.includes(control?.value)) &&
+        (control.dirty || control.touched)
+      );
+    }
+    return false;
+  }
 
   getFormError(field: string): string {
     const control = this.addUserForm.get(field);
-    const userEmails = this.users.map(user => user.email);
-    if(control?.hasError('required')) {
-      return 'This field can’t be empty'
-    } 
-    if(control?.hasError('email')) {
+    if (control?.hasError('required')) {
+      return "This field can't be empty";
+    }
+    if (control?.hasError('email')) {
       return 'Check email format';
-    } 
-    if(!userEmails.includes(control?.value)) {
-      return 'This user not available'
-    } 
+    }
+    if (!this.userEmails.includes(control?.value)) {
+      return "This email doesn't exist";
+    }
     return '';
-     
   }
-  
 }

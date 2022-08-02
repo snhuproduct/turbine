@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IGroup } from '@toboggan-ws/toboggan-common';
+import { INewGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -10,11 +10,15 @@ import { GroupService } from '../../services/group.service';
 })
 export class CreateGroupComponent implements OnInit {
   createGroupForm!: FormGroup;
-  constructor(private groupService: GroupService) { }
+  constructor(private groupService: GroupService) {}
 
   ngOnInit(): void {
     this.createGroupForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$'), this.specialCharactersValidation]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9]*$'),
+        this.specialCharactersValidation,
+      ]),
       description: new FormControl('', [Validators.required]),
       addUser: new FormControl(false),
     });
@@ -39,9 +43,9 @@ export class CreateGroupComponent implements OnInit {
     if (spChars.test(value)) {
       return {
         specialCharacters: {
-          errors: true
-        }
-      }
+          errors: true,
+        },
+      };
     }
     return null;
   }
@@ -57,20 +61,18 @@ export class CreateGroupComponent implements OnInit {
   createGroup() {
     this.createGroupForm.markAllAsTouched();
     if (this.createGroupForm.valid) {
-      const group: IGroup = {
+      const group: INewGroup = {
         name: this.createGroupForm.value.name,
         description: this.createGroupForm.value.description,
-      }
+      };
       this.groupService.createGroup(group).subscribe({
         next: (response) => {
           // handle success
         },
-        error: (error) => { // handle error scenario
-        }
-
+        error: (error) => {
+          // handle error scenario
+        },
       });
     }
-
   }
-
 }
