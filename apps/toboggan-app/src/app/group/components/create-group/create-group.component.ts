@@ -16,7 +16,7 @@ export class CreateGroupComponent implements OnInit {
     this.createGroupForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-Z0-9]*$'),
+        Validators.pattern('^[a-zA-Z0-9 ]*$'),
         this.specialCharactersValidation,
       ]),
       description: new FormControl('', [Validators.required]),

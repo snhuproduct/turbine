@@ -2,8 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ModalButtonConfig, StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
-import { ModalModule } from "ngx-bootstrap/modal";
+import {
+  ModalButtonConfig,
+  StoriesModule,
+} from '@snhuproduct/toboggan-ui-components-library';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { of } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
@@ -12,34 +15,36 @@ import { CreateGroupComponent } from '../../components/create-group/create-group
 import { GroupService } from '../../services/group.service';
 import { GroupMainPageComponent } from './group-main-page.component';
 
-const mockUsers = [{
-  username: 'user1',
-  firstName: 'name1',
-  lastName: 'last1',
-  email: 'email1@sada.com',
-  groups: [],
-}, {
-  username: 'user2',
-  firstName: 'name2',
-  lastName: 'last2',
-  email: 'email2@sada.com',
-  groups: [],
-}
+const mockUsers = [
+  {
+    username: 'user1',
+    firstName: 'name1',
+    lastName: 'last1',
+    email: 'email1@sada.com',
+    groups: [],
+  },
+  {
+    username: 'user2',
+    firstName: 'name2',
+    lastName: 'last2',
+    email: 'email2@sada.com',
+    groups: [],
+  },
 ];
 
 const mockModalService = {
   show: jest.fn(),
-  _hideModal: jest.fn()
+  _hideModal: jest.fn(),
 };
 
 const mockUserService = {
-  fetchUsers: jest.fn().mockReturnValue(of(mockUsers))
+  fetchUsers: jest.fn().mockReturnValue(of(mockUsers)),
 };
 
 const mockGroupService = {
-  createGroup: jest.fn(),
-  addUsertoGroup: jest.fn().mockReturnValue(of({}))
-}
+  createGroup: jest.fn().mockReturnValue(of({})),
+  addUsertoGroup: jest.fn().mockReturnValue(of({})),
+};
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;
   let fixture: ComponentFixture<GroupMainPageComponent>;
@@ -56,18 +61,23 @@ describe('GroupMainPageComponent', () => {
         ReactiveFormsModule,
         ModalModule.forRoot(),
         TypeaheadModule.forRoot(),
-
       ],
-      declarations: [GroupMainPageComponent, CreateGroupComponent, AddUsersComponent],
+      declarations: [
+        GroupMainPageComponent,
+        CreateGroupComponent,
+        AddUsersComponent,
+      ],
       providers: [
         { provide: UserService, useValue: mockUserService },
-        { provide: GroupService, useValue: mockGroupService }
-      ]
-    }).overrideModule(BrowserDynamicTestingModule, {
-      set: {
-        entryComponents: [AddUsersComponent],
-      }
-    }).compileComponents();
+        { provide: GroupService, useValue: mockGroupService },
+      ],
+    })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [AddUsersComponent],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(GroupMainPageComponent);
     component = fixture.componentInstance;
@@ -84,7 +94,6 @@ describe('GroupMainPageComponent', () => {
       (button) => button.title === 'Cancel'
     ) as ModalButtonConfig;
     createGroupFixture.detectChanges();
-
   });
 
   it('should create', () => {
@@ -115,9 +124,12 @@ describe('GroupMainPageComponent', () => {
     const group = {
       name: 'new test group',
       description: 'test description',
-      addUser: true
+      addUser: true,
     };
-    const createGroupSpy = jest.spyOn(component.createGroupComponent, 'createGroup');
+    const createGroupSpy = jest.spyOn(
+      component.createGroupComponent,
+      'createGroup'
+    );
     const openAddUserModalSpy = jest.spyOn(component, 'openAddUserModal');
     expect(component.addUserModalRef).toBeUndefined();
 
@@ -127,8 +139,7 @@ describe('GroupMainPageComponent', () => {
     expect(openAddUserModalSpy).toHaveBeenCalled();
   });
 
-
-  it('should call submit function when user clicks on "Add user" button ', (() => {
+  it('should call submit function when user clicks on "Add user" button ', () => {
     const modalSpy = jest.spyOn(component, 'openAddUserModal');
     component.openAddUserModal();
     fixture.detectChanges();
@@ -137,12 +148,17 @@ describe('GroupMainPageComponent', () => {
     component.addUserComponent = addUserComponent;
     component.addUserComponent.ngOnInit();
     addUserComponent.addUserForm.setValue({
-      "user": "email2@sada.com",
-      "groupId": "2AE9GWE5E1A9",
+      user: 'email2@sada.com',
+      groupId: '2AE9GWE5E1A9',
     });
-    const addUsertoGroupSpy = jest.spyOn(component.addUserComponent, 'addUsertoGroup');
+    const addUsertoGroupSpy = jest.spyOn(
+      component.addUserComponent,
+      'addUsertoGroup'
+    );
     addUserFixture.detectChanges();
-    const button = document.querySelector('modal-container button.gp-button-primary');
+    const button = document.querySelector(
+      'modal-container button.gp-button-primary'
+    );
     button?.dispatchEvent(new Event('click'));
 
     addUserFixture.detectChanges();
@@ -151,8 +167,5 @@ describe('GroupMainPageComponent', () => {
     // Check if whether API call is fired
     const apiCallspy = jest.spyOn(mockGroupService, 'addUsertoGroup');
     expect(apiCallspy).toHaveBeenCalled();
-
-  }));
-
-
+  });
 });
