@@ -12,17 +12,16 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
   declarations: [
     GroupMainPageComponent,
     CreateGroupComponent,
-    AddUsersComponent
+    AddUsersComponent,
   ],
   imports: [
-    CommonModule, 
+    CommonModule,
     FormsModule,
     StoriesModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     TypeaheadModule.forRoot(),
-    groupRouting],
+    groupRouting,
+  ],
   exports: [GroupMainPageComponent, CreateGroupComponent, AddUsersComponent],
 })
 export class GroupModule {}
-
-// exports: [GroupMainPageComponent, CreateGroupComponent],
