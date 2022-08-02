@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { GroupMainPageComponent } from './group-main-page.component';
 
 describe('GroupMainPageComponent', () => {

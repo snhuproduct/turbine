@@ -34,8 +34,8 @@ export class CreateGroupComponent implements OnInit {
   }
 
   specialCharactersValidation(control: FormControl) {
-    let value = control.value;
-    let spChars = /[!@#$]+/;
+    const value = control.value;
+    const spChars = /[!@#$]+/;
     if (spChars.test(value)) {
       return {
         specialCharacters: {
