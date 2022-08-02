@@ -78,7 +78,7 @@ export class AddUsersComponent implements OnInit {
       return 'Check email format';
     }
     if (!this.userEmails.includes(control?.value)) {
-      return "This email doesn't exist";
+      return 'No user found with that email';
     }
     return '';
   }
