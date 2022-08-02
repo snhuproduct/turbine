@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ModalButtonConfig,
-  ModalComponent,
+  ModalComponent
 } from '@snhuproduct/toboggan-ui-components-library';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
@@ -37,7 +37,7 @@ export class GroupMainPageComponent {
   addUserModalRef?: BsModalRef | null;
   addUserModalState!: ModalOptions;
 
-  constructor(private modalService: BsModalService) {}
+  constructor(private modalService: BsModalService) { }
 
   openAddUserModal() {
     this.modalService._hideModal();
