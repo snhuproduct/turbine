@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ModalButtonConfig,
-  ModalComponent
+  ModalComponent,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
@@ -27,7 +27,10 @@ export class GroupMainPageComponent {
       style: 'primary',
       onClick: async () => {
         this.createGroupComponent.createGroup();
-        if (this.createGroupComponent.createGroupForm.value?.addUser) {
+        if (
+          this.createGroupComponent.createGroupForm.valid &&
+          this.createGroupComponent.createGroupForm.value?.addUser
+        ) {
           this.openAddUserModal();
         }
         return false;
@@ -37,7 +40,7 @@ export class GroupMainPageComponent {
   addUserModalRef?: BsModalRef | null;
   addUserModalState!: ModalOptions;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService) {}
 
   openAddUserModal() {
     this.modalService._hideModal();
