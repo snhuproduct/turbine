@@ -20,8 +20,6 @@ export class UsersController {
   getUsers(@Query() query) {
     const { currentPage, resultsPerPage } = query;
 
-    console.log(query);
-
     return this.usersService.getUsers(currentPage, resultsPerPage);
   }
 
