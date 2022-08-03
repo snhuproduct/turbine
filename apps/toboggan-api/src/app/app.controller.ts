@@ -9,37 +9,12 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { IAddUsertoGroup, IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { IAddUsertoGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get('users')
-  getUsers() {
-    return this.appService.getUsers();
-  }
-
-  @Post('users')
-  createUser(@Body() user: IUser) {
-    return this.appService.createUser(user);
-  }
-
-  @Put('users/:id')
-  updateUser(@Param('id') id, @Body() user: IUser) {
-    return this.appService.updateUser(id, user);
-  }
-
-  @Patch('users/:id')
-  patchUser(@Param('id') id, @Body() user: IUser) {
-    return this.appService.patchUser(id, user);
-  }
-
-  @Delete('users/:id')
-  deleteUser(@Param('id') id) {
-    return this.appService.deleteUser(id);
-  }
 
   @Get('groups')
   getGroups() {

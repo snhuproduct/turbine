@@ -1,13 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import {
-  IAddUsertoGroup,
-  IGroup,
-  INewUser,
-  IUser,
-} from '@toboggan-ws/toboggan-common';
+import { IAddUsertoGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { v4 as uuidv4 } from 'uuid';
-
-import * as arrayPaginate from 'array-paginate';
 
 @Injectable()
 export class AppService {
@@ -23,72 +16,6 @@ export class AppService {
   //
   // some fake test users
   //
-  users: IUser[] = [
-    {
-      id: uuidv4(),
-      userName: 'user1',
-      firstName: 'name1',
-      lastName: 'last1',
-      email: 'email1@sada.com',
-      groups: this.groups,
-      enabled: true,
-    },
-    {
-      id: uuidv4(),
-      userName: 'user2',
-      firstName: 'name2',
-      lastName: 'last2',
-      email: 'email2@sada.com',
-      groups: this.groups,
-      enabled: true,
-    },
-  ];
-
-  getUsers(): IUser[] {
-    const paginatedUsers = arrayPaginate(this.users, 0, 10);
-
-    console.log(paginatedUsers);
-
-    return this.users;
-  }
-
-  createUser(user: INewUser) {
-    this.users.push({
-      id: uuidv4(),
-      ...user,
-    });
-  }
-
-  updateUser(id: string, updatedUser: IUser) {
-    console.log('updating user');
-    this.users = this.users.map((user) => {
-      if (user.id === id) {
-        return {
-          id: user.id,
-          ...updatedUser,
-        };
-      }
-      return user;
-    });
-  }
-
-  patchUser(id: string, updatedUser: IUser) {
-    this.users = this.users.map((user) => {
-      if (user.id === id) {
-        return {
-          ...user,
-          ...updatedUser,
-        };
-      }
-      return user;
-    });
-  }
-
-  deleteUser(id: string) {
-    this.users = this.users.filter((user) => {
-      return user.id !== id;
-    });
-  }
 
   //TODO: I suggest refactoring both Groups and Users into different providers (Single responsibility principle)
 
