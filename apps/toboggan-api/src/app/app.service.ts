@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
+import {
+  IAddUsertoGroup,
+  IGroup,
+  INewUser,
+  IUser,
+} from '@toboggan-ws/toboggan-common';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -7,8 +12,9 @@ export class AppService {
   groups: IGroup[] = [
     {
       id: uuidv4(),
-      groupName: 'group1',
+      name: 'group1',
       type: 0,
+      description: '',
     },
   ];
 
@@ -116,5 +122,9 @@ export class AppService {
     this.groups = this.groups.filter((group) => {
       return group.id !== id;
     });
+  }
+
+  addUserstoGroup(request: IAddUsertoGroup) {
+    console.log(request);
   }
 }

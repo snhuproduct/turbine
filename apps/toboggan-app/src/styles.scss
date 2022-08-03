@@ -2,3 +2,9 @@
 
 @import './app/shared/styles/_colors.scss';
 @import './app/shared/styles/_typography.scss';
+.modal .modal-dialog {
+    .dropdown.open.dropdown-menu {
+        width: 100%;
+        max-height: 100px !important;
+    }
+}

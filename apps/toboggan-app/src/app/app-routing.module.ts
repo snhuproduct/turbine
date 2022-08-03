@@ -7,6 +7,10 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
+  {
+    path: 'group',
+    loadChildren: () => import('./group/group.module').then((m) => m.GroupModule),
+  },
   { path: '**', redirectTo: '' }
 ];
 

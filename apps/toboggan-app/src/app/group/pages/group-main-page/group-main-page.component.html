@@ -1,0 +1,14 @@
+<gp-page [loggedin]="true">
+    <div>
+        <div class="gp-level-4">User Group</div>
+        <button gp-button gp-modal-trigger [modalTemplate]="createGroup" [modalTitle]="title" [modalButtons]="modalButtons" aria-label="open modal">Open</button>
+    </div>
+
+    <ng-template #createGroup>
+        <toboggan-ws-create-group></toboggan-ws-create-group>
+    </ng-template>
+    <ng-template #addUsers>
+        <toboggan-ws-add-users></toboggan-ws-add-users>
+    </ng-template>
+    
+</gp-page>

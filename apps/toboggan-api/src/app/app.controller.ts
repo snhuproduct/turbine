@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { IAddUsertoGroup, IGroup, IUser } from '@toboggan-ws/toboggan-common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -64,5 +64,10 @@ export class AppController {
   @Delete('groups/:id')
   deleteGroup(@Param('id') id) {
     return this.appService.deleteGroup(id);
+  }
+
+  @Post('addusertogroup')
+  addUserstoGroup(@Body() request: IAddUsertoGroup) {
+    return this.appService.addUserstoGroup(request);
   }
 }

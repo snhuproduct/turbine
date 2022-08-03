@@ -4,8 +4,9 @@ export function tobogganCommon(): string {
 
 export interface IGroup {
   id: string;
-  groupName: string;
-  type: number;
+  name: string;
+  type?: number;
+  description: string | null;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;
@@ -21,3 +22,8 @@ export interface IUser {
 }
 
 export type INewUser = Omit<IUser, 'id'>;
+
+export interface IAddUsertoGroup {
+  groupId: string;
+  email: string;
+}
