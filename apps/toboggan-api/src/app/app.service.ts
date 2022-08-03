@@ -7,6 +7,8 @@ import {
 } from '@toboggan-ws/toboggan-common';
 import { v4 as uuidv4 } from 'uuid';
 
+import * as arrayPaginate from 'array-paginate';
+
 @Injectable()
 export class AppService {
   groups: IGroup[] = [
@@ -43,6 +45,10 @@ export class AppService {
   ];
 
   getUsers(): IUser[] {
+    const paginatedUsers = arrayPaginate(this.users, 0, 10);
+
+    console.log(paginatedUsers);
+
     return this.users;
   }
 
