@@ -4,7 +4,16 @@
 
   <main>
     <div class="row">
-      <div class="col">
+      <div class="col-9 d-flex justify-content-end align-items-center">
+        <gp-input size="default" [submitButton]="true"
+          ><input
+            aria-label="input"
+            placeholder="Search users"
+            class="user-search"
+            type="search"
+        /></gp-input>
+      </div>
+      <div class="col d-flex justify-content-end align-items-center">
         <button
           gp-button
           gp-modal-trigger
@@ -21,5 +30,6 @@
         </ng-template>
       </div>
     </div>
+    <div class="row">[TABLE HERE]</div>
   </main>
 </gp-page>
