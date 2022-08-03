@@ -1,0 +1,12 @@
+<gp-page [loggedin]="true">
+    <div class="gp-level-4">User Group</div>
+    <div class="gp-level-5">[User Group Name]</div>
+    <div class="p-3">[Group description the admin wrote when creating group]</div>
+    <gp-tabs>
+        <gp-tab label="Users">
+            <gp-table title="Table Title" description="Table description if needed" [dynamic]="true"
+                [dataGenerator]="dataGenerator" tableStyle="striped"></gp-table>
+        </gp-tab>
+        <gp-tab label="Permissions">Permissions</gp-tab>
+    </gp-tabs>
+</gp-page>
