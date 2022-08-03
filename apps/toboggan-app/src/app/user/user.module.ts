@@ -4,9 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { SharedModule } from '../shared/shared.module';
 import { CreateUserComponent } from './components/create-user/create-user.component';
+import { UserTableComponent } from './components/user-table/user-table.component';
 import { UserMainPageComponent } from './pages/user-main-page/user-main-page.component';
 import { userRouting } from './user.routing';
-import { UserTableComponent } from './components/user-table/user-table.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,6 @@ import { UserTableComponent } from './components/user-table/user-table.component
     ReactiveFormsModule,
   ],
 
-  exports: [UserMainPageComponent],
+  exports: [UserMainPageComponent, UserTableComponent],
 })
 export class UserModule {}
