@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { UsersService } from '../../providers/users/users.service';
@@ -16,8 +17,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('/')
-  getUsers() {
-    return this.usersService.getUsers();
+  getUsers(@Query() query) {
+    const { currentPage, resultsPerPage } = query;
+
+    console.log(query);
+
+    return this.usersService.getUsers(currentPage, resultsPerPage);
   }
 
   @Post('/')

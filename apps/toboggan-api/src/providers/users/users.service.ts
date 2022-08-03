@@ -38,12 +38,14 @@ export class UsersService {
     },
   ];
 
-  getUsers(): IUser[] {
-    const paginatedUsers = arrayPaginate(this.users, 0, 10);
+  getUsers(currentPage: number, resultsPerPage = 10): IUser[] {
+    const paginatedUsers = arrayPaginate(
+      this.users,
+      currentPage,
+      resultsPerPage
+    );
 
-    console.log(paginatedUsers);
-
-    return this.users;
+    return paginatedUsers;
   }
 
   createUser(user: INewUser) {

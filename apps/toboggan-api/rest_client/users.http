@@ -1,7 +1,7 @@
 
 ## Users :: Read all users
 
-GET {{baseUrl}}/users HTTP/1.1
+GET {{baseUrl}}/users?currentPage=1&resultsPerPage=10 HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
