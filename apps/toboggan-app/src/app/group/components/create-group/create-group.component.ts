@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INewGroup } from '@toboggan-ws/toboggan-common';
+import { FormError } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { GroupService } from '../../services/group.service';
 })
 export class CreateGroupComponent implements OnInit {
   createGroupForm!: FormGroup;
-  constructor(private groupService: GroupService) {}
+  constructor(private groupService: GroupService) { }
 
   ngOnInit(): void {
     this.createGroupForm = new FormGroup({
@@ -28,11 +29,11 @@ export class CreateGroupComponent implements OnInit {
     const control = this.createGroupForm.get(controlName);
     if (control)
       if (control.hasError('required')) {
-        return friendlyName + ' is required';
+        return `${friendlyName} ${FormError.isRequired}`;
       } else if (control.hasError('specialCharacters')) {
-        return `Don't use these characters: ! @ # $`;
+        return `${FormError.characters} ! @ # $`;
       } else if (control.hasError('pattern')) {
-        return `Use only letters and numbers.`;
+        return `${FormError.lettersAndNumbers}`;
       }
     return '';
   }
