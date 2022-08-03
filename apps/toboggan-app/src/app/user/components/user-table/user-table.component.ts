@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
   TableColumnAlignmentEnum,
@@ -16,13 +16,9 @@ import { dynamicRowData } from './user-table.mock';
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss'],
 })
-export class UserTableComponent implements OnInit {
-  dataGenerator: SingleHeaderRowTableDataGenerator | null = null;
-
-  constructor() {}
-
-  ngOnInit(): void {
-    this.dataGenerator = new SingleHeaderRowTableDataGenerator(
+export class UserTableComponent {
+  dataGenerator: SingleHeaderRowTableDataGenerator =
+    new SingleHeaderRowTableDataGenerator(
       (
         dataGenerator: TableDataGenerator,
         columnDisplayMetadata: TableColumnDisplayMetadatum[]
@@ -51,9 +47,7 @@ export class UserTableComponent implements OnInit {
           }
         }
 
-        // @ts-ignore
         dataGenerator.retrievalCallback(
-          // @ts-ignore
           dynamicRowData.sort((a, b) => {
             if (a.cellData[sortColumnIndex] < b.cellData[sortColumnIndex]) {
               return -1 * sortDirectionCoefficient;
@@ -70,10 +64,10 @@ export class UserTableComponent implements OnInit {
       },
       () => {},
       [
-        { title: '#', dataKey: '1' },
+        { title: '#', dataKey: 'sequence' },
         {
-          dataKey: '2',
           title: 'First',
+          dataKey: 'first',
           parents: '',
           defaultSort: true,
           filters: [
@@ -84,40 +78,44 @@ export class UserTableComponent implements OnInit {
           selectedFilters: { a: false, b: false, c: false },
         },
         {
-          dataKey: '3',
           title: 'Last',
+          dataKey: 'last',
           parents: '',
           filters: ['a', 'b', 'c'],
           selectedFilters: { a: false, b: false, c: false },
           alignment: TableColumnAlignmentEnum.Right,
         },
         {
-          dataKey: '4',
+          title: 'Status',
+          dataKey: 'status',
+          alignment: TableColumnAlignmentEnum.Right,
+        },
+        {
           title: 'mail',
+          dataKey: 'mail',
           parents: '',
           dataType: TableColumnDataTypeEnum.IconLeft,
           filters: ['Twitter', 'lock', 'Instagram'],
           selectedFilters: { Twitter: false, lock: false, Instagram: false },
         },
         {
-          dataKey: '5',
           title: 'lock',
+          dataKey: 'lock',
           parents: '',
           dataType: TableColumnDataTypeEnum.IconRight,
           filters: ['Twitter', 'lock', 'Instagram'],
           selectedFilters: { Twitter: false, lock: false, Instagram: false },
         },
         {
-          dataKey: '6',
           title: 'Menu',
+          dataKey: 'menu',
           dataType: TableColumnDataTypeEnum.InlineMenu,
         },
         {
-          dataKey: '7',
           title: 'Fixed Menu',
+          dataKey: 'fixedMenu',
           dataType: TableColumnDataTypeEnum.FixedInlineMenu,
         },
       ]
     );
-  }
 }
