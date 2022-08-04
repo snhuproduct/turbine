@@ -15,9 +15,36 @@
         >
           Add New User
         </button>
+        <button
+          gp-button
+          gp-modal-trigger
+          (click)="
+            updateUserComponent?.setUser({
+              id: '9642095',
+              firstName: 'Leela',
+              lastName: 'Turanga',
+              userName: 'leela.turanga',
+              email: 'leela@planetexpress.com',
+              enabled: true
+            })
+          "
+          [modalTemplate]="updateusertemplate"
+          [modalTitle]="updateUserDialogTitle"
+          [modalButtons]="updateUserModalButtonsConfig"
+          aria-label="blomp"
+        >
+          Edit user (demo)
+        </button>
         <ng-template #createusertemplate>
           <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
           </toboggan-ws-create-user>
+        </ng-template>
+        <ng-template #updateusertemplate>
+          <toboggan-ws-update-user
+            [returnHandle]="receiveUpdateUserHandle"
+            [user]="editingUser"
+          >
+          </toboggan-ws-update-user>
         </ng-template>
       </div>
     </div>

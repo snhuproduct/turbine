@@ -33,8 +33,8 @@ export class UserService {
   }
 
   // updates user
-  updateUser() {
-    this.http.put('/api/users/:id', {}).subscribe(() => {
+  updateUser(id: string, user: Partial<IUser>) {
+    this.http.put(`/api/users/${id}`, user).subscribe(() => {
       this.fetchUsers();
     });
   }
@@ -53,5 +53,5 @@ export class UserService {
     });
   }
 
-    
+
 }
