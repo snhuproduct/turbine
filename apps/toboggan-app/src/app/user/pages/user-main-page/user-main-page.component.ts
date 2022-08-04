@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
-import { UpdateUserComponent } from '../../components/update-user/update-user.component';
 
 @Component({
   selector: 'toboggan-ws-user-main-page',
@@ -27,21 +26,6 @@ export class UserMainPageComponent {
     },
   ];
 
-  updateUserDialogTitle = 'Edit User';
-
-  updateUserComponent?: UpdateUserComponent;
-  updateUserModalButtonsConfig: ModalButtonConfig[] = [
-    {
-      title: 'Cancel',
-      onClick: () => this.handleCancelCreateUserModalButton(),
-      style: 'secondary',
-    },
-    {
-      title: 'Review Changes',
-      onClick: () => this.handleAddNewUserModalButton(),
-      style: 'primary',
-    },
-  ];
 
   async handleCancelCreateUserModalButton() {
     return true;
@@ -57,9 +41,5 @@ export class UserMainPageComponent {
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {
     this.createUserComponent = handle;
-  };
-
-  receiveUpdateUserHandle = (handle: UpdateUserComponent) => {
-    this.updateUserComponent = handle;
   };
 }

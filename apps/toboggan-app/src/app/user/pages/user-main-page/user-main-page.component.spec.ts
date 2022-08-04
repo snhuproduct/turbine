@@ -9,6 +9,7 @@ import { mock, MockProxy } from 'jest-mock-extended';
 import { UserService } from '../../../shared/services/user/user.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
+import { EditUserComponent } from '../../components/edit-user/edit-user.component';
 
 import { UserMainPageComponent } from './user-main-page.component';
 
@@ -19,7 +20,7 @@ describe('UserMainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserMainPageComponent, CreateUserComponent],     
+      declarations: [UserMainPageComponent, CreateUserComponent, EditUserComponent],
       imports: [
         StoriesModule,
         NoopAnimationsModule,

@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+  font-size: 14px;
+  line-height: 22px;
+  thead {
+    td {
+      padding: 8px;
+      font-weight: 700;
+      color: #456067;
+      border-bottom: 1px solid #e5eced;
+    }
+  }
+  tbody {
+    tr {
+      td {
+        padding: 32px 8px 0;
+        &:first-of-type {
+          font-weight: 700;
+          color: #08295a;
+        }
+      }
+    }
+  }
+  margin-bottom: 32px;
+}

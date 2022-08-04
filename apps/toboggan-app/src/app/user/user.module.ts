@@ -4,12 +4,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { SharedModule } from '../shared/shared.module';
 import { CreateUserComponent } from './components/create-user/create-user.component';
-import { UpdateUserComponent } from './components/update-user/update-user.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { UserMainPageComponent } from './pages/user-main-page/user-main-page.component';
 import { userRouting } from './user.routing';
 
 @NgModule({
-  declarations: [UserMainPageComponent, CreateUserComponent, UpdateUserComponent],
+  declarations: [UserMainPageComponent, CreateUserComponent, EditUserComponent],
   imports: [
     CommonModule,
     StoriesModule,
@@ -20,4 +20,4 @@ import { userRouting } from './user.routing';
 
   exports: [UserMainPageComponent],
 })
-export class UserModule { }
+export class UserModule {}

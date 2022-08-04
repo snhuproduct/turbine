@@ -1,0 +1,16 @@
+<table class="">
+  <thead>
+    <tr>
+      <td></td>
+      <td>Original</td>
+      <td>New</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of editedRows">
+      <td>{{ row.label }}</td>
+      <td>{{ row.oldValue }}</td>
+      <td>{{ row.newValue }}</td>
+    </tr>
+  </tbody>
+</table>
