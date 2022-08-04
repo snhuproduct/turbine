@@ -19,21 +19,17 @@
         </button>
         <button
           gp-button
-          gp-modal-trigger
+          aria-label="blomp"
           (click)="
-            updateUserComponent?.setUser({
+            editingUser = {
               id: '9642095',
               firstName: 'Leela',
               lastName: 'Turanga',
               userName: 'leela.turanga',
-              email: 'leela@planetexpress.com',
+              email: 'leela@pexpress.com',
               enabled: true
-            })
+            }
           "
-          [modalTemplate]="updateusertemplate"
-          [modalTitle]="updateUserDialogTitle"
-          [modalButtons]="updateUserModalButtonsConfig"
-          aria-label="blomp"
         >
           Edit user (demo)
         </button>
@@ -41,13 +37,7 @@
           <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
           </toboggan-ws-create-user>
         </ng-template>
-        <ng-template #updateusertemplate>
-          <toboggan-ws-update-user
-            [returnHandle]="receiveUpdateUserHandle"
-            [user]="editingUser"
-          >
-          </toboggan-ws-update-user>
-        </ng-template>
+        <toboggan-ws-edit-user [(user)]="editingUser"></toboggan-ws-edit-user>
 
         <toboggan-ws-user-table></toboggan-ws-user-table>
       </div>
