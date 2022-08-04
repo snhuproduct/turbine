@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { SharedModule } from '../shared/shared.module';
 import { CreateUserComponent } from './components/create-user/create-user.component';
+import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { UserTableComponent } from './components/user-table/user-table.component';
 import { UserMainPageComponent } from './pages/user-main-page/user-main-page.component';
 import { userRouting } from './user.routing';
@@ -13,6 +14,7 @@ import { userRouting } from './user.routing';
     UserMainPageComponent,
     CreateUserComponent,
     UserTableComponent,
+    UpdateUserComponent,
   ],
   imports: [
     CommonModule,
@@ -22,6 +24,6 @@ import { userRouting } from './user.routing';
     ReactiveFormsModule,
   ],
 
-  exports: [UserMainPageComponent, UserTableComponent],
+  exports: [UserMainPageComponent, UserTableComponent, UpdateUserComponent],
 })
-export class UserModule {}
+export class UserModule { }

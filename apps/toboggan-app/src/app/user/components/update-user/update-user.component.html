@@ -1,0 +1,36 @@
+<div *ngIf="isLoading">
+  <gp-interstitial-loader
+    [isOverlayVisible]="true"
+    [type]="loaderType"
+  ></gp-interstitial-loader>
+</div>
+<p *ngIf="failedToUpdateUser" class="gp-paragraph error-message">
+  <strong>Add New User</strong> couldn't be completed
+</p>
+
+<form [formGroup]="userForm">
+  <p class="gp-paragraph" *ngIf="user">
+    {{ user.firstName }} {{ user.lastName }} (User ID: {{ user.id }})
+  </p>
+  <gp-input
+    label="First Name"
+    [error]="hasError('firstName')"
+    [errorMessage]="getErrorMessage('firstName', 'First Name')"
+  >
+    <input type="text" formControlName="firstName" />
+  </gp-input>
+  <gp-input
+    label="Last Name"
+    [error]="hasError('lastName')"
+    [errorMessage]="getErrorMessage('lastName', 'Last Name')"
+  >
+    <input type="text" formControlName="lastName" />
+  </gp-input>
+  <gp-input
+    label="Email Address"
+    [error]="hasError('email')"
+    [errorMessage]="getErrorMessage('email', 'Email')"
+  >
+    <input type="email" formControlName="email" />
+  </gp-input>
+</form>
