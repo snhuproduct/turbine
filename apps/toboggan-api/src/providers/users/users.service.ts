@@ -20,7 +20,7 @@ export class UsersService {
   users: IUser[] = [];
 
   constructor() {
-    // generate mocked data for 20 users
+    // generate mocked data for 20
     for (let i = 0; i < 20; i++) {
       this.users.push({
         id: uuidv4(),

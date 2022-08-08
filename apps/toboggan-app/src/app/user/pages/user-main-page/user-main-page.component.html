@@ -4,10 +4,7 @@
 
   <main>
     <div class="row">
-      <div class="col-9 d-flex justify-content-end align-items-center">
-        [SEARCH INPUT PLACEHOLDER]
-      </div>
-      <div class="col d-flex justify-content-end align-items-center">
+      <div class="page-container">
         <button
           gp-button
           gp-modal-trigger
@@ -22,10 +19,7 @@
           <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
           </toboggan-ws-create-user>
         </ng-template>
-      </div>
-    </div>
-    <div class="row">
-      <div class="page-container">
+
         <toboggan-ws-user-table></toboggan-ws-user-table>
       </div>
     </div>
