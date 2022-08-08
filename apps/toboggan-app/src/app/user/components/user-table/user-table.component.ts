@@ -20,6 +20,7 @@ import { userTableHeader } from './data/user-table-header';
 export class UserTableComponent {
   private currentPage = 1;
   private resultsPerPage = 10;
+  public dynamicRowData: TableRow[] = [];
 
   constructor(private userService: UserService) {}
 
@@ -55,11 +56,10 @@ export class UserTableComponent {
             break;
           }
         }
-        console.log(sortColumnDataKey, sortDirectionCoefficient);
 
-        const dynamicRowData = await this.generateUserRowData();
+        await this.generateUserRowData();
 
-        const sortedData = dynamicRowData.sort((a, b) => {
+        const sortedData = this.dynamicRowData.sort((a, b) => {
           if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
             return -1 * sortDirectionCoefficient;
           }
@@ -92,7 +92,7 @@ export class UserTableComponent {
     return actions;
   }
 
-  async generateUserRowData(): Promise<TableRow[]> {
+  async generateUserRowData(): Promise<void> {
     const users = await firstValueFrom(this.userService.fetchUsers());
 
     // TODO: Ideally it should come sorted from our API!
@@ -128,6 +128,6 @@ export class UserTableComponent {
       (user) => user.cellData.status === 'Active'
     );
 
-    return activeUsers as unknown as TableRow[];
+    this.dynamicRowData = activeUsers as TableRow[];
   }
 }

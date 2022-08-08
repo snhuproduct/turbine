@@ -9,7 +9,14 @@ import {
 } from '@snhuproduct/toboggan-ui-components-library';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { of } from 'rxjs';
+import { UserService } from '../../../shared/services/user/user.service';
+import { mockUsers } from './mock/usersMock';
 import { UserTableComponent } from './user-table.component';
+
+const mockUserService = {
+  fetchUsers: jest.fn().mockReturnValue(of(mockUsers)),
+};
 
 describe('UserTableComponent', () => {
   let component: UserTableComponent;
@@ -18,7 +25,14 @@ describe('UserTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserTableComponent, TableComponent],
-      providers: [HttpClient, HttpHandler],
+      providers: [
+        HttpClient,
+        HttpHandler,
+        {
+          provide: UserService,
+          useValue: mockUserService,
+        },
+      ],
       imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -36,5 +50,13 @@ describe('UserTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render all users, on start', () => {
+    const fetchUsers = jest.spyOn(mockUserService, 'fetchUsers');
+
+    expect(fetchUsers).toHaveBeenCalled();
+
+    expect(component.dynamicRowData).toHaveLength(mockUsers.length);
   });
 });
