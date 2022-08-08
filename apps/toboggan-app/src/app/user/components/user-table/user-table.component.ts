@@ -27,16 +27,19 @@ export class UserTableComponent {
     new SingleHeaderRowTableDataGenerator(
       async (
         dataGenerator: TableDataGenerator,
-        columnDisplayMetadata: TableColumnDisplayMetadatum[]
+        columnDisplayMetadata: TableColumnDisplayMetadatum[],
+        searchString: string,
+        pageSize: number,
+        currentPage: number
       ) => {
-        let sortColumnIndex = 0;
+        let sortColumnDataKey = '';
         let sortDirectionCoefficient = 0;
         for (let i = 0; i < columnDisplayMetadata.length; i++) {
           if (
             columnDisplayMetadata[i].sort &&
             columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
           ) {
-            sortColumnIndex = i;
+            sortColumnDataKey = columnDisplayMetadata[i].dataKey;
             if (
               columnDisplayMetadata[i].sort ===
               TableColumnSortStateEnum.Ascending
@@ -52,22 +55,27 @@ export class UserTableComponent {
             break;
           }
         }
+        console.log(sortColumnDataKey, sortDirectionCoefficient);
 
         const dynamicRowData = await this.generateUserRowData();
 
+        const sortedData = dynamicRowData.sort((a, b) => {
+          if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
+            return -1 * sortDirectionCoefficient;
+          }
+          if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
+            return 1 * sortDirectionCoefficient;
+          }
+          return 0;
+        });
+
+        const startRow = (currentPage - 1) * pageSize;
+        const pageData = sortedData.slice(startRow, startRow + pageSize);
         dataGenerator.retrievalCallback(
-          dynamicRowData.sort((a, b) => {
-            if (a.cellData[sortColumnIndex] < b.cellData[sortColumnIndex]) {
-              return -1 * sortDirectionCoefficient;
-            }
-            if (a.cellData[sortColumnIndex] > b.cellData[sortColumnIndex]) {
-              return 1 * sortDirectionCoefficient;
-            }
-            return 0;
-          }),
-          12,
-          1,
-          2
+          pageData,
+          sortedData.length,
+          currentPage,
+          Math.ceil(sortedData.length / pageSize)
         );
       },
       () => {},
