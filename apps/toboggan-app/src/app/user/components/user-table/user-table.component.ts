@@ -8,6 +8,7 @@ import {
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
+import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -35,6 +36,9 @@ export class UserTableComponent {
       ) => {
         let sortColumnDataKey = '';
         let sortDirectionCoefficient = 0;
+
+        dataGenerator.isFiltered = true;
+
         for (let i = 0; i < columnDisplayMetadata.length; i++) {
           if (
             columnDisplayMetadata[i].sort &&
@@ -59,30 +63,35 @@ export class UserTableComponent {
 
         await this.generateUserRowData();
 
-        const sortedData = this.dynamicRowData.sort((a, b) => {
-          if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-            return -1 * sortDirectionCoefficient;
-          }
-          if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-            return 1 * sortDirectionCoefficient;
-          }
-          return 0;
-        });
-
-        const startRow = (currentPage - 1) * pageSize;
-        const pageData = sortedData.slice(startRow, startRow + pageSize);
-        dataGenerator.retrievalCallback(
-          pageData,
-          sortedData.length,
-          currentPage,
-          Math.ceil(sortedData.length / pageSize)
-        );
+        if (this.dynamicRowData.length) {
+          const sortedData = this.dynamicRowData.sort((a, b) => {
+            if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
+              return -1 * sortDirectionCoefficient;
+            }
+            if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
+              return 1 * sortDirectionCoefficient;
+            }
+            return 0;
+          });
+          const startRow = (currentPage - 1) * pageSize;
+          const pageData = sortedData.slice(startRow, startRow + pageSize);
+          dataGenerator.retrievalCallback(
+            pageData,
+            sortedData.length,
+            currentPage,
+            Math.ceil(sortedData.length / pageSize)
+          );
+        } else {
+          dataGenerator.retrievalCallback([], 0, 1, 1);
+        }
       },
       () => {},
       userTableHeader
     );
 
   getActionMenuItems(rowData: TableRow) {
+    console.log('getActionMenuItems', rowData);
+
     const actions = ['edit', 'reset password'];
     if (rowData.cellData['status']?.toString().toLowerCase() === 'active') {
       actions.push('deactivate');
@@ -90,6 +99,10 @@ export class UserTableComponent {
       actions.push('activate');
     }
     return actions;
+  }
+
+  onRowAction(event: IRowActionEvent) {
+    console.log(event);
   }
 
   async generateUserRowData(): Promise<void> {
@@ -117,15 +130,17 @@ export class UserTableComponent {
           first: user.firstName,
           last: user.lastName,
           mail: ['gp-icon-mail', user.email],
-          status: user.enabled ? 'Active' : 'Inactive',
+          status: user.enabled
+            ? ['is-category', 'Active', 50] // this will generate the custom tag
+            : ['is-category', 'Inactive', 50],
         },
       };
     });
 
     // filter out active only users
-    // TODO: This will be refactored once the API has support for searching.
+    // TODO: It should be refactored once the API has support for searching.
     const activeUsers = data.filter(
-      (user) => user.cellData.status === 'Active'
+      (user) => user.cellData.status[1] === 'Active'
     );
 
     this.dynamicRowData = activeUsers as TableRow[];
