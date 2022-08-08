@@ -6,10 +6,11 @@ import {
   TableColumnDisplayMetadatum,
   TableColumnSortStateEnum,
   TableDataGenerator,
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
+import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
-import { dynamicRowData } from './user-table.mock';
 
 @Component({
   selector: 'toboggan-ws-user-table',
@@ -20,13 +21,11 @@ export class UserTableComponent {
   private currentPage = 1;
   private resultsPerPage = 10;
 
-  constructor(private userService: UserService) {
-    this.fetchUsers();
-  }
+  constructor(private userService: UserService) {}
 
   dataGenerator: SingleHeaderRowTableDataGenerator =
     new SingleHeaderRowTableDataGenerator(
-      (
+      async (
         dataGenerator: TableDataGenerator,
         columnDisplayMetadata: TableColumnDisplayMetadatum[]
       ) => {
@@ -54,6 +53,8 @@ export class UserTableComponent {
           }
         }
 
+        const dynamicRowData = await this.generateUserRowData();
+
         dataGenerator.retrievalCallback(
           dynamicRowData.sort((a, b) => {
             if (a.cellData[sortColumnIndex] < b.cellData[sortColumnIndex]) {
@@ -73,11 +74,29 @@ export class UserTableComponent {
       userTableHeader
     );
 
-  public fetchUsers() {
-    this.userService.fetchUsers().subscribe((users) => {
-      console.log(users);
-    });
-  }
+  public async generateUserRowData(): Promise<TableRow[]> {
+    const users = await firstValueFrom(this.userService.fetchUsers());
 
-  public generateUserCell() {}
+    const data = users.map((user, index) => {
+      return {
+        rowId: String(index + 1),
+        cellData: {
+          sequence: String(index + 1),
+          first: user.firstName,
+          last: user.lastName,
+          mail: ['gp-icon-mail', user.email],
+          status: user.enabled ? 'Active' : 'Inactive',
+        },
+      };
+    });
+
+    // filter out active only users
+    // TODO: This will be refactored once the API has support for searching.
+
+    const activeUsers = data.filter(
+      (user) => user.cellData.status === 'Active'
+    );
+
+    return activeUsers as unknown as TableRow[];
+  }
 }
