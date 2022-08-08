@@ -20,7 +20,11 @@ export class UsersController {
   getUsers(@Query() query) {
     const { currentPage, resultsPerPage } = query;
 
-    return this.usersService.getUsers(currentPage, resultsPerPage);
+    if (currentPage && resultsPerPage) {
+      return this.usersService.getPaginatedUsers(currentPage, resultsPerPage);
+    }
+
+    return this.usersService.getUsers();
   }
 
   @Post('/')

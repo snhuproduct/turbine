@@ -38,7 +38,11 @@ export class UsersService {
     },
   ];
 
-  getUsers(currentPage: number, resultsPerPage = 10): IUser[] {
+  getUsers(): IUser[] {
+    return this.users;
+  }
+
+  getPaginatedUsers(currentPage: number, resultsPerPage = 10) {
     const paginatedUsers = arrayPaginate(
       this.users,
       currentPage,

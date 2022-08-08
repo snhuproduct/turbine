@@ -10,9 +10,7 @@ export class UserService {
   users: IUser[] = [];
   groups: IGroup[] = [];
 
-  constructor(private http: HttpClient) {
-    this.fetchUsers();
-  }
+  constructor(private http: HttpClient) {}
 
   // user handlers
 
@@ -25,7 +23,13 @@ export class UserService {
   //
 
   fetchUsers() {
-    return this.http.get<IUser[]>('/api/users');
+    return this.http.get<IUser[]>(`/api/users`);
+  }
+
+  fetchPaginatedUsers(currentPage: number, resultsPerPage: number = 10) {
+    return this.http.get<IUser[]>(
+      `/api/users?currentPage=${currentPage}&resultsPerPage=${resultsPerPage}`
+    );
   }
 
   createUser(user: INewUser): Promise<unknown> {
@@ -52,6 +56,4 @@ export class UserService {
       this.fetchUsers();
     });
   }
-
-    
 }

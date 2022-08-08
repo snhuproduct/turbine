@@ -3,12 +3,12 @@
 import { Component } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
-  TableColumnAlignmentEnum,
-  TableColumnDataTypeEnum,
   TableColumnDisplayMetadatum,
   TableColumnSortStateEnum,
   TableDataGenerator,
 } from '@snhuproduct/toboggan-ui-components-library';
+import { UserService } from '../../../shared/services/user/user.service';
+import { userTableHeader } from './data/user-table-header';
 import { dynamicRowData } from './user-table.mock';
 
 @Component({
@@ -17,6 +17,13 @@ import { dynamicRowData } from './user-table.mock';
   styleUrls: ['./user-table.component.scss'],
 })
 export class UserTableComponent {
+  private currentPage = 1;
+  private resultsPerPage = 10;
+
+  constructor(private userService: UserService) {
+    this.fetchUsers();
+  }
+
   dataGenerator: SingleHeaderRowTableDataGenerator =
     new SingleHeaderRowTableDataGenerator(
       (
@@ -63,59 +70,14 @@ export class UserTableComponent {
         );
       },
       () => {},
-      [
-        { title: '#', dataKey: 'sequence' },
-        {
-          title: 'First',
-          dataKey: 'first',
-          parents: '',
-          defaultSort: true,
-          filters: [
-            'Long label for test max width on dropdown',
-            'Long label for test max width on dropdown 2',
-            'Long label for test max width on dropdown 3',
-          ],
-          selectedFilters: { a: false, b: false, c: false },
-        },
-        {
-          title: 'Last',
-          dataKey: 'last',
-          parents: '',
-          filters: ['a', 'b', 'c'],
-          selectedFilters: { a: false, b: false, c: false },
-          alignment: TableColumnAlignmentEnum.Right,
-        },
-        {
-          title: 'Status',
-          dataKey: 'status',
-          alignment: TableColumnAlignmentEnum.Right,
-        },
-        {
-          title: 'mail',
-          dataKey: 'mail',
-          parents: '',
-          dataType: TableColumnDataTypeEnum.IconLeft,
-          filters: ['Twitter', 'lock', 'Instagram'],
-          selectedFilters: { Twitter: false, lock: false, Instagram: false },
-        },
-        {
-          title: 'lock',
-          dataKey: 'lock',
-          parents: '',
-          dataType: TableColumnDataTypeEnum.IconRight,
-          filters: ['Twitter', 'lock', 'Instagram'],
-          selectedFilters: { Twitter: false, lock: false, Instagram: false },
-        },
-        {
-          title: 'Menu',
-          dataKey: 'menu',
-          dataType: TableColumnDataTypeEnum.InlineMenu,
-        },
-        {
-          title: 'Fixed Menu',
-          dataKey: 'fixedMenu',
-          dataType: TableColumnDataTypeEnum.FixedInlineMenu,
-        },
-      ]
+      userTableHeader
     );
+
+  public fetchUsers() {
+    this.userService.fetchUsers().subscribe((users) => {
+      console.log(users);
+    });
+  }
+
+  public generateUserCell() {}
 }

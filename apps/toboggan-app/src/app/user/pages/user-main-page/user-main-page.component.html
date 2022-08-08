@@ -5,13 +5,7 @@
   <main>
     <div class="row">
       <div class="col-9 d-flex justify-content-end align-items-center">
-        <gp-input size="default" [submitButton]="true"
-          ><input
-            aria-label="input"
-            placeholder="Search users"
-            class="user-search"
-            type="search"
-        /></gp-input>
+        [SEARCH INPUT PLACEHOLDER]
       </div>
       <div class="col d-flex justify-content-end align-items-center">
         <button
@@ -31,7 +25,9 @@
       </div>
     </div>
     <div class="row">
-      <toboggan-ws-user-table></toboggan-ws-user-table>
+      <div class="page-container">
+        <toboggan-ws-user-table></toboggan-ws-user-table>
+      </div>
     </div>
   </main>
 </gp-page>
