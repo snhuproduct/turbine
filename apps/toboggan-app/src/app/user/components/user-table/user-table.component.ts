@@ -87,6 +87,7 @@ export class UserTableComponent {
   async generateUserRowData(): Promise<TableRow[]> {
     const users = await firstValueFrom(this.userService.fetchUsers());
 
+    // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
       if (a.lastName && b.lastName) {
         if (a.lastName < b.lastName) {
@@ -115,7 +116,6 @@ export class UserTableComponent {
 
     // filter out active only users
     // TODO: This will be refactored once the API has support for searching.
-
     const activeUsers = data.filter(
       (user) => user.cellData.status === 'Active'
     );
