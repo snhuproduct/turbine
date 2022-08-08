@@ -74,10 +74,33 @@ export class UserTableComponent {
       userTableHeader
     );
 
-  public async generateUserRowData(): Promise<TableRow[]> {
+  getActionMenuItems(rowData: TableRow) {
+    const actions = ['edit', 'reset password'];
+    if (rowData.cellData['status']?.toString().toLowerCase() === 'active') {
+      actions.push('deactivate');
+    } else {
+      actions.push('activate');
+    }
+    return actions;
+  }
+
+  async generateUserRowData(): Promise<TableRow[]> {
     const users = await firstValueFrom(this.userService.fetchUsers());
 
-    const data = users.map((user, index) => {
+    const usersSortedByLastName = users.sort((a, b) => {
+      if (a.lastName && b.lastName) {
+        if (a.lastName < b.lastName) {
+          return -1;
+        }
+        if (a.lastName > b.lastName) {
+          return 1;
+        }
+      }
+
+      return 0;
+    });
+
+    const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
         cellData: {
