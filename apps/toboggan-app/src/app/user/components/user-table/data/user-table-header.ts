@@ -10,13 +10,14 @@ export const userTableHeader = [
     parents: '',
     defaultSort: true,
     selectedFilters: { a: false, b: false, c: false },
+    alignment: TableColumnAlignmentEnum.Center,
   },
   {
     title: 'Last name',
     dataKey: 'last',
     parents: '',
     selectedFilters: { a: false, b: false, c: false },
-    alignment: TableColumnAlignmentEnum.Right,
+    alignment: TableColumnAlignmentEnum.Center,
   },
   {
     title: 'E-mail address',
@@ -24,10 +25,11 @@ export const userTableHeader = [
     parents: '',
     dataType: TableColumnDataTypeEnum.IconLeft,
     selectedFilters: { Twitter: false, lock: false, Instagram: false },
+    alignment: TableColumnAlignmentEnum.Center,
   },
   {
     title: 'Status',
     dataKey: 'status',
-    alignment: TableColumnAlignmentEnum.Right,
+    alignment: TableColumnAlignmentEnum.Center,
   },
 ];
