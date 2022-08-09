@@ -9,7 +9,6 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
 })
 export class UserMainPageComponent {
   createUserDialogTitle = 'Add New User';
-
   createUserComponent?: CreateUserComponent;
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
@@ -22,18 +21,18 @@ export class UserMainPageComponent {
       onClick: () => this.handleAddNewUserModalButton(),
       style: 'primary',
     },
-];
+  ];
 
-  async handleCancelCreateUserModalButton(){
+  async handleCancelCreateUserModalButton() {
     return true;
   }
 
-  async handleAddNewUserModalButton() {        
-    if(!this.createUserComponent){
+  async handleAddNewUserModalButton() {
+    if (!this.createUserComponent) {
       return false;
-    } 
-    const result =  await this.createUserComponent.handleAddNewUserModalButton();
-    return result;      
+    }
+    const result = await this.createUserComponent.handleAddNewUserModalButton();
+    return result;
   }
 
   receiveCreateUserHandle = (handle: CreateUserComponent) => {
