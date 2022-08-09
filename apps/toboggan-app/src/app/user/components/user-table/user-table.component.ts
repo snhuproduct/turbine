@@ -55,7 +55,7 @@ export class UserTableComponent {
             Math.ceil(sortedData.length / pageSize)
           );
         } else {
-          dataGenerator.retrievalCallback([], 0, 1, 1);
+          dataGenerator.update();
         }
       },
       () => {},
