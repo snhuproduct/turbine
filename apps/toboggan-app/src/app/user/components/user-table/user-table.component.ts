@@ -13,6 +13,11 @@ import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 
+interface IFilterChange {
+  filters: Record<string, boolean>;
+  columnMetadatum: TableColumnDisplayMetadatum;
+}
+
 @Component({
   selector: 'toboggan-ws-user-table',
   templateUrl: './user-table.component.html',
@@ -22,6 +27,8 @@ export class UserTableComponent {
   private currentPage = 1;
   private resultsPerPage = 10;
   public dynamicRowData: TableRow[] = [];
+
+  private filters: Map<string, Record<string, boolean>> = new Map();
 
   constructor(private userService: UserService) {}
 
@@ -110,13 +117,16 @@ export class UserTableComponent {
       };
     });
 
-    // filter out active only users
-    // TODO: It should be refactored once the API has support for searching.
-    const activeUsers = data.filter(
-      (user) => user.cellData.status[1] === 'Active'
-    );
+    this.dynamicRowData = data as TableRow[];
+  }
 
-    this.dynamicRowData = activeUsers as TableRow[];
+  public onFilterChange(event: IFilterChange): void {
+    // if all filters are false, remove the filter
+    //TODO: We actually need to implement filtering.
+    if (Object.values(event.filters).every((value) => !value)) {
+      this.filters.delete(event.columnMetadatum.dataKey);
+    }
+    this.filters.set(event.columnMetadatum.dataKey, event.filters);
   }
 
   private getSortedData(
