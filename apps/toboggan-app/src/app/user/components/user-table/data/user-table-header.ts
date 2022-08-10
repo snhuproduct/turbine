@@ -27,6 +27,6 @@ export const userTableHeader = [
     filters: ['Active', 'Inactive'],
     alignment: TableColumnAlignmentEnum.Left,
     dataType: TableColumnDataTypeEnum.Tag,
-    selectedFilters: { a: false, b: false },
+    selectedFilters: { Active: false, Inactive: false },
   },
 ];
