@@ -34,45 +34,18 @@ export class UserTableComponent {
         pageSize: number,
         currentPage: number
       ) => {
-        let sortColumnDataKey = '';
-        let sortDirectionCoefficient = 0;
-
         dataGenerator.isFiltered = true;
 
-        for (let i = 0; i < columnDisplayMetadata.length; i++) {
-          if (
-            columnDisplayMetadata[i].sort &&
-            columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-          ) {
-            sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-            if (
-              columnDisplayMetadata[i].sort ===
-              TableColumnSortStateEnum.Ascending
-            ) {
-              sortDirectionCoefficient = 1;
-            }
-            if (
-              columnDisplayMetadata[i].sort ===
-              TableColumnSortStateEnum.Descending
-            ) {
-              sortDirectionCoefficient = -1;
-            }
-            break;
-          }
-        }
+        const { sortColumnDataKey, sortDirectionCoefficient } =
+          this.getSortDirectionCoefficient(columnDisplayMetadata);
 
         await this.generateUserRowData();
 
         if (this.dynamicRowData.length) {
-          const sortedData = this.dynamicRowData.sort((a, b) => {
-            if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-              return -1 * sortDirectionCoefficient;
-            }
-            if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-              return 1 * sortDirectionCoefficient;
-            }
-            return 0;
-          });
+          const sortedData = this.getSortedData(
+            sortColumnDataKey,
+            sortDirectionCoefficient
+          );
           const startRow = (currentPage - 1) * pageSize;
           const pageData = sortedData.slice(startRow, startRow + pageSize);
           dataGenerator.retrievalCallback(
@@ -82,7 +55,7 @@ export class UserTableComponent {
             Math.ceil(sortedData.length / pageSize)
           );
         } else {
-          dataGenerator.retrievalCallback([], 0, 1, 1);
+          dataGenerator.update();
         }
       },
       () => {},
@@ -144,5 +117,47 @@ export class UserTableComponent {
     );
 
     this.dynamicRowData = activeUsers as TableRow[];
+  }
+
+  private getSortedData(
+    sortColumnDataKey: string,
+    sortDirectionCoefficient: number
+  ) {
+    return this.dynamicRowData.sort((a, b) => {
+      if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
+        return -1 * sortDirectionCoefficient;
+      }
+      if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
+        return 1 * sortDirectionCoefficient;
+      }
+      return 0;
+    });
+  }
+
+  private getSortDirectionCoefficient(
+    columnDisplayMetadata: TableColumnDisplayMetadatum[]
+  ): { sortColumnDataKey: string; sortDirectionCoefficient: number } {
+    let sortColumnDataKey = '';
+
+    for (let i = 0; i < columnDisplayMetadata.length; i++) {
+      if (
+        columnDisplayMetadata[i].sort &&
+        columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
+      ) {
+        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
+        if (
+          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
+        ) {
+          return { sortColumnDataKey, sortDirectionCoefficient: 1 };
+        }
+        if (
+          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
+        ) {
+          return { sortColumnDataKey, sortDirectionCoefficient: -1 };
+        }
+        break;
+      }
+    }
+    return { sortColumnDataKey, sortDirectionCoefficient: 0 };
   }
 }
