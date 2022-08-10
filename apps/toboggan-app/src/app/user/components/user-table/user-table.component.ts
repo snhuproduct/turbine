@@ -122,11 +122,11 @@ export class UserTableComponent {
 
   public onFilterChange(event: IFilterChange): void {
     // if all filters are false, remove the filter
+    //TODO: We actually need to implement filtering.
     if (Object.values(event.filters).every((value) => !value)) {
       this.filters.delete(event.columnMetadatum.dataKey);
-    } else {
-      this.filters.set(event.columnMetadatum.dataKey, event.filters);
     }
+    this.filters.set(event.columnMetadatum.dataKey, event.filters);
   }
 
   private getSortedData(
