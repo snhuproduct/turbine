@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
+import {
+  IGroup,
+  INewUser,
+  IUpdatedUser,
+  IUser,
+} from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -37,22 +42,8 @@ export class UserService {
   }
 
   // updates user
-  updateUser() {
-    this.http.put('/api/users/:id', {}).subscribe(() => {
-      this.fetchUsers();
-    });
-  }
-
-  //
-  enableUser() {
-    this.http.put('/api/users/:id/enable/', {}).subscribe(() => {
-      this.fetchUsers();
-    });
-  }
-
-  //
-  disableUser() {
-    this.http.put('/api/users/:id/disable', {}).subscribe(() => {
+  updateUser(updatedUser: IUpdatedUser) {
+    this.http.put('/api/users/:id', updatedUser).subscribe(() => {
       this.fetchUsers();
     });
   }

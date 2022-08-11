@@ -12,11 +12,7 @@ import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
-
-interface IFilterChange {
-  filters: Record<string, boolean>;
-  columnMetadatum: TableColumnDisplayMetadatum;
-}
+import { IFilterChange, RowActions } from './user-table.types';
 
 @Component({
   selector: 'toboggan-ws-user-table',
@@ -70,10 +66,13 @@ export class UserTableComponent {
     );
 
   getActionMenuItems(rowData: TableRow) {
-    console.log('getActionMenuItems', rowData);
+    const cellData = rowData.cellData as Record<string, any>;
 
     const actions = ['edit', 'reset password'];
-    if (rowData.cellData['status']?.toString().toLowerCase() === 'active') {
+
+    // we're using a tag on this format for the status: ['is-category', 'Active', 50]
+    // that's why we're using index 1 here.
+    if (cellData['status'][1]?.toString().toLowerCase() === 'active') {
       actions.push('deactivate');
     } else {
       actions.push('activate');
@@ -83,6 +82,19 @@ export class UserTableComponent {
 
   onRowAction(event: IRowActionEvent) {
     console.log(event);
+
+    switch (event.action) {
+      case RowActions.Activate:
+        console.log('Activating user...');
+        break;
+      case RowActions.Deactivate:
+        console.log('Deactivating user...');
+        break;
+
+      case RowActions.ResetPassword:
+      case RowActions.Edit:
+        throw new Error('RowAction not implemented yet');
+    }
   }
 
   async generateUserRowData(): Promise<void> {
