@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IAddUsertoGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -51,7 +51,7 @@ export class GroupsService {
     });
   }
 
-  addUsersToGroup(request: IAddUsertoGroup) {
+  addUsersToGroup(request: IAddUserToGroup) {
     console.log(request);
   }
 }
