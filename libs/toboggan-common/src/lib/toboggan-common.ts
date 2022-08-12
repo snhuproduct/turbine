@@ -23,7 +23,7 @@ export interface IUser {
 
 export type INewUser = Omit<IUser, 'id'>;
 
-export type IUpdatedUser = Omit<IUser, 'id'>;
+export type IUpdatedUser = Omit<IUser, 'id' | 'userName'>;
 
 export interface IAddUserToGroup {
   groupId: string;

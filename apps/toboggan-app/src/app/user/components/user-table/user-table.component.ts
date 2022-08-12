@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component } from '@angular/core';
@@ -9,10 +10,16 @@ import {
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
+import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
-import { IFilterChange, RowActions } from './user-table.types';
+import {
+  ICellRowData,
+  IFilterChange,
+  ITableRow,
+  RowActions,
+} from './user-table.types';
 
 @Component({
   selector: 'toboggan-ws-user-table',
@@ -22,7 +29,9 @@ import { IFilterChange, RowActions } from './user-table.types';
 export class UserTableComponent {
   private currentPage = 1;
   private resultsPerPage = 10;
-  public dynamicRowData: TableRow[] = [];
+  dynamicRowData: TableRow[] = [];
+
+  private users: IUser[] = [];
 
   private filters: Map<string, Record<string, boolean>> = new Map();
 
@@ -77,28 +86,75 @@ export class UserTableComponent {
     } else {
       actions.push('activate');
     }
+
+    actions.push('cancel'); // cancel should come last!
+
     return actions;
   }
 
   onRowAction(event: IRowActionEvent) {
-    console.log(event);
+    const { action, rowId } = event;
 
-    switch (event.action) {
+    const rowData = this.dynamicRowData.find(
+      (row) => row.rowId === rowId
+    ) as ITableRow;
+
+    if (!rowData) {
+      throw new Error('Could not find rowData for rowId: ' + rowId);
+    }
+    const { first, last, mail } = rowData.cellData as unknown as ICellRowData;
+
+    const userId = rowData.id;
+
+    const userPayload: Omit<IUpdatedUser, 'id' | 'enabled'> = {
+      firstName: first,
+      lastName: last,
+      email: mail[1],
+    };
+
+    switch (action) {
       case RowActions.Activate:
         console.log('Activating user...');
+
+        this.userService.updateUser(
+          {
+            ...userPayload,
+            enabled: true,
+          },
+          userId
+        );
+
+        this.refreshTableData();
+
         break;
       case RowActions.Deactivate:
         console.log('Deactivating user...');
+
+        this.userService.updateUser(
+          {
+            ...userPayload,
+            enabled: false,
+          },
+          userId
+        );
+
+        this.refreshTableData();
+
         break;
 
       case RowActions.ResetPassword:
       case RowActions.Edit:
         throw new Error('RowAction not implemented yet');
+      case RowActions.Cancel:
+        // just close the menu!
+        break;
     }
   }
 
   async generateUserRowData(): Promise<void> {
     const users = await firstValueFrom(this.userService.fetchUsers());
+
+    this.users = users;
 
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
@@ -117,6 +173,7 @@ export class UserTableComponent {
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
+        id: user.id,
         cellData: {
           sequence: String(index + 1),
           first: user.firstName,
@@ -129,16 +186,21 @@ export class UserTableComponent {
       };
     });
 
-    this.dynamicRowData = data as TableRow[];
+    this.dynamicRowData = data as ITableRow[];
   }
 
-  public onFilterChange(event: IFilterChange): void {
+  onFilterChange(event: IFilterChange): void {
     // if all filters are false, remove the filter
     //TODO: We actually need to implement filtering.
     if (Object.values(event.filters).every((value) => !value)) {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
+  }
+
+  private refreshTableData() {
+    this.generateUserRowData();
+    this.dataGenerator.update();
   }
 
   private getSortedData(

@@ -42,8 +42,9 @@ export class UserService {
   }
 
   // updates user
-  updateUser(updatedUser: IUpdatedUser) {
-    this.http.put('/api/users/:id', updatedUser).subscribe(() => {
+  updateUser(updatedUser: IUpdatedUser, userId: string): void {
+    console.log(`Updating user ID ${userId}`, updatedUser);
+    this.http.put(`/api/users/${userId}`, updatedUser).subscribe(() => {
       this.fetchUsers();
     });
   }
