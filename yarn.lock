@@ -2292,10 +2292,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@snhuproduct/toboggan-ui-components-library@^1.4.7":
-  "integrity" "sha512-pxEyki7ECPhZYNOoHnGiv4oN6RfJ1/NFXphramydBxyfemTQBW0i//s2A1Cg1tOE+X8+6jXOeYHB/ZVBp939ww=="
-  "resolved" "https://npm.pkg.github.com/download/@snhuproduct/toboggan-ui-components-library/1.4.7/e86b8e99278f21f66061670d904fb3b881a5a3b5"
-  "version" "1.4.7"
+"@snhuproduct/toboggan-ui-components-library@file:../toboggan-ui-components/dist/libs/stories/snhuproduct-toboggan-ui-components-library-1.4.9.tgz":
+  "integrity" "sha512-fTJDWvM63p7lMVFSWLYHUL5tVtrHY6n1RJd2Ayk4alRXRj5G1A9tfTEBGb44gN5G0L6KGO4zK5s+0W8qXxub5g=="
+  "resolved" "file:../toboggan-ui-components/dist/libs/stories/snhuproduct-toboggan-ui-components-library-1.4.9.tgz"
+  "version" "1.4.9"
   dependencies:
     "tslib" "^2.3.0"
 

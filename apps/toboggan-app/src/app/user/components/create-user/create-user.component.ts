@@ -3,7 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
+  Output
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -70,7 +70,6 @@ export class CreateUserComponent implements AfterViewInit {
         return true;
       } catch (error) {
         console.log('Failed creating user', error);
-        this.failedToAddUser = true;
         return false;
       } finally {
         this.isLoading = false;
