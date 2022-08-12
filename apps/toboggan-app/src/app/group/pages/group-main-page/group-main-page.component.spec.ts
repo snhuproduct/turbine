@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { CreateGroupComponent } from '../../components/create-group/create-group.component';
+import { GroupListComponent } from '../../components/group-list/group-list.component';
 import { GroupService } from '../../services/group.service';
 import { GroupMainPageComponent } from './group-main-page.component';
 
@@ -66,6 +67,7 @@ describe('GroupMainPageComponent', () => {
         GroupMainPageComponent,
         CreateGroupComponent,
         AddUsersComponent,
+        GroupListComponent,
       ],
       providers: [
         { provide: UserService, useValue: mockUserService },

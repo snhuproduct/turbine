@@ -1,20 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { IAddUsertoGroup, IGroup } from '@toboggan-ws/toboggan-common';
-import { v4 as uuidv4 } from 'uuid';
+import * as arrayPaginate from 'array-paginate';
 
 @Injectable()
 export class GroupsService {
-  groups: IGroup[] = [
-    {
-      id: uuidv4(),
-      name: 'group1',
-      type: 0,
-      description: '',
-    },
-  ];
+  groups: IGroup[] = [];
 
-  getGroups() {
+  constructor() {
+    // for (let i = 0; i < 20; i++) {
+    //   this.groups.push({
+    //     id: uuidv4(),
+    //     name: `Group name-${i}`,
+    //     description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
+    //   });
+    // }
+  }
+
+  getGroups(): IGroup[] {
     return this.groups;
+  }
+
+  getPaginatedGroups(currentPage: number, resultsPerPage = 10): IGroup[] {
+    const paginatedGroups = arrayPaginate(
+      this.groups,
+      currentPage,
+      resultsPerPage
+    );
+
+    return paginatedGroups;
   }
 
   createGroup(newGroup: IGroup) {
