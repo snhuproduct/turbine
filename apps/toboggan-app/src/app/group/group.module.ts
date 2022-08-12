@@ -8,6 +8,7 @@ import { CreateGroupComponent } from './components/create-group/create-group.com
 import { groupRouting } from './group.routing';
 import { GroupDetailsPageComponent } from './pages/group-details-page/group-details-page.component';
 import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.component';
+import { ListUsersComponent } from './components/list-users/list-users.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
     CreateGroupComponent,
     AddUsersComponent,
     GroupDetailsPageComponent,
+    ListUsersComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
     GroupMainPageComponent,
     CreateGroupComponent,
     AddUsersComponent,
-    GroupDetailsPageComponent],
+    GroupDetailsPageComponent,
+  ],
 })
-export class GroupModule { }
+export class GroupModule {}
