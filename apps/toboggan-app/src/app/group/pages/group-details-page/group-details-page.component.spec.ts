@@ -1,14 +1,23 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  StoriesModule
+} from '@snhuproduct/toboggan-ui-components-library';
+import { ListUsersComponent } from '../../components/list-users/list-users.component';
 import { GroupDetailsPageComponent } from './group-details-page.component';
-
 describe('GroupDetailsPageComponent', () => {
   let component: GroupDetailsPageComponent;
   let fixture: ComponentFixture<GroupDetailsPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GroupDetailsPageComponent],
+      providers: [
+        HttpClient,
+        HttpHandler],
+      imports: [StoriesModule, BrowserModule, BrowserAnimationsModule],
+      declarations: [GroupDetailsPageComponent, ListUsersComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GroupDetailsPageComponent);

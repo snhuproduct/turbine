@@ -7,7 +7,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupDetailsPageComponent implements OnInit {
   constructor() { }
-  dataGenerator = {}
-
   ngOnInit(): void { }
 }
