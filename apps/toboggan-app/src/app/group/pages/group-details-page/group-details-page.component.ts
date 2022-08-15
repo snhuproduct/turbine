@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,5 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupDetailsPageComponent implements OnInit {
   constructor() { }
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    // TODO: call API to load data!
+  }
 }
