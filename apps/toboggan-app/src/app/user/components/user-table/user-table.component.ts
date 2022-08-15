@@ -12,6 +12,7 @@ import {
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
+import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
@@ -20,6 +21,8 @@ import {
   ITableRow,
   RowActions,
 } from './user-table.types';
+
+type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
 
 @Component({
   selector: 'toboggan-ws-user-table',
@@ -35,7 +38,10 @@ export class UserTableComponent {
 
   private filters: Map<string, Record<string, boolean>> = new Map();
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private modalAlertService: ModalAlertService
+  ) {}
 
   dataGenerator: SingleHeaderRowTableDataGenerator =
     new SingleHeaderRowTableDataGenerator(
@@ -106,7 +112,7 @@ export class UserTableComponent {
 
     const userId = rowData.id;
 
-    const userPayload: Omit<IUpdatedUser, 'id' | 'enabled'> = {
+    const userPayload: UserStatusPayload = {
       firstName: first,
       lastName: last,
       email: mail[1],
@@ -114,31 +120,33 @@ export class UserTableComponent {
 
     switch (action) {
       case RowActions.Activate:
-        console.log('Activating user...');
-
-        this.userService.updateUser(
-          {
-            ...userPayload,
-            enabled: true,
-          },
-          userId
-        );
-
-        this.refreshTableData();
-
+        this.toggleUserStatus('active', userPayload, userId);
         break;
       case RowActions.Deactivate:
-        console.log('Deactivating user...');
+        const userName = `${first} ${last}`;
 
-        this.userService.updateUser(
-          {
-            ...userPayload,
-            enabled: false,
-          },
-          userId
-        );
-
-        this.refreshTableData();
+        this.modalAlertService.showModalAlert({
+          type: 'warning',
+          heading: 'Deactivate this user?',
+          message: `If you deactivate ${userName}, they'll no longer have any of the permissions associated with their assigned user group(s). This action is reversible.`,
+          buttons: [
+            {
+              title: 'No, keep active',
+              onClick: () => {
+                this.modalAlertService.hideModalAlert();
+              },
+              style: 'secondary',
+            },
+            {
+              title: 'Yes, deactivate',
+              onClick: () => {
+                this.toggleUserStatus('inactive', userPayload, userId);
+                this.modalAlertService.hideModalAlert();
+              },
+              style: 'primary',
+            },
+          ],
+        });
 
         break;
 
@@ -149,6 +157,22 @@ export class UserTableComponent {
         // just close the menu!
         break;
     }
+  }
+
+  private toggleUserStatus(
+    status: 'active' | 'inactive',
+    userPayload: UserStatusPayload,
+    userId: string
+  ) {
+    this.userService.updateUser(
+      {
+        ...userPayload,
+        enabled: status === 'active',
+      },
+      userId
+    );
+
+    this.refreshTableData();
   }
 
   async generateUserRowData(): Promise<void> {
