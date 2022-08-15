@@ -98,7 +98,7 @@ export class UserTableComponent {
     return actions;
   }
 
-  onRowAction(event: IRowActionEvent) {
+  async onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
 
     const rowData = this.dynamicRowData.find(
@@ -120,7 +120,7 @@ export class UserTableComponent {
 
     switch (action) {
       case RowActions.Activate:
-        this.toggleUserStatus('active', userPayload, userId);
+        await this.toggleUserStatus('active', userPayload, userId);
         break;
       case RowActions.Deactivate:
         const userName = `${first} ${last}`;
@@ -139,8 +139,8 @@ export class UserTableComponent {
             },
             {
               title: 'Yes, deactivate',
-              onClick: () => {
-                this.toggleUserStatus('inactive', userPayload, userId);
+              onClick: async () => {
+                await this.toggleUserStatus('inactive', userPayload, userId);
                 this.modalAlertService.hideModalAlert();
               },
               style: 'primary',
@@ -159,12 +159,12 @@ export class UserTableComponent {
     }
   }
 
-  private toggleUserStatus(
+  private async toggleUserStatus(
     status: 'active' | 'inactive',
     userPayload: UserStatusPayload,
     userId: string
   ) {
-    this.userService.updateUser(
+    await this.userService.updateUser(
       {
         ...userPayload,
         enabled: status === 'active',

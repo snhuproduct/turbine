@@ -27,13 +27,13 @@ export class UserService {
     );
   }
 
-  createUser(user: INewUser): Promise<unknown> {
+  async createUser(user: INewUser): Promise<unknown> {
     return firstValueFrom(this.http.post('/api/users', user));
   }
 
-  updateUser(updatedUser: IUpdatedUser, userId: string): void {
-    this.http.put(`/api/users/${userId}`, updatedUser).subscribe(() => {
-      this.fetchUsers();
-    });
+  async updateUser(updatedUser: IUpdatedUser, userId: string): Promise<void> {
+    await firstValueFrom(this.http.put(`/api/users/${userId}`, updatedUser));
+
+    this.fetchUsers();
   }
 }
