@@ -7,27 +7,5 @@ import { ModalAlertService } from '../../../services/modal-alert/modal-alert.ser
   styleUrls: ['./modal-alert.component.scss'],
 })
 export class ModalAlertComponent {
-  constructor(public modalAlertService: ModalAlertService) {
-    this.modalAlertService.showModalAlert({
-      type: 'success',
-      heading: 'Success',
-      message: 'This is a success message.',
-      buttons: [
-        {
-          title: 'Cancel',
-          onClick: () => {
-            this.modalAlertService.hideModalAlert();
-          },
-          style: 'secondary',
-        },
-        {
-          title: 'OK',
-          onClick: () => {
-            this.modalAlertService.hideModalAlert();
-          },
-          style: 'primary',
-        },
-      ],
-    });
-  }
+  constructor(public modalAlertService: ModalAlertService) {}
 }
