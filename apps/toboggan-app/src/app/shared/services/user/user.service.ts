@@ -17,16 +17,6 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // user handlers
-
-  //
-  // TODO: split this into "managers" so all main logic is there:
-  //  - UserManager
-  //  - GroupManager
-  //  - etc.
-  //
-  //
-
   fetchUsers() {
     return this.http.get<IUser[]>(`/api/users`);
   }
@@ -41,9 +31,7 @@ export class UserService {
     return firstValueFrom(this.http.post('/api/users', user));
   }
 
-  // updates user
   updateUser(updatedUser: IUpdatedUser, userId: string): void {
-    console.log(`Updating user ID ${userId}`, updatedUser);
     this.http.put(`/api/users/${userId}`, updatedUser).subscribe(() => {
       this.fetchUsers();
     });
