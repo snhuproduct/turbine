@@ -1,0 +1,14 @@
+<div
+  *ngIf="
+    modalAlertService.modalAlert && modalAlertService.modalAlert.alertCondition
+  "
+>
+  <div
+    gp-modal-alert
+    [alertCondition]="modalAlertService.modalAlert.alertCondition"
+    [alertType]="modalAlertService.modalAlert.type"
+    [alertHeading]="modalAlertService.modalAlert.heading"
+    [alertMsg]="modalAlertService.modalAlert.message"
+    [alertButtons]="modalAlertService.modalAlert.buttons"
+  ></div>
+</div>

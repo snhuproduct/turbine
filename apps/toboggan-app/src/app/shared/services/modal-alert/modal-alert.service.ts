@@ -5,10 +5,13 @@ import { IModalAlert } from './modal-alert.types';
   providedIn: 'root',
 })
 export class ModalAlertService {
-  private modalAlert: IModalAlert | null = null;
+  modalAlert: IModalAlert | null = null;
 
   public showModalAlert(modalAlert: IModalAlert): void {
-    this.modalAlert = modalAlert;
+    this.modalAlert = {
+      ...modalAlert,
+      alertCondition: true,
+    };
   }
 
   public hideModalAlert(): void {

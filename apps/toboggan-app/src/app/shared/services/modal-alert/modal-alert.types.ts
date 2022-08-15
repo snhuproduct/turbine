@@ -1,18 +1,12 @@
-import { AlertType } from '@snhuproduct/toboggan-ui-components-library';
+import {
+  AlertType,
+  ButtonConfig,
+} from '@snhuproduct/toboggan-ui-components-library';
 
 export interface IModalAlert {
-  id: number;
   type: AlertType;
-  title: string;
+  heading: string;
   message: string;
-  buttons: {
-    primary: {
-      label: string;
-      action: (modalId: number) => void;
-    };
-    secondary?: {
-      label: string;
-      action: (modalId: number) => void;
-    };
-  };
+  alertCondition?: boolean;
+  buttons: ButtonConfig[];
 }
