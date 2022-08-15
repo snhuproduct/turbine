@@ -82,6 +82,8 @@ Run `nx affected:test` to execute the unit tests affected by a change.
 
 Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
+Run `ng e2e my-app --watch` to execute the end-to-end tests in the UI
+
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
 #### Understand your workspace
