@@ -11,7 +11,6 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
 export class UserMainPageComponent {
   editingUser?: IUser;
   createUserDialogTitle = 'Add New User';
-
   createUserComponent?: CreateUserComponent;
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {

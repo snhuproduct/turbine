@@ -130,7 +130,7 @@ export class EditUserComponent implements OnChanges {
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
 
-        await this.userService.updateUser(this.user?.id, userObj);
+        await this.userService.updateUser(userObj, this.user?.id);
         this.bannerService.showBanner({
           type: 'success',
           heading: `${userObj.firstName} ${userObj.lastName}`,

@@ -28,7 +28,7 @@ describe('UserMainPageComponent', () => {
         SharedModule,
         BrowserAnimationsModule,
       ],
-      providers: [{ provide: UserService, useValue: mockUserService }]
+      providers: [{ provide: UserService, useValue: mockUserService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserMainPageComponent);

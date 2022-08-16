@@ -17,28 +17,27 @@ export class UsersService {
     },
   ];
 
-  users: IUser[] = [
-    {
-      id: uuidv4(),
-      userName: 'user1',
-      firstName: 'name1',
-      lastName: 'last1',
-      email: 'email1@sada.com',
-      groups: this.groups,
-      enabled: true,
-    },
-    {
-      id: uuidv4(),
-      userName: 'user2',
-      firstName: 'name2',
-      lastName: 'last2',
-      email: 'email2@sada.com',
-      groups: this.groups,
-      enabled: true,
-    },
-  ];
+  users: IUser[] = [];
 
-  getUsers(currentPage: number, resultsPerPage = 10): IUser[] {
+  constructor() {
+    // generate mocked data for 20 users
+    for (let i = 0; i < 20; i++) {
+      this.users.push({
+        id: uuidv4(),
+        userName: `user${i}`,
+        firstName: `name${i}`,
+        lastName: `last${i}`,
+        email: `user-${i}@sada.com`,
+        enabled: true,
+      });
+    }
+  }
+
+  getUsers(): IUser[] {
+    return this.users;
+  }
+
+  getPaginatedUsers(currentPage: number, resultsPerPage = 10) {
     const paginatedUsers = arrayPaginate(
       this.users,
       currentPage,
@@ -56,7 +55,6 @@ export class UsersService {
   }
 
   updateUser(id: string, updatedUser: IUser) {
-    console.log('updating user');
     this.users = this.users.map((user) => {
       if (user.id === id) {
         return {

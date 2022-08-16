@@ -2,9 +2,11 @@
   <toboggan-ws-banner></toboggan-ws-banner>
   <h1>Users</h1>
 
+  <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
+
   <main>
     <div class="row">
-      <div class="col">
+      <div class="page-container">
         <button
           gp-button
           gp-modal-trigger
@@ -36,6 +38,8 @@
           </toboggan-ws-create-user>
         </ng-template>
         <toboggan-ws-edit-user [(user)]="editingUser"></toboggan-ws-edit-user>
+
+        <toboggan-ws-user-table></toboggan-ws-user-table>
       </div>
     </div>
   </main>

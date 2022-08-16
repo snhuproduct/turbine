@@ -3,14 +3,11 @@ import { NgModule } from '@angular/core';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { BannerComponent } from './components/banner/banner.component';
 import { FormChangesTableComponent } from './components/form-changes-table/form-changes-table.component';
+import { ModalAlertComponent } from './components/modal-alert/modal-alert/modal-alert.component';
 import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
-  declarations: [
-    BannerComponent,
-    ModalComponent,
-    FormChangesTableComponent,
-  ],
+  declarations: [BannerComponent, ModalAlertComponent, FormChangesTableComponent, ModalComponent],
   imports: [CommonModule, StoriesModule],
   exports: [
     CommonModule,
@@ -18,6 +15,7 @@ import { ModalComponent } from './components/modal/modal.component';
     ModalComponent,
     StoriesModule,
     FormChangesTableComponent,
+    ModalAlertComponent,
   ],
 })
 export class SharedModule { }
