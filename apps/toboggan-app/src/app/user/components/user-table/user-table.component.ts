@@ -72,8 +72,6 @@ export class UserTableComponent {
             sortDirectionCoefficient
           );
 
-          console.log(sortedData);
-
           const startRow = (currentPage - 1) * pageSize;
           const pageData = sortedData.slice(startRow, startRow + pageSize);
           dataGenerator.retrievalCallback(
