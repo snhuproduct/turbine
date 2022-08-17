@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
@@ -15,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
+import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
@@ -43,7 +43,8 @@ export class UserTableComponent {
   constructor(
     private userService: UserService,
     private modalAlertService: ModalAlertService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private tableSortingService: TableSortingService
   ) {}
 
   dataGenerator: SingleHeaderRowTableDataGenerator =
@@ -58,15 +59,21 @@ export class UserTableComponent {
         dataGenerator.isFiltered = true;
 
         const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.getSortDirectionCoefficient(columnDisplayMetadata);
+          this.tableSortingService.getSortDirectionCoefficient(
+            columnDisplayMetadata
+          );
 
         await this.generateUserRowData();
 
         if (this.dynamicRowData.length) {
-          const sortedData = this.getSortedData(
+          const sortedData = this.tableSortingService.getSortedData(
+            this.dynamicRowData,
             sortColumnDataKey,
             sortDirectionCoefficient
           );
+
+          console.log(sortedData);
+
           const startRow = (currentPage - 1) * pageSize;
           const pageData = sortedData.slice(startRow, startRow + pageSize);
           dataGenerator.retrievalCallback(
@@ -287,47 +294,5 @@ export class UserTableComponent {
   private refreshTableData() {
     this.generateUserRowData();
     this.dataGenerator.update();
-  }
-
-  private getSortedData(
-    sortColumnDataKey: string,
-    sortDirectionCoefficient: number
-  ) {
-    return this.dynamicRowData.sort((a, b) => {
-      if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-        return -1 * sortDirectionCoefficient;
-      }
-      if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-        return 1 * sortDirectionCoefficient;
-      }
-      return 0;
-    });
-  }
-
-  private getSortDirectionCoefficient(
-    columnDisplayMetadata: TableColumnDisplayMetadatum[]
-  ): { sortColumnDataKey: string; sortDirectionCoefficient: number } {
-    let sortColumnDataKey = '';
-
-    for (let i = 0; i < columnDisplayMetadata.length; i++) {
-      if (
-        columnDisplayMetadata[i].sort &&
-        columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-      ) {
-        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: 1 };
-        }
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: -1 };
-        }
-        break;
-      }
-    }
-    return { sortColumnDataKey, sortDirectionCoefficient: 0 };
   }
 }
