@@ -12,6 +12,8 @@ import {
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
+import { BannerService } from '../../../shared/services/banner/banner.service';
+import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -40,7 +42,8 @@ export class UserTableComponent {
 
   constructor(
     private userService: UserService,
-    private modalAlertService: ModalAlertService
+    private modalAlertService: ModalAlertService,
+    private bannerService: BannerService
   ) {}
 
   dataGenerator: SingleHeaderRowTableDataGenerator =
@@ -120,7 +123,27 @@ export class UserTableComponent {
 
     switch (action) {
       case RowActions.Activate:
-        await this.toggleUserStatus('active', userPayload, userId);
+        try {
+          await this.toggleUserStatus('active', userPayload, userId);
+
+          this.showNotification(
+            'success',
+            `[${userPayload.firstName} ${userPayload.lastName}]`,
+            `'s account has been activated.`,
+            true
+          );
+        } catch (error) {
+          console.error(error);
+
+          this.showNotification(
+            'error',
+            `Activate user`,
+            `couldn't be completed.`,
+            true,
+            null
+          );
+        }
+
         break;
       case RowActions.Deactivate:
         const userName = `${first} ${last}`;
@@ -140,8 +163,27 @@ export class UserTableComponent {
             {
               title: 'Yes, deactivate',
               onClick: async () => {
-                await this.toggleUserStatus('inactive', userPayload, userId);
-                this.modalAlertService.hideModalAlert();
+                try {
+                  this.modalAlertService.hideModalAlert();
+                  await this.toggleUserStatus('inactive', userPayload, userId);
+
+                  this.showNotification(
+                    'success',
+                    `[${userPayload.firstName} ${userPayload.lastName}]`,
+                    `'s account has been deactivated.`,
+                    true
+                  );
+                } catch (error) {
+                  console.error(error);
+
+                  this.showNotification(
+                    'error',
+                    `Deactivate user`,
+                    `couldn't be completed.`,
+                    true,
+                    null
+                  );
+                }
               },
               style: 'primary',
             },
@@ -157,6 +199,26 @@ export class UserTableComponent {
         // just close the menu!
         break;
     }
+  }
+
+  private showNotification(
+    type: 'success' | 'error',
+    heading: string,
+    message: string,
+    autoDismiss: boolean,
+    dismissButton: IBannerButton | null = {
+      label: 'Dismiss',
+      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      style: 'secondary',
+    }
+  ) {
+    this.bannerService.showBanner({
+      type,
+      heading,
+      message,
+      button: dismissButton,
+      autoDismiss,
+    });
   }
 
   private async toggleUserStatus(
