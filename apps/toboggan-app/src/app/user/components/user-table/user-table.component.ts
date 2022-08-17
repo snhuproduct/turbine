@@ -164,8 +164,8 @@ export class UserTableComponent {
               title: 'Yes, deactivate',
               onClick: async () => {
                 try {
-                  await this.toggleUserStatus('inactive', userPayload, userId);
                   this.modalAlertService.hideModalAlert();
+                  await this.toggleUserStatus('inactive', userPayload, userId);
 
                   this.showNotification(
                     'success',
