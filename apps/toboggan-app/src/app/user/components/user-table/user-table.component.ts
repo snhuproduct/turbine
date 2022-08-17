@@ -126,7 +126,7 @@ export class UserTableComponent {
         try {
           await this.toggleUserStatus('active', userPayload, userId);
 
-          this.showConfirmation(
+          this.showNotification(
             'success',
             `[${userPayload.firstName} ${userPayload.lastName}]`,
             `'s account has been activated.`,
@@ -135,7 +135,7 @@ export class UserTableComponent {
         } catch (error) {
           console.error(error);
 
-          this.showConfirmation(
+          this.showNotification(
             'error',
             `Activate user`,
             `couldn't be completed.`,
@@ -167,7 +167,7 @@ export class UserTableComponent {
                   await this.toggleUserStatus('inactive', userPayload, userId);
                   this.modalAlertService.hideModalAlert();
 
-                  this.showConfirmation(
+                  this.showNotification(
                     'success',
                     `[${userPayload.firstName} ${userPayload.lastName}]`,
                     `'s account has been deactivated.`,
@@ -176,7 +176,7 @@ export class UserTableComponent {
                 } catch (error) {
                   console.error(error);
 
-                  this.showConfirmation(
+                  this.showNotification(
                     'error',
                     `Deactivate user`,
                     `couldn't be completed.`,
@@ -201,7 +201,7 @@ export class UserTableComponent {
     }
   }
 
-  private showConfirmation(
+  private showNotification(
     type: 'success' | 'error',
     heading: string,
     message: string,
