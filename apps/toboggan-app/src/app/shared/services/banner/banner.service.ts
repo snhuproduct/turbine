@@ -12,6 +12,13 @@ export class BannerService {
       id: this.banners.length,
       ...banner,
     });
+
+    if (banner.autoDismiss) {
+      const timeout = setTimeout(() => {
+        this.hideBanner(this.banners.length - 1);
+        clearTimeout(timeout);
+      }, banner.dismissDelay || 5000);
+    }
   }
 
   public hideBanner(index: number): void {
