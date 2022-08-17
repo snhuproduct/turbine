@@ -10,6 +10,7 @@
     "start:api": "nx run toboggan-api:serve:development",
     "build": "nx build",
     "test": "nx test",
+    "e2e:test:debug": "ng e2e toboggan-app-e2e --watch",
     "prepare": "husky install",
     "app:lint": "nx run toboggan-app:lint --fix",
     "api:lint": "nx run toboggan-api:lint --fix",
