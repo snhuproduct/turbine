@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { IAddUsertoGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupsService } from '../../providers/groups/groups.service';
 
 @Controller('groups')
@@ -49,7 +49,7 @@ export class GroupsController {
 
   // TODO: Refactor this route to follow REST principles
   @Post('addusertogroup')
-  addUserstoGroup(@Body() request: IAddUsertoGroup) {
+  addUsersToGroup(@Body() request: IAddUserToGroup) {
     return this.groupsService.addUsersToGroup(request);
   }
 }

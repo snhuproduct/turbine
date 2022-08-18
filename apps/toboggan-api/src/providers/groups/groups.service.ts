@@ -65,7 +65,7 @@ export class GroupsService {
     });
   }
 
-  addUsersToGroup(request: IAddUsertoGroup) {
+  addUsersToGroup(request: IAddUserToGroup) {
     console.log(request);
   }
 }
