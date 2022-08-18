@@ -5,4 +5,6 @@
   [getActionMenuItems]="getActionMenuItems"
   (onRowAction)="onRowAction($event)"
   (onFilterChange)="onFilterChange($event)"
-></gp-table>
+>
+  <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+</gp-table>
