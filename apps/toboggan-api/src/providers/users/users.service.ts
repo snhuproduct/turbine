@@ -55,7 +55,6 @@ export class UsersService {
   }
 
   updateUser(id: string, updatedUser: IUser) {
-    console.log('updating user');
     this.users = this.users.map((user) => {
       if (user.id === id) {
         return {
