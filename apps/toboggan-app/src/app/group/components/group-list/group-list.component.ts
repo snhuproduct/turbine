@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { firstValueFrom } from 'rxjs';
+import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -21,7 +21,10 @@ export class GroupListComponent implements OnInit {
   itemsPerPage = 10;
   columnHeadings: TableColumnDisplayMetadatum[] = [];
 
-  constructor(private groupService: GroupService) {}
+  constructor(
+    private groupService: GroupService,
+    private tableSortingService: TableSortingService
+  ) {}
 
   ngOnInit(): void {
     this.columnHeadings = [
@@ -47,20 +50,18 @@ export class GroupListComponent implements OnInit {
       ) => {
         dataGenerator.isFiltered = true;
         const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.getSortDirectionCoefficient(columnDisplayMetadata);
+          this.tableSortingService.getSortDirectionCoefficient(
+            columnDisplayMetadata
+          );
 
         await this.generateUserRowData();
 
         if (this.groupList.length) {
-          const sortedData = this.groupList.sort((a, b) => {
-            if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-              return -1 * sortDirectionCoefficient;
-            }
-            if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-              return 1 * sortDirectionCoefficient;
-            }
-            return 0;
-          });
+          const sortedData = this.tableSortingService.getSortedData(
+            this.groupList,
+            sortColumnDataKey,
+            sortDirectionCoefficient
+          );
           const startRow = (currentPage - 1) * pageSize;
           const pageData = sortedData.slice(startRow, startRow + pageSize);
           dataGenerator.retrievalCallback(
@@ -116,30 +117,8 @@ export class GroupListComponent implements OnInit {
     this.groupList = data as TableRow[];
   }
 
-  private getSortDirectionCoefficient(
-    columnDisplayMetadata: TableColumnDisplayMetadatum[]
-  ): { sortColumnDataKey: string; sortDirectionCoefficient: number } {
-    let sortColumnDataKey = '';
-
-    for (let i = 0; i < columnDisplayMetadata.length; i++) {
-      if (
-        columnDisplayMetadata[i].sort &&
-        columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-      ) {
-        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: 1 };
-        }
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: -1 };
-        }
-        break;
-      }
-    }
-    return { sortColumnDataKey, sortDirectionCoefficient: 0 };
+  private refreshTableData() {
+    this.generateUserRowData();
+    this.dataGenerator.update();
   }
 }
