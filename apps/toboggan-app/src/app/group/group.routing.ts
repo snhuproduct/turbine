@@ -4,6 +4,6 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
 
 const groupRoutes: Routes = [
     { path: '', component: GroupMainPageComponent },
-    { path: 'details', component: GroupDetailsPageComponent }];
+    { path: 'details/:id', component: GroupDetailsPageComponent }];
 
 export const groupRouting = RouterModule.forChild(groupRoutes);

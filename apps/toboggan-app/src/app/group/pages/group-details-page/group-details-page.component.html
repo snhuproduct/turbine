@@ -2,9 +2,9 @@
     <div class="p-5">
         <a gp-link iconId="gp-icon-east" iconVariations="iconleft">Back to User Groups</a>
         <div class="gp-level-4 mt-6">User Group</div>
-        <div class="gp-level-5">User Group Name</div>
-        <div class="my-6">
-            Group description the admin wrote when creating group
+        <div *ngIf="group">
+            <div class="gp-level-5">{{group.name}}</div>
+            <div class="my-6"> {{group.description}} </div>
         </div>
         <gp-tabs>
             <gp-tab label="Users">
