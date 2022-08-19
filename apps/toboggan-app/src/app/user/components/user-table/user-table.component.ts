@@ -1,27 +1,29 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
-  TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
-import { firstValueFrom } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
-import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
+import {
+  ITableDataGeneratorFactoryOutput,
+  TableDataService
+} from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
   ICellRowData,
   IFilterChange,
   ITableRow,
-  RowActions,
+  RowActions
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
@@ -31,12 +33,14 @@ type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss'],
 })
-export class UserTableComponent {
+export class UserTableComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private resultsPerPage = 10;
-  dynamicRowData: TableRow[] = [];
-
-  private users: IUser[] = [];
+  dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
+  dynamicRowData: TableRow[] = {} as ITableRow[];
+  users = {} as IUser[];
+  private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> = {} as Observable<ITableDataGeneratorFactoryOutput>;
+  private datageneratorSubscription: Subscription = {} as Subscription;
 
   private filters: Map<string, Record<string, boolean>> = new Map();
 
@@ -44,55 +48,41 @@ export class UserTableComponent {
     private userService: UserService,
     private modalAlertService: ModalAlertService,
     private bannerService: BannerService,
-    private tableSortingService: TableSortingService
+    private tableDataService: TableDataService
   ) {}
 
-  dataGenerator: SingleHeaderRowTableDataGenerator =
-    new SingleHeaderRowTableDataGenerator(
-      async (
-        dataGenerator: TableDataGenerator,
-        columnDisplayMetadata: TableColumnDisplayMetadatum[],
-        searchString: string,
-        pageSize: number,
-        currentPage: number
-      ) => {
-        dataGenerator.isFiltered = true;
+  ngOnInit(): void {
+    this.refreshTableData();
+  }
 
-        const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.tableSortingService.getSortDirectionCoefficient(
-            columnDisplayMetadata
-          );
+  ngOnDestroy(): void {
+    this.datageneratorSubscription.unsubscribe();
+  }
 
-        await this.generateUserRowData();
-
-        if (this.dynamicRowData.length) {
-          const sortedData = this.tableSortingService.getSortedData(
-            this.dynamicRowData,
-            sortColumnDataKey,
-            sortDirectionCoefficient
-          );
-
-          const startRow = (currentPage - 1) * pageSize;
-          const pageData = sortedData.slice(startRow, startRow + pageSize);
-          dataGenerator.retrievalCallback(
-            pageData,
-            sortedData.length,
-            currentPage,
-            Math.ceil(sortedData.length / pageSize)
-          );
-        } else {
-          dataGenerator.update();
+  private refreshTableData() {
+    const [prevSearchString, prevCurrentPage] = [this.dataGenerator.searchString || '', this.dataGenerator.currentPage || this.currentPage];
+    this.dataGeneratorFactoryOutputObserver =
+      this.tableDataService.dataGeneratorFactoryObs(
+        this.userService.fetchUsers(),
+        userTableHeader,
+        this.formatTableRowsWithUserData,
+        this.resultsPerPage,
+        prevCurrentPage
+      );
+    this.datageneratorSubscription =
+      this.dataGeneratorFactoryOutputObserver.subscribe(
+        (dataGeneratorFactoryOutput) => {
+          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
+          this.dynamicRowData = dataGeneratorFactoryOutput.tableRows as TableRow[];
+          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
+          this.dataGenerator.searchString = prevSearchString;
         }
-      },
-      () => {},
-      userTableHeader
-    );
+      );
+  }
 
   getActionMenuItems(rowData: TableRow) {
     const cellData = rowData.cellData as Record<string, any>;
-
     const actions = ['edit', 'reset password'];
-
     // we're using a tag on this format for the status: ['is-category', 'Active', 50]
     // that's why we're using index 1 here.
     if (cellData['status'][1]?.toString().toLowerCase() === 'active') {
@@ -100,32 +90,25 @@ export class UserTableComponent {
     } else {
       actions.push('activate');
     }
-
     actions.push('cancel'); // cancel should come last!
-
     return actions;
   }
 
   async onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
-
-    const rowData = this.dynamicRowData.find(
+    const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     ) as ITableRow;
-
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
     const { first, last, mail } = rowData.cellData as unknown as ICellRowData;
-
     const userId = rowData.id;
-
     const userPayload: UserStatusPayload = {
       firstName: first,
       lastName: last,
       email: mail[1],
     };
-
     switch (action) {
       case RowActions.Activate:
         try {
@@ -148,7 +131,6 @@ export class UserTableComponent {
             null
           );
         }
-
         break;
       case RowActions.Deactivate:
         const userName = `${first} ${last}`;
@@ -242,11 +224,8 @@ export class UserTableComponent {
     this.refreshTableData();
   }
 
-  async generateUserRowData(): Promise<void> {
-    const users = await firstValueFrom(this.userService.fetchUsers());
-
-    this.users = users;
-
+  formatTableRowsWithUserData(fetchedData: any): TableRow[] {
+    const users = fetchedData as IUser[];
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
       if (a.lastName && b.lastName) {
@@ -257,10 +236,8 @@ export class UserTableComponent {
           return 1;
         }
       }
-
       return 0;
     });
-
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
@@ -276,8 +253,7 @@ export class UserTableComponent {
         },
       };
     });
-
-    this.dynamicRowData = data as ITableRow[];
+    return data as TableRow[];
   }
 
   onFilterChange(event: IFilterChange): void {
@@ -287,10 +263,5 @@ export class UserTableComponent {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
-  }
-
-  private refreshTableData() {
-    this.generateUserRowData();
-    this.dataGenerator.update();
   }
 }
