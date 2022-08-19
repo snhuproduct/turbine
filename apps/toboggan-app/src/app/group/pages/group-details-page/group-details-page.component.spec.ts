@@ -2,6 +2,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from "@angular/router/testing";
 import {
   StoriesModule
 } from '@snhuproduct/toboggan-ui-components-library';
@@ -16,7 +17,7 @@ describe('GroupDetailsPageComponent', () => {
       providers: [
         HttpClient,
         HttpHandler],
-      imports: [StoriesModule, BrowserModule, BrowserAnimationsModule],
+      imports: [StoriesModule, BrowserModule, BrowserAnimationsModule, RouterTestingModule],
       declarations: [GroupDetailsPageComponent, ListUsersComponent],
     }).compileComponents();
 
