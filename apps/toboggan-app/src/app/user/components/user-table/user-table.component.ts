@@ -5,14 +5,16 @@ import { Component } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
+import { BannerService } from '../../../shared/services/banner/banner.service';
+import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
+import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
@@ -40,7 +42,9 @@ export class UserTableComponent {
 
   constructor(
     private userService: UserService,
-    private modalAlertService: ModalAlertService
+    private modalAlertService: ModalAlertService,
+    private bannerService: BannerService,
+    private tableSortingService: TableSortingService
   ) {}
 
   dataGenerator: SingleHeaderRowTableDataGenerator =
@@ -55,15 +59,19 @@ export class UserTableComponent {
         dataGenerator.isFiltered = true;
 
         const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.getSortDirectionCoefficient(columnDisplayMetadata);
+          this.tableSortingService.getSortDirectionCoefficient(
+            columnDisplayMetadata
+          );
 
         await this.generateUserRowData();
 
         if (this.dynamicRowData.length) {
-          const sortedData = this.getSortedData(
+          const sortedData = this.tableSortingService.getSortedData(
+            this.dynamicRowData,
             sortColumnDataKey,
             sortDirectionCoefficient
           );
+
           const startRow = (currentPage - 1) * pageSize;
           const pageData = sortedData.slice(startRow, startRow + pageSize);
           dataGenerator.retrievalCallback(
@@ -120,7 +128,27 @@ export class UserTableComponent {
 
     switch (action) {
       case RowActions.Activate:
-        await this.toggleUserStatus('active', userPayload, userId);
+        try {
+          await this.toggleUserStatus('active', userPayload, userId);
+
+          this.showNotification(
+            'success',
+            `[${userPayload.firstName} ${userPayload.lastName}]`,
+            `'s account has been activated.`,
+            true
+          );
+        } catch (error) {
+          console.error(error);
+
+          this.showNotification(
+            'error',
+            `Activate user`,
+            `couldn't be completed.`,
+            true,
+            null
+          );
+        }
+
         break;
       case RowActions.Deactivate:
         const userName = `${first} ${last}`;
@@ -140,8 +168,27 @@ export class UserTableComponent {
             {
               title: 'Yes, deactivate',
               onClick: async () => {
-                await this.toggleUserStatus('inactive', userPayload, userId);
-                this.modalAlertService.hideModalAlert();
+                try {
+                  this.modalAlertService.hideModalAlert();
+                  await this.toggleUserStatus('inactive', userPayload, userId);
+
+                  this.showNotification(
+                    'success',
+                    `[${userPayload.firstName} ${userPayload.lastName}]`,
+                    `'s account has been deactivated.`,
+                    true
+                  );
+                } catch (error) {
+                  console.error(error);
+
+                  this.showNotification(
+                    'error',
+                    `Deactivate user`,
+                    `couldn't be completed.`,
+                    true,
+                    null
+                  );
+                }
               },
               style: 'primary',
             },
@@ -157,6 +204,26 @@ export class UserTableComponent {
         // just close the menu!
         break;
     }
+  }
+
+  private showNotification(
+    type: 'success' | 'error',
+    heading: string,
+    message: string,
+    autoDismiss: boolean,
+    dismissButton: IBannerButton | null = {
+      label: 'Dismiss',
+      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      style: 'secondary',
+    }
+  ) {
+    this.bannerService.showBanner({
+      type,
+      heading,
+      message,
+      button: dismissButton,
+      autoDismiss,
+    });
   }
 
   private async toggleUserStatus(
@@ -225,47 +292,5 @@ export class UserTableComponent {
   private refreshTableData() {
     this.generateUserRowData();
     this.dataGenerator.update();
-  }
-
-  private getSortedData(
-    sortColumnDataKey: string,
-    sortDirectionCoefficient: number
-  ) {
-    return this.dynamicRowData.sort((a, b) => {
-      if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-        return -1 * sortDirectionCoefficient;
-      }
-      if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-        return 1 * sortDirectionCoefficient;
-      }
-      return 0;
-    });
-  }
-
-  private getSortDirectionCoefficient(
-    columnDisplayMetadata: TableColumnDisplayMetadatum[]
-  ): { sortColumnDataKey: string; sortDirectionCoefficient: number } {
-    let sortColumnDataKey = '';
-
-    for (let i = 0; i < columnDisplayMetadata.length; i++) {
-      if (
-        columnDisplayMetadata[i].sort &&
-        columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-      ) {
-        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: 1 };
-        }
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: -1 };
-        }
-        break;
-      }
-    }
-    return { sortColumnDataKey, sortDirectionCoefficient: 0 };
   }
 }

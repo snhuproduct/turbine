@@ -6,17 +6,13 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { AddUsersComponent } from './components/add-users/add-users.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { groupRouting } from './group.routing';
-import { GroupDetailsPageComponent } from './pages/group-details-page/group-details-page.component';
 import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.component';
-import { ListUsersComponent } from './components/list-users/list-users.component';
 
 @NgModule({
   declarations: [
     GroupMainPageComponent,
     CreateGroupComponent,
     AddUsersComponent,
-    GroupDetailsPageComponent,
-    ListUsersComponent,
   ],
   imports: [
     CommonModule,
@@ -26,11 +22,6 @@ import { ListUsersComponent } from './components/list-users/list-users.component
     TypeaheadModule.forRoot(),
     groupRouting,
   ],
-  exports: [
-    GroupMainPageComponent,
-    CreateGroupComponent,
-    AddUsersComponent,
-    GroupDetailsPageComponent,
-  ],
+  exports: [GroupMainPageComponent, CreateGroupComponent, AddUsersComponent],
 })
-export class GroupModule {}
+export class GroupModule { }
