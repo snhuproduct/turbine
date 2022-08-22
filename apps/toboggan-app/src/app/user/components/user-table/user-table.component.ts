@@ -20,9 +20,7 @@ import {
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
-  ICellRowData,
-  IFilterChange,
-  ITableRow,
+  ICellRowData, IFilterChange, ITableRow,
   RowActions
 } from './user-table.types';
 
@@ -180,12 +178,50 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
 
       case RowActions.ResetPassword:
+        this.resetPassword(userId, first, last);
+        break;
       case RowActions.Edit:
         throw new Error('RowAction not implemented yet');
       case RowActions.Cancel:
         // just close the menu!
         break;
     }
+  }
+
+  public resetPassword(id: string, firstName: string, lastName: string){
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: `Reset user's password?`,
+      message: `If you continue ${firstName} ${lastName}, will receive an email prompting them to set a new password. They won't be able to access [Platform name] until their password is reset.`,
+      buttons: [
+        {
+          title: 'No, Cancel',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'secondary',
+        },
+        {
+          title: 'Yes, reset password',
+          onClick: async () => {
+            try {
+              this.modalAlertService.hideModalAlert();
+              /* Handle reset password */
+            } catch (error) {
+              console.error(error);
+
+              this.showNotification(
+                'error',
+                `Reset password`,
+                `couldn't be completed.`,
+                true,
+                null
+              );
+            }
+          },
+          style: 'primary',
+        },
+      ]});
   }
 
   private showNotification(
