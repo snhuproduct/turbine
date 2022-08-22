@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   TableColumnDisplayMetadatum,
   TableColumnSortStateEnum,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 
 @Injectable({
@@ -18,16 +18,12 @@ export class TableSortingService {
       if (
         columnDisplayMetadata[i].sort &&
         columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-      ) {
-        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
-        ) {
+        ){
+          sortColumnDataKey = columnDisplayMetadata[i].dataKey;
+        if (columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending){
           return { sortColumnDataKey, sortDirectionCoefficient: 1 };
         }
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
-        ) {
+        if (columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending){
           return { sortColumnDataKey, sortDirectionCoefficient: -1 };
         }
         break;
@@ -36,12 +32,12 @@ export class TableSortingService {
     return { sortColumnDataKey, sortDirectionCoefficient: 0 };
   }
 
-  public getSortedData(
-    data: TableRow[],
+  public sortOnDatakeynCoeff(
+    a: TableRow,
+    b: TableRow,
     sortColumnDataKey: string,
     sortDirectionCoefficient: number
-  ) {
-    return data.sort((a, b) => {
+  ):number {
       if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
         return -1 * sortDirectionCoefficient;
       }
@@ -49,6 +45,13 @@ export class TableSortingService {
         return 1 * sortDirectionCoefficient;
       }
       return 0;
-    });
+  }
+
+  public getSortedData(
+    data: TableRow[],
+    sortColumnDataKey: string,
+    sortDirectionCoefficient: number
+  ) {
+    return data.sort((a, b) => this.sortOnDatakeynCoeff(a,b,sortColumnDataKey,sortDirectionCoefficient));
   }
 }
