@@ -1,0 +1,16 @@
+<gp-page [loggedin]="true" title="Application Admin">
+    <div class="p-5">
+        <a gp-link iconId="gp-icon-west" iconVariations="iconleft">Back to User Groups</a>
+        <div class="gp-level-4 mt-6">User Group</div>
+        <div *ngIf="group">
+            <div class="gp-level-5">{{group.name}}</div>
+            <div class="my-6"> {{group.description}} </div>
+        </div>
+        <gp-tabs>
+            <gp-tab label="Users">
+                <toboggan-ws-list-users></toboggan-ws-list-users>
+            </gp-tab>
+            <gp-tab label="Permissions">Permissions</gp-tab>
+        </gp-tabs>
+    </div>
+</gp-page>
