@@ -40,7 +40,7 @@ describe('ListUsersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should render all users, on start', () => {
+  it('should render all users', () => {
     const fetchUsers = jest.spyOn(mockUserService, 'fetchUsers');
     expect(fetchUsers).toHaveBeenCalled();
     expect(component.dynamicRowData).toHaveLength(mockUsers.length);
