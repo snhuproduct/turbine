@@ -15,8 +15,9 @@
               [modalTemplate]="createusertemplate"
               [modalTitle]="createUserDialogTitle"
               [modalButtons]="createUserModalButtonsConfig"
+              [alertBanners]="createUserModalAlertBanners"
               aria-label="blomp"
-            >
+              (click)="createUserModalAlertBanners=[]">
               Add New User
             </button>
             <ng-template #createusertemplate>
