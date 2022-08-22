@@ -20,7 +20,8 @@ describe('Users', () => {
       cy.wait('@getUsers');
 
       cy.get('table > tbody > tr').as('tableRows');
-      cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn')
+      cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn');
+      cy.get('@tableRows').get('td:nth-child(4)').as('tableForthColumn');
     });
 
     it('should have the table', () => {
@@ -82,6 +83,44 @@ describe('Users', () => {
         "last19",
         "last18"
       ]);
+    });
+
+    it('should deactivate the active user', () => {
+      cy.get('@tableForthColumn')
+        .contains('Active')
+        .parent()
+        .get('td:nth-child(5) button')
+        .first()
+        .click({ force: true });
+
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
+
+      cy.fixture('users').then(users => {
+        users[0].enabled = false;
+
+        cy.intercept('GET', 'api/users', users);
+      });
+
+      cy.get('.modal-content button').contains('Yes, deactivate').click();
+
+      cy.get('.modal-content').should('not.exist');
+      cy.get('.gp-banneralert').contains('\'s account has been deactivated.').should('exist');
+      cy.get('@tableForthColumn').first().contains('Inactive').should('exist');
+    });
+
+    it('should leave the user active', () => {
+      cy.get('@tableForthColumn')
+        .contains('Active')
+        .parent()
+        .get('td:nth-child(5) button')
+        .first()
+        .click({ force: true });
+
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
+
+      cy.get('.modal-content button').contains('No, keep active').click();
+
+      cy.get('.modal-content').should('not.exist');
     });
   });
 })
