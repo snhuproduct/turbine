@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class GroupsService {
   groups: IGroup[] = [];
+  group: IGroup;
 
   constructor() {
     for (let i = 0; i < 20; i++) {
@@ -15,10 +16,15 @@ export class GroupsService {
         description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
       });
     }
+    this.group = this.groups[0];
   }
 
   getGroups(): IGroup[] {
     return this.groups;
+  }
+
+  getGroup(): IGroup {
+    return this.group;
   }
 
   getPaginatedGroups(currentPage: number, resultsPerPage = 10): IGroup[] {
