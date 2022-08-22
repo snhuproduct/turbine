@@ -6,11 +6,15 @@ import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
   providedIn: 'root',
 })
 export class GroupService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Fetch all groups
   fetchGroups() {
     return this.http.get<IGroup[]>('/api/groups');
+  }
+
+  fetchGroupDetails(id: string) {
+    return this.http.get<IGroup>('/api/groups/:' + id);
   }
 
   // Creates group

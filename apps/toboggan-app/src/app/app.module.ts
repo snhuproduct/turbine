@@ -21,7 +21,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     StoriesModule,
   ],
-  providers: [{ provide: "BASE_API_URL", useValue: environment.baseApiUrl }],
+  providers: [{ provide: 'BASE_API_URL', useValue: environment.baseApiUrl }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
