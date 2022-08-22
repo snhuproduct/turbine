@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupsService } from '../../providers/groups/groups.service';
@@ -16,7 +17,13 @@ export class GroupsController {
   constructor(private groupsService: GroupsService) {}
 
   @Get('/')
-  getGroups() {
+  getGroups(@Query() query) {
+    const { currentPage, resultsPerPage } = query;
+
+    if (currentPage && resultsPerPage) {
+      return this.groupsService.getPaginatedGroups(currentPage, resultsPerPage);
+    }
+
     return this.groupsService.getGroups();
   }
 

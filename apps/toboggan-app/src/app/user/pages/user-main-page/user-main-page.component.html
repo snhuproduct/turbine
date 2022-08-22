@@ -7,23 +7,25 @@
   <main>
     <div class="row">
       <div class="page-container">
-        <button
-          gp-button
-          gp-modal-trigger
-          [modalTemplate]="createusertemplate"
-          [modalTitle]="createUserDialogTitle"
-          [modalButtons]="createUserModalButtonsConfig"
-          [alertBanners]="createUserModalAlertBanners"
-          aria-label="blomp"
-          (click)="createUserModalAlertBanners=[]">
-          Add New User
-        </button>
-        <ng-template #createusertemplate>
-          <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
-          </toboggan-ws-create-user>
-        </ng-template>
-
-        <toboggan-ws-user-table></toboggan-ws-user-table>
+        <toboggan-ws-user-table>
+          <div table-cta-right>
+            <button
+              gp-button
+              gp-modal-trigger
+              [modalTemplate]="createusertemplate"
+              [modalTitle]="createUserDialogTitle"
+              [modalButtons]="createUserModalButtonsConfig"
+              [alertBanners]="createUserModalAlertBanners"
+              aria-label="blomp"
+              (click)="createUserModalAlertBanners=[]">
+              Add New User
+            </button>
+            <ng-template #createusertemplate>
+              <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
+              </toboggan-ws-create-user>
+            </ng-template>
+          </div>
+        </toboggan-ws-user-table>
       </div>
     </div>
   </main>
