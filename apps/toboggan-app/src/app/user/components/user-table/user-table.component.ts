@@ -3,8 +3,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  SingleHeaderRowTableDataGenerator,
-  TableDataGenerator,
+  JSONObject, SingleHeaderRowTableDataGenerator, TableDataGenerator,
   TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
@@ -14,8 +13,7 @@ import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
-  ITableDataGeneratorFactoryOutput,
-  TableDataService
+  ITableDataGeneratorFactoryOutput, ITableRowFilterFunc, TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -43,6 +41,16 @@ export class UserTableComponent implements OnInit, OnDestroy {
   private datageneratorSubscription: Subscription = {} as Subscription;
 
   private filters: Map<string, Record<string, boolean>> = new Map();
+  private filterFuncs: { [key:string]: ITableRowFilterFunc } =
+    {
+      status: (tr:TableRow, columnMetadata=userTableHeader)=>{
+        const isInvalid = !(columnMetadata[columnMetadata.length-1].selectedFilters.Active ^ columnMetadata[columnMetadata.length-1].selectedFilters.Inactive);
+        const filterStatusStr = columnMetadata[columnMetadata.length-1].selectedFilters.Active ? 'Active' : 'Inactive';
+        const rowUserStatus = tr.cellData['status'] as Array<unknown>;
+        return isInvalid || (filterStatusStr===rowUserStatus[1]);
+      }
+    }
+  ;
 
   constructor(
     private userService: UserService,
@@ -52,14 +60,16 @@ export class UserTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.refreshTableData();
+    //the table should load with only active users visible. Filter is set to "Active" by default
+    //hence the status filter is passed on-init
+    this.refreshTableData([this.filterFuncs['status']]);
   }
 
   ngOnDestroy(): void {
     this.datageneratorSubscription.unsubscribe();
   }
 
-  private refreshTableData() {
+  private refreshTableData(additionalFilterFuncs:ITableRowFilterFunc[]=[]):void {
     const [prevSearchString, prevCurrentPage] = [this.dataGenerator.searchString || '', this.dataGenerator.currentPage || this.currentPage];
     this.dataGeneratorFactoryOutputObserver =
       this.tableDataService.dataGeneratorFactoryObs(
@@ -67,7 +77,9 @@ export class UserTableComponent implements OnInit, OnDestroy {
         userTableHeader,
         this.formatTableRowsWithUserData,
         this.resultsPerPage,
-        prevCurrentPage
+        prevCurrentPage,
+        ()=>{},
+        additionalFilterFuncs
       );
     this.datageneratorSubscription =
       this.dataGeneratorFactoryOutputObserver.subscribe(
@@ -81,7 +93,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
   getActionMenuItems(rowData: TableRow) {
-    const cellData = rowData.cellData as Record<string, any>;
+    const cellData = rowData.cellData as Record<string, JSONObject>;
     const actions = ['edit', 'reset password'];
     // we're using a tag on this format for the status: ['is-category', 'Active', 50]
     // that's why we're using index 1 here.
@@ -224,7 +236,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.refreshTableData();
   }
 
-  formatTableRowsWithUserData(fetchedData: any): TableRow[] {
+  formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
     const users = fetchedData as IUser[];
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
@@ -258,10 +270,19 @@ export class UserTableComponent implements OnInit, OnDestroy {
 
   onFilterChange(event: IFilterChange): void {
     // if all filters are false, remove the filter
-    //TODO: We actually need to implement filtering.
     if (Object.values(event.filters).every((value) => !value)) {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
+    this.applyActiveFilters();
   }
+
+  private applyActiveFilters(){
+    const additionalFilterFuncs:ITableRowFilterFunc[]= [];
+    this.filters.forEach((_,key)=>{
+      additionalFilterFuncs.push(this.filterFuncs[key]);
+    })
+    this.refreshTableData(additionalFilterFuncs);
+  }
+
 }

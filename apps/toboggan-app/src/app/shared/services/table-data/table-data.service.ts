@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Injectable } from '@angular/core';
 import {
@@ -7,17 +8,18 @@ import { Observable, Subscription } from 'rxjs';
 import { TableSortingService } from '../table-sorting/table-sorting.service';
 
 export interface ITableRowFilterFunc{
-  (tr:TableRow, columnMetadata:TableColumnDisplayMetadatum[], searchString:string): boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (tr:TableRow, columnMetadata?:TableColumnDisplayMetadatum[], searchVal?:unknown): boolean;
 }
 
 export interface ICelldataFormatterFunc{
-  (dataArray:any): TableRow[];
+  (dataArray:unknown): TableRow[];
 }
 
 export interface ITableDataGeneratorFactoryOutput{
   dataGenerator: SingleHeaderRowTableDataGenerator,
   tableRows?: TableRow[],
-  rawData?: any
+  rawData?: unknown
 }
 
 @Injectable({
@@ -58,8 +60,8 @@ export class TableDataService {
           (
             dataGenerator: TableDataGenerator,
             columnDisplayMetadata: TableColumnDisplayMetadatum[],
-            searchString:string = dataGenerator.searchString,
-            pageSize:number = rowsPerPage,
+            _searchString:string = dataGenerator.searchString,
+            _pageSize:number = rowsPerPage,
             currentPage:number = currentPageNumer
           )=>{
             rowsObservableSubscription = rowsObservable

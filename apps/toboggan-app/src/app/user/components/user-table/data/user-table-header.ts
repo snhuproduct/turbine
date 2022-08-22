@@ -10,6 +10,7 @@ export const userTableHeader = [
     dataKey: 'first',
     parents: '',
     alignment: TableColumnAlignmentEnum.Left,
+    sort: TableColumnSortStateEnum.Ascending,
     searchableField: true
   },
   {
@@ -32,6 +33,6 @@ export const userTableHeader = [
     sort: TableColumnSortStateEnum.None,
     alignment: TableColumnAlignmentEnum.Left,
     dataType: TableColumnDataTypeEnum.Tag,
-    selectedFilters: { Active: false, Inactive: false },
+    selectedFilters: { Active: true, Inactive: false },
   },
 ];
