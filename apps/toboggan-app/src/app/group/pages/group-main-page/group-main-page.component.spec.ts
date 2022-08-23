@@ -45,6 +45,7 @@ const mockUserService = {
 const mockGroupService = {
   createGroup: jest.fn().mockReturnValue(of({})),
   addUsertoGroup: jest.fn().mockReturnValue(of({})),
+  fetchGroups: jest.fn().mockReturnValue(of({})),
 };
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;

@@ -4,5 +4,9 @@
     [dynamic]="true"
     tableStyle="borders"
     [getActionMenuItems]="getActionMenuItems"
-  ></gp-table>
+    noResultsHeading="No groups yet"
+    noResultsText="Once you create one, it’ll show up here."
+  >
+    <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+  </gp-table>
 </div>
