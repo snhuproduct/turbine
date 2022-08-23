@@ -4,5 +4,7 @@
     [dynamic]="true"
     tableStyle="borders"
     [getActionMenuItems]="getActionMenuItems"
-  ></gp-table>
+  >
+    <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+  </gp-table>
 </div>

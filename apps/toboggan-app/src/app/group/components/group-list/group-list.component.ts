@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
-import { firstValueFrom } from 'rxjs';
+import { IGroup } from '@toboggan-ws/toboggan-common';
+import { Observable, Subscription } from 'rxjs';
+import {
+  ITableDataGeneratorFactoryOutput,
+  TableDataService,
+} from '../../../shared/services/table-data/table-data.service';
 import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
 import { GroupService } from '../../services/group.service';
+import { groupTableHeader } from './group-table.type';
 
 @Component({
   selector: 'toboggan-ws-group-list',
@@ -15,69 +20,23 @@ import { GroupService } from '../../services/group.service';
   styleUrls: ['./group-list.component.scss'],
 })
 export class GroupListComponent implements OnInit {
-  dataGenerator!: TableDataGenerator;
+  dataGenerator: TableDataGenerator = {} as TableDataGenerator;
   groupList: TableRow[] = [];
   currentPage = 1;
   itemsPerPage = 10;
   columnHeadings: TableColumnDisplayMetadatum[] = [];
+  private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
+    {} as Observable<ITableDataGeneratorFactoryOutput>;
+  private datageneratorSubscription: Subscription = {} as Subscription;
 
   constructor(
     private groupService: GroupService,
-    private tableSortingService: TableSortingService
+    private tableSortingService: TableSortingService,
+    private tableDataService: TableDataService
   ) {}
 
   ngOnInit(): void {
-    this.columnHeadings = [
-      {
-        title: 'Name',
-        dataKey: 'name',
-        parents: '',
-        defaultSort: true,
-      },
-      {
-        title: 'Description',
-        dataKey: 'description',
-        parents: '',
-      },
-    ];
-    this.dataGenerator = new SingleHeaderRowTableDataGenerator(
-      async (
-        dataGenerator: TableDataGenerator,
-        columnDisplayMetadata: TableColumnDisplayMetadatum[],
-        searchString: string,
-        pageSize: number,
-        currentPage: number
-      ) => {
-        dataGenerator.isFiltered = true;
-        const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.tableSortingService.getSortDirectionCoefficient(
-            columnDisplayMetadata
-          );
-
-        await this.generateUserRowData();
-
-        if (this.groupList.length) {
-          const sortedData = this.tableSortingService.getSortedData(
-            this.groupList,
-            sortColumnDataKey,
-            sortDirectionCoefficient
-          );
-          const startRow = (currentPage - 1) * pageSize;
-          const pageData = sortedData.slice(startRow, startRow + pageSize);
-          dataGenerator.retrievalCallback(
-            pageData,
-            sortedData.length,
-            currentPage,
-            Math.ceil(sortedData.length / pageSize)
-          );
-        } else {
-          dataGenerator.retrievalCallback([], 0, 1, 1);
-        }
-      },
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      () => this.dataGenerator.retrieveRowData,
-      this.columnHeadings
-    );
+    this.refreshTableData();
   }
 
   getActionMenuItems = (rowData: TableRow) => {
@@ -85,9 +44,9 @@ export class GroupListComponent implements OnInit {
     return actions;
   };
 
-  async generateUserRowData(): Promise<void> {
+  formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
     //API call
-    const groups = await firstValueFrom(this.groupService.fetchGroups());
+    const groups = fetchedData as IGroup[];
 
     // TODO: Ideally it should come sorted from our API!
     const groupsSortedByName = groups.sort((a, b) => {
@@ -114,11 +73,33 @@ export class GroupListComponent implements OnInit {
       };
     });
 
-    this.groupList = data as TableRow[];
+    return data as TableRow[];
   }
 
   private refreshTableData() {
-    this.generateUserRowData();
-    this.dataGenerator.update();
+    const [prevSearchString, prevCurrentPage] = [
+      this.dataGenerator.searchString || '',
+      this.dataGenerator.currentPage || this.currentPage,
+    ];
+    this.dataGeneratorFactoryOutputObserver =
+      this.tableDataService.dataGeneratorFactoryObs(
+        this.groupService.fetchGroups(),
+        groupTableHeader,
+        this.formatTableRowsWithUserData,
+        this.itemsPerPage,
+        prevCurrentPage,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        () => {},
+        []
+      );
+    this.datageneratorSubscription =
+      this.dataGeneratorFactoryOutputObserver.subscribe(
+        (dataGeneratorFactoryOutput) => {
+          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
+          this.groupList = dataGeneratorFactoryOutput.tableRows as TableRow[];
+          // this.users = dataGeneratorFactoryOutput.rawData as IUser[];
+          this.dataGenerator.searchString = prevSearchString;
+        }
+      );
   }
 }
