@@ -12,7 +12,7 @@ export class GroupsService {
     for (let i = 0; i < 20; i++) {
       this.groups.push({
         id: uuidv4(),
-        name: `Group name-${i}`,
+        name: `Group name ${i}`,
         description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
       });
     }

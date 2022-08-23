@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  ModalButtonConfig,
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { firstValueFrom } from 'rxjs';
 import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
@@ -15,16 +16,32 @@ import { GroupService } from '../../services/group.service';
   styleUrls: ['./group-list.component.scss'],
 })
 export class GroupListComponent implements OnInit {
+  editTitle = 'Edit user group details';
   dataGenerator!: TableDataGenerator;
   groupList: TableRow[] = [];
   currentPage = 1;
   itemsPerPage = 10;
   columnHeadings: TableColumnDisplayMetadatum[] = [];
 
+  modalEditButtons: ModalButtonConfig[] = [
+    {
+      title: 'Cancel',
+      style: 'secondary',
+      onClick: () => { return true },
+    },
+    {
+      title: 'Review changes',
+      style: 'primary',
+      onClick: async () => {
+        return false;
+      },
+    },
+  ];
+
   constructor(
     private groupService: GroupService,
     private tableSortingService: TableSortingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.columnHeadings = [

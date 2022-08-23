@@ -1,8 +1,12 @@
 <div class="table-container">
-  <gp-table
-    [dataGenerator]="dataGenerator"
-    [dynamic]="true"
-    tableStyle="borders"
-    [getActionMenuItems]="getActionMenuItems"
-  ></gp-table>
+  <button gp-button gp-modal-trigger [modalTemplate]="editGroup" [modalTitle]="editTitle"
+    [modalButtons]="modalEditButtons" aria-label="open modal">
+    Edit user group
+  </button>
+  <ng-template #editGroup>
+    <toboggan-ws-edit-group></toboggan-ws-edit-group>
+  </ng-template>
+
+  <gp-table [dataGenerator]="dataGenerator" [dynamic]="true" tableStyle="borders"
+    [getActionMenuItems]="getActionMenuItems"></gp-table>
 </div>

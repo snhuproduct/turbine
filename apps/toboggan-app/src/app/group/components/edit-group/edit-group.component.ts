@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { INewGroup } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../services/group.service';
 
 @Component({
-  selector: 'toboggan-ws-create-group',
-  templateUrl: './create-group.component.html',
-  styleUrls: ['./create-group.component.scss'],
+  selector: 'toboggan-ws-edit-group',
+  templateUrl: './edit-group.component.html',
+  styleUrls: ['./edit-group.component.scss'],
 })
-export class CreateGroupComponent implements OnInit {
-  createGroupForm!: FormGroup;
+export class EditGroupComponent implements OnInit {
+  editGroupForm!: FormGroup;
   constructor(private groupService: GroupService) { }
 
   ngOnInit(): void {
-    this.createGroupForm = new FormGroup({
+    this.editGroupForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
@@ -23,13 +22,12 @@ export class CreateGroupComponent implements OnInit {
         Validators.required,
         Validators.maxLength(300),
         this.specialCharactersValidation
-      ]),
-      addUser: new FormControl(false),
+      ])
     });
   }
 
   getErrorMessage(controlName: string, friendlyName: string) {
-    const control = this.createGroupForm.get(controlName);
+    const control = this.editGroupForm.get(controlName);
     if (control)
       if (control.hasError('required')) {
         return `${friendlyName} ${FormError.isRequired}`;
@@ -57,28 +55,11 @@ export class CreateGroupComponent implements OnInit {
   }
 
   hasError(controlName: string) {
-    const control = this.createGroupForm.get(controlName);
+    const control = this.editGroupForm.get(controlName);
     if (control) {
       return !control.valid && (control.dirty || control.touched);
     }
     return false;
   }
 
-  createGroup() {
-    this.createGroupForm.markAllAsTouched();
-    if (this.createGroupForm.valid) {
-      const group: INewGroup = {
-        name: this.createGroupForm.value.name,
-        description: this.createGroupForm.value.description,
-      };
-      this.groupService.createGroup(group).subscribe({
-        next: (response) => {
-          // handle success
-        },
-        error: (error) => {
-          // handle error scenario
-        },
-      });
-    }
-  }
 }
