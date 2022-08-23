@@ -32,12 +32,12 @@ type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
 export class UserTableComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private resultsPerPage = 10;
+  itemName = "Users";
   dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
   dynamicRowData: TableRow[] = {} as ITableRow[];
   users = {} as IUser[];
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> = {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
-
   private filters: Map<string, Record<string, boolean>> = new Map();
   private filterFuncs: { [key:string]: ITableRowFilterFunc } =
     {
@@ -68,7 +68,14 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
   private refreshTableData(additionalFilterFuncs:ITableRowFilterFunc[]=[]):void {
-    const [prevSearchString, prevCurrentPage] = [this.dataGenerator.searchString || '', this.dataGenerator.currentPage || this.currentPage];
+    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
+    if(this.datageneratorSubscription.unsubscribe){
+      this.datageneratorSubscription.unsubscribe();
+    }
+    const [prevSearchString, prevCurrentPage] = [
+      this.dataGenerator.searchString || '', //prevSearchString
+      this.dataGenerator.currentPage || this.currentPage //prevCurrentPage
+    ];
     this.dataGeneratorFactoryOutputObserver =
       this.tableDataService.dataGeneratorFactoryObs(
         this.userService.fetchUsers(),
@@ -144,7 +151,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
       case RowActions.Deactivate:
         const userName = `${first} ${last}`;
-
         this.modalAlertService.showModalAlert({
           type: 'warning',
           heading: 'Deactivate this user?',
@@ -163,7 +169,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
                 try {
                   this.modalAlertService.hideModalAlert();
                   await this.toggleUserStatus('inactive', userPayload, userId);
-
                   this.showNotification(
                     'success',
                     `[${userPayload.firstName} ${userPayload.lastName}]`,
@@ -172,7 +177,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
                   );
                 } catch (error) {
                   console.error(error);
-
                   this.showNotification(
                     'error',
                     `Deactivate user`,
@@ -186,9 +190,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
             },
           ],
         });
-
         break;
-
       case RowActions.ResetPassword:
         this.resetPassword(userId, first, last);
         break;
@@ -268,8 +270,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
       },
       userId
     );
-
-    this.refreshTableData();
+    // table should retain its original filtered status and refresh rather than simply refresh
+    this.applyActiveFilters();
   }
 
   formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
