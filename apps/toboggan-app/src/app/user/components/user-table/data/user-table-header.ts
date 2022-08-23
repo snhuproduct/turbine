@@ -30,7 +30,7 @@ export const userTableHeader = [
     title: 'Status',
     dataKey: 'status',
     filters: ['Active', 'Inactive'],
-    sort: TableColumnSortStateEnum.None,
+    sort: TableColumnSortStateEnum.Disabled,
     alignment: TableColumnAlignmentEnum.Left,
     dataType: TableColumnDataTypeEnum.Tag,
     selectedFilters: { Active: true, Inactive: false },
