@@ -20,3 +20,9 @@ export const groupTableHeader: TableColumnDisplayMetadatum[] = [
     alignment: TableColumnAlignmentEnum.Left,
   },
 ];
+
+export enum RowActions {
+  Edit = 'edit',
+  ViewDetails = 'view details',
+  Delete = 'delete',
+}
