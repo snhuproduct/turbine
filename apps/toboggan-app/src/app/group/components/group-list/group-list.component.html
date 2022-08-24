@@ -1,0 +1,14 @@
+<div class="table-container">
+  <gp-table
+    [dataGenerator]="dataGenerator"
+    [dynamic]="true"
+    tableStyle="borders"
+    [getActionMenuItems]="getActionMenuItems"
+    noResultsHeading="No groups yet"
+    noResultsText="Once you create one, it’ll show up here."
+    (onRowAction)="onRowAction($event)"
+    itemName="user groups"
+  >
+    <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+  </gp-table>
+</div>

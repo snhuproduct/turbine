@@ -2,15 +2,17 @@
   <div *ngFor="let banner of bannerService.banners">
     <div class="banner">
       <gp-banner-alert [alertType]="banner.type" [heading]="banner.heading">
-        <p gp-alert-msg *ngIf="banner.message">
-          {{ banner.message }}
-        </p>
+        <p
+          gp-alert-msg
+          *ngIf="banner.message"
+          [innerHTML]="banner.message | safeHtml"
+        ></p>
 
         <button
           *ngIf="banner.button?.action"
           gp-button
           (click)="banner.button?.action(banner.id)"
-          styleType="primary"
+          [styleType]="banner.button?.style || 'primary'"
         >
           {{ banner.button?.label }}
         </button>

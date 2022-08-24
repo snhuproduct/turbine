@@ -3,7 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -34,7 +34,7 @@ export class CreateUserComponent implements AfterViewInit {
   constructor(
     public userService: UserService,
     private bannerService: BannerService
-  ) { }
+  ) {}
 
   ngAfterViewInit(): void {
     // provide own handle to the hosting component
@@ -69,6 +69,7 @@ export class CreateUserComponent implements AfterViewInit {
         return true;
       } catch (error) {
         this.failedToAddUser = true;
+        console.log('Failed creating user', error);
         return false;
       } finally {
         this.isLoading = false;

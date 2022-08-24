@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
+import {
+  IAlertBanner,
+  ModalButtonConfig,
+} from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
@@ -12,6 +15,7 @@ export class UserMainPageComponent {
   editingUser?: IUser;
   createUserDialogTitle = 'Add New User';
   createUserComponent?: CreateUserComponent;
+  createUserModalAlertBanners: IAlertBanner[] = [];
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
       title: 'Cancel',
@@ -25,7 +29,6 @@ export class UserMainPageComponent {
     },
   ];
 
-
   async handleCancelCreateUserModalButton() {
     return true;
   }
@@ -34,7 +37,15 @@ export class UserMainPageComponent {
     if (!this.createUserComponent) {
       return false;
     }
+    this.createUserModalAlertBanners = [];
     const result = await this.createUserComponent.handleAddNewUserModalButton();
+    if (!result) {
+      this.createUserModalAlertBanners.push({
+        type: 'error',
+        heading: 'Add New User',
+        message: "Couldn't be completed.",
+      });
+    }
     return result;
   }
 

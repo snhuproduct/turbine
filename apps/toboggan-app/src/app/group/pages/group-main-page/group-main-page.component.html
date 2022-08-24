@@ -1,14 +1,27 @@
 <gp-page [loggedin]="true">
-    <div>
-        <div class="gp-level-4">User Group</div>
-        <button gp-button gp-modal-trigger [modalTemplate]="createGroup" [modalTitle]="title" [modalButtons]="modalButtons" aria-label="open modal">Open</button>
-    </div>
-
-    <ng-template #createGroup>
-        <toboggan-ws-create-group></toboggan-ws-create-group>
-    </ng-template>
-    <ng-template #addUsers>
-        <toboggan-ws-add-users></toboggan-ws-add-users>
-    </ng-template>
-    
+  <toboggan-ws-banner></toboggan-ws-banner>
+  <div class="gp-level-4 page-heading mb-5">User Groups</div>
+  <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
+  <div class="group-list-container p-5">
+    <toboggan-ws-group-list>
+      <div table-cta-right>
+        <button
+          gp-button
+          gp-modal-trigger
+          [modalTemplate]="createGroup"
+          [modalTitle]="title"
+          [modalButtons]="modalButtons"
+          aria-label="open modal"
+        >
+          Create user group
+        </button>
+      </div>
+    </toboggan-ws-group-list>
+  </div>
+  <ng-template #createGroup>
+    <toboggan-ws-create-group></toboggan-ws-create-group>
+  </ng-template>
+  <ng-template #addUsers>
+    <toboggan-ws-add-users></toboggan-ws-add-users>
+  </ng-template>
 </gp-page>

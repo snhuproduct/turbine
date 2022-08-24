@@ -1,6 +1,6 @@
 import {
   TableColumnDisplayMetadatum,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 
 export enum RowActions {

@@ -62,7 +62,7 @@ describe('GroupService', () => {
         user: userEmail,
       };
       service.addUsertoGroup(group.id as string, userEmail).subscribe();
-      const req = httpMock.expectOne('/api/addusertogroup');
+      const req = httpMock.expectOne('/api/groups/addusertogroup');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toStrictEqual(mockRequest);
       req.flush(group);
