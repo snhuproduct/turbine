@@ -7,14 +7,14 @@ import {
   Patch,
   Post,
   Put,
-  Query
+  Query,
 } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupsService } from '../../providers/groups/groups.service';
 
 @Controller('groups')
 export class GroupsController {
-  constructor(private groupsService: GroupsService) { }
+  constructor(private groupsService: GroupsService) {}
 
   @Get('/')
   getGroups(@Query() query) {
@@ -49,7 +49,6 @@ export class GroupsController {
 
   @Delete('/:id')
   deleteGroup(@Param('id') id) {
-    console.log('is is =>', id);
     return this.groupsService.deleteGroup(id);
   }
 
