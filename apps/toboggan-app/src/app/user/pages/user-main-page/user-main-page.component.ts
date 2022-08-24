@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IAlertBanner, ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
+import {
+  IAlertBanner,
+  ModalButtonConfig,
+} from '@snhuproduct/toboggan-ui-components-library';
+import { IUser } from '@toboggan-ws/toboggan-common';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
 @Component({
@@ -8,9 +12,10 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
   styleUrls: ['./user-main-page.component.scss'],
 })
 export class UserMainPageComponent {
+  editingUser?: IUser;
   createUserDialogTitle = 'Add New User';
   createUserComponent?: CreateUserComponent;
-  createUserModalAlertBanners: IAlertBanner[] = []; 
+  createUserModalAlertBanners: IAlertBanner[] = [];
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
       title: 'Cancel',
@@ -34,11 +39,11 @@ export class UserMainPageComponent {
     }
     this.createUserModalAlertBanners = [];
     const result = await this.createUserComponent.handleAddNewUserModalButton();
-    if(!result){
+    if (!result) {
       this.createUserModalAlertBanners.push({
         type: 'error',
         heading: 'Add New User',
-        message: 'Couldn\'t be completed.',
+        message: "Couldn't be completed.",
       });
     }
     return result;
