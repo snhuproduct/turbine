@@ -128,68 +128,10 @@ export class UserTableComponent implements OnInit, OnDestroy {
     };
     switch (action) {
       case RowActions.Activate:
-        try {
-          await this.toggleUserStatus('active', userPayload, userId);
-
-          this.showNotification(
-            'success',
-            `[${userPayload.firstName} ${userPayload.lastName}]`,
-            `'s account has been activated.`,
-            true
-          );
-        } catch (error) {
-          console.error(error);
-
-          this.showNotification(
-            'error',
-            `Activate user`,
-            `couldn't be completed.`,
-            true,
-            null
-          );
-        }
-        break;
+          this.activateUser(userId, userPayload);
+          break;
       case RowActions.Deactivate:
-        const userName = `${first} ${last}`;
-        this.modalAlertService.showModalAlert({
-          type: 'warning',
-          heading: 'Deactivate this user?',
-          message: `If you deactivate ${userName}, they'll no longer have any of the permissions associated with their assigned user group(s). This action is reversible.`,
-          buttons: [
-            {
-              title: 'No, keep active',
-              onClick: () => {
-                this.modalAlertService.hideModalAlert();
-              },
-              style: 'secondary',
-            },
-            {
-              title: 'Yes, deactivate',
-              onClick: async () => {
-                try {
-                  this.modalAlertService.hideModalAlert();
-                  await this.toggleUserStatus('inactive', userPayload, userId);
-                  this.showNotification(
-                    'success',
-                    `[${userPayload.firstName} ${userPayload.lastName}]`,
-                    `'s account has been deactivated.`,
-                    true
-                  );
-                } catch (error) {
-                  console.error(error);
-                  this.showNotification(
-                    'error',
-                    `Deactivate user`,
-                    `couldn't be completed.`,
-                    true,
-                    null
-                  );
-                }
-              },
-              style: 'primary',
-            },
-          ],
-        });
+        this.deactivateUser(userId, userPayload);
         break;
       case RowActions.ResetPassword:
         this.resetPassword(userId, first, last);
@@ -201,12 +143,99 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
     }
   }
+  public activateUser(id: string, userPayload: UserStatusPayload){
+        this.modalAlertService.showModalAlert({
+          type: 'warning',
+          heading: 'Activate this user?',
+          message: `If you activate ${userPayload.firstName} ${userPayload.lastName}, they'll have all the permissions associated with their assigned user group(s).`,
+          buttons: [
+            {
+              title: 'No, cancel',
+              onClick: () => {
+                this.modalAlertService.hideModalAlert();
+              },
+              style: 'secondary',
+            },
+            {
+              title: 'Yes, activate',
+              onClick: async () => {
+                try {
+                  this.modalAlertService.hideModalAlert();
+                  await this.toggleUserStatus('active', userPayload, id);
 
+                  this.showNotification(
+                    'success',
+                    `[${userPayload.firstName} ${userPayload.lastName}]`,
+                    `'s account has been activated.`,
+                    true
+                  );
+                } catch (error) {
+                  console.error(error);
+
+                  this.showNotification(
+                    'error',
+                    `Activate user`,
+                    `couldn't be completed.`,
+                    true,
+                    null
+                  );
+                }
+              },
+              style: 'primary',
+            },
+          ],
+        });
+  }
+
+  public deactivateUser(id: string, userPayload: UserStatusPayload){
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: 'Deactivate this user?',      
+      message: `If you deactivate ${userPayload.firstName} ${userPayload.lastName}, they'll no longer have any of the permissions associated with their assigned user group(s). This action is reversible.`,
+      buttons: [
+        {
+          title: 'No, keep active',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'secondary',
+        },
+        {
+          title: 'Yes, deactivate',
+          onClick: async () => {
+            try {
+              this.modalAlertService.hideModalAlert();
+              await this.toggleUserStatus('inactive', userPayload, id);
+
+              this.showNotification(
+                'success',
+                `[${userPayload.firstName} ${userPayload.lastName}]`,
+                `'s account has been deactivated.`,
+                true
+              );
+            } catch (error) {
+              console.error(error);
+
+              this.showNotification(
+                'error',
+                `Deactivate user`,
+                `couldn't be completed.`,
+                true,
+                null
+              );
+            }
+          },
+          style: 'primary',
+        },
+      ],
+    });
+  }
+  
   public resetPassword(id: string, firstName: string, lastName: string){
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: `Reset user's password?`,
-      message: `If you continue ${firstName} ${lastName}, will receive an email prompting them to set a new password. They won't be able to access [Platform name] until their password is reset.`,
+      message: `If you continue ${firstName} ${lastName}, will receive an email prompting them to set a new password. They won't be able to access their account until their password is reset.`,
       buttons: [
         {
           title: 'No, Cancel',
