@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { SharedModule } from '../shared/shared.module';
 import { AddUsersComponent } from './components/add-users/add-users.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
@@ -26,6 +27,7 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
     StoriesModule,
     ReactiveFormsModule,
     TypeaheadModule.forRoot(),
+    SharedModule,
     groupRouting,
   ],
   exports: [

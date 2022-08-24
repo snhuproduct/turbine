@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,11 @@ export class GroupService {
 
   // Add user to group
   addUsertoGroup(groupId: string, user: string) {
-    return this.http.post('/api/addusertogroup', { groupId, user });
+    return this.http.post('/api/groups/addusertogroup', { groupId, user });
+  }
+
+  //Delete group
+  async deleteGroup(groupId: string) {
+    await firstValueFrom(this.http.delete(`/api/groups/${groupId}`));
   }
 }

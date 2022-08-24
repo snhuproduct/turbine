@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ModalButtonConfig,
   StoriesModule,
@@ -10,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { of } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
+import { SharedModule } from '../../../shared/shared.module';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { CreateGroupComponent } from '../../components/create-group/create-group.component';
 import { GroupListComponent } from '../../components/group-list/group-list.component';
@@ -59,6 +61,7 @@ describe('GroupMainPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         StoriesModule,
+        SharedModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
         ModalModule.forRoot(),
@@ -73,6 +76,16 @@ describe('GroupMainPageComponent', () => {
       providers: [
         { provide: UserService, useValue: mockUserService },
         { provide: GroupService, useValue: mockGroupService },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of([{ id: 1 }]),
+          },
+        },
+        {
+          provide: Router,
+          useValue: {},
+        },
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
