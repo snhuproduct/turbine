@@ -49,11 +49,12 @@ export class GroupsController {
 
   @Delete('/:id')
   deleteGroup(@Param('id') id) {
+    console.log('is is =>', id);
     return this.groupsService.deleteGroup(id);
   }
 
   // TODO: Refactor this route to follow REST principles
-  @Post('addusertogroup')
+  @Post('/addusertogroup')
   addUsersToGroup(@Body() request: IAddUserToGroup) {
     return this.groupsService.addUsersToGroup(request);
   }

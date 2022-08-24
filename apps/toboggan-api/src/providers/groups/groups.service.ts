@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class GroupsService {
@@ -11,7 +10,7 @@ export class GroupsService {
   constructor() {
     for (let i = 0; i < 20; i++) {
       this.groups.push({
-        id: uuidv4(),
+        id: `group-id-${i}`,
         name: `Group name-${i}`,
         description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
       });
@@ -66,9 +65,7 @@ export class GroupsService {
   }
 
   deleteGroup(id: string) {
-    this.groups = this.groups.filter((group) => {
-      return group.id !== id;
-    });
+    this.groups = this.groups.filter((group) => group.id !== id);
   }
 
   addUsersToGroup(request: IAddUserToGroup) {

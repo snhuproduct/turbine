@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { of } from 'rxjs';
@@ -27,7 +28,19 @@ describe('GroupListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StoriesModule, NoopAnimationsModule],
       declarations: [GroupListComponent],
-      providers: [{ provide: GroupService, useValue: mockGroupService }],
+      providers: [
+        { provide: GroupService, useValue: mockGroupService },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of([{ id: 1 }]),
+          },
+        },
+        {
+          provide: Router,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GroupListComponent);
