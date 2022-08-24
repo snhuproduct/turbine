@@ -11,6 +11,18 @@ describe('Users', () => {
     cy.get('.gp-table-x-noresultsheading').should('contain', 'No Results Found');
   });
 
+  it('should display the number of records “1-10 of 10 items”', () => {
+    cy.fixture('users').then(usersFixture => {
+      cy.intercept('GET', "api/users", usersFixture.slice(0, 10));
+
+      cy.visit('/user');
+
+      console.log(usersFixture.slice(0, 10));
+    });
+
+    cy.get('.gp-pagination-x-total').contains('1-10 of 10 items', { matchCase: false }).should('exist');
+  });
+
   describe('with users data', () => {
     beforeEach(() => {
       cy.intercept({ method: 'GET', url: 'api/users' }, { fixture: 'users' }).as('getUsers');
@@ -82,6 +94,26 @@ describe('Users', () => {
         "last19",
         "last18"
       ]);
+    });
+
+    it('should filter table on search', () => {
+      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 20 items');
+
+      cy.get('input[placeholder="Search"]').type('name1', { force: true });
+
+      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 11 items');
+    });
+
+    it('should not display pagination when results are less than 10', function () {
+      cy.get('input[placeholder="Search"]').type('name0', { force: true });
+
+      cy.get('.gp-pagination-x-list').should('not.exist');
+    });
+
+    it('should reflect the number of records', () => {
+      cy.get('input[placeholder="Search"]').type('name1', { force: true });
+
+      cy.get('.gp-pagination-x-list').contains('2').should('exist');
     });
   });
 })
