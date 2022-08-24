@@ -61,8 +61,8 @@ describe('Users', () => {
         "name4",
         "name3",
         "name2",
-        "name19",
-        "name18"
+        "name17",
+        "name16"
       ]);
     });
 
@@ -80,9 +80,37 @@ describe('Users', () => {
         "last4",
         "last3",
         "last2",
-        "last19",
-        "last18"
+        "last17",
+        "last16"
       ]);
+    });
+
+    it('should occur automatically after three characters are entered', () => {
+      cy.get('input[placeholder="Search"]').type('e10', { force: true });
+
+      cy.get('.gp-table-x-bodyrow').contains('name10').should('exist');
+    });
+
+    it('should occur after hitting “enter”', () => {
+      cy.get('input[placeholder="Search"]').type('10{enter}', { force: true });
+
+      cy.get('.gp-table-x-bodyrow').contains('name10').should('exist');
+    });
+
+    it('should search by no records criteria', function () {
+      cy.get('input[placeholder="Search"]').type('no exist', { force: true });
+
+      cy.get('.gp-table-x-noresults').should('exist');
+    });
+
+    it('should combine searching and filtering together', function () {
+      cy.get('input[placeholder="Search"]').type('name18', { force: true });
+
+      cy.get('#Status-filter-button').click({force: true});
+      cy.get('#Status-filter-menu').contains('Inactive').click({force: true});
+      cy.get('#Status-filter-menu').contains('OK').click({force: true});
+
+      cy.get('.gp-table-x-bodyrow').contains('name18').should('exist');
     });
 
     it('should deactivate the active user', () => {

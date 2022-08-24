@@ -149,7 +149,7 @@
     "firstName": "name18",
     "lastName": "last18",
     "email": "user-18@sada.com",
-    "enabled": true
+    "enabled": false
   },
   {
     "id": "d4608c0f-daef-4d37-8412-26b9773ca8d2",
@@ -157,6 +157,6 @@
     "firstName": "name19",
     "lastName": "last19",
     "email": "user-19@sada.com",
-    "enabled": true
+    "enabled": false
   }
 ]
