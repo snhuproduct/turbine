@@ -4,7 +4,7 @@ import {
   IGroup,
   INewUser,
   IUpdatedUser,
-  IUser,
+  IUser
 } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class UserService {
   users: IUser[] = [];
   groups: IGroup[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   fetchUsers() {
     return this.http.get<IUser[]>(`/api/users`);

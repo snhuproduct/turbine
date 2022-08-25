@@ -47,7 +47,6 @@ export class CreateUserComponent {
 
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
-        console.log('User created');
         this.bannerService.showBanner({
           type: 'success',
           heading: `${userObj.firstName} ${userObj.lastName}`,

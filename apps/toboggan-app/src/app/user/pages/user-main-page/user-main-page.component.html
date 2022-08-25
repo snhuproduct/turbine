@@ -19,10 +19,26 @@
               aria-label="blomp">
               Add New User
             </button>
+            <button
+              gp-button
+              aria-label="blomp"
+              (click)="
+                editingUser = {
+                  id: '9642095',
+                  firstName: 'Leela',
+                  lastName: 'Turanga',
+                  userName: 'leela.turanga',
+                  email: 'leela@pexpress.com',
+                  enabled: true
+                }
+              ">
+              Edit user (demo)
+            </button>
             <ng-template #createusertemplate>
               <toboggan-ws-create-user #createUserModal [modalHandle]="createUserModalDirective.modalRef?.content">
               </toboggan-ws-create-user>
             </ng-template>
+            <toboggan-ws-edit-user [(user)]="editingUser"></toboggan-ws-edit-user>
           </div>
         </toboggan-ws-user-table>
       </div>
