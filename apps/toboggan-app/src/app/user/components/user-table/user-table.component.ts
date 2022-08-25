@@ -78,41 +78,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.datageneratorSubscription.unsubscribe();
   }
 
-  private refreshTableData(
-    additionalFilterFuncs: ITableRowFilterFunc[] = []
-  ): void {
-    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
-    if (this.datageneratorSubscription.unsubscribe) {
-      this.datageneratorSubscription.unsubscribe();
-    }
-    const [prevSearchString, prevCurrentPage] = [
-      this.dataGenerator.searchString || '', //prevSearchString
-      this.dataGenerator.currentPage || this.currentPage, //prevCurrentPage
-    ];
-    this.dataGeneratorFactoryOutputObserver =
-      this.tableDataService.dataGeneratorFactoryObs(
-        this.userService.fetchUsers(),
-        userTableHeader,
-        this.formatTableRowsWithUserData,
-        this.resultsPerPage,
-        prevCurrentPage,
-        () => {},
-        additionalFilterFuncs
-      );
-
-    this.datageneratorSubscription =
-      this.dataGeneratorFactoryOutputObserver.subscribe(
-        (dataGeneratorFactoryOutput) => {
-          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
-          this.dynamicRowData =
-            dataGeneratorFactoryOutput.tableRows as TableRow[];
-          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
-
-          this.dataGenerator.searchString = prevSearchString;
-        }
-      );
-  }
-
   getActionMenuItems(rowData: TableRow) {
     const cellData = rowData.cellData as Record<string, JSONObject>;
     const actions = ['edit', 'reset password'];
@@ -162,7 +127,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  public activateUser(id: string, userPayload: UserStatusPayload) {
+  activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: 'Activate this user?',
@@ -206,7 +171,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  public deactivateUser(id: string, userPayload: UserStatusPayload) {
+  deactivateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: 'Deactivate this user?',
@@ -250,7 +215,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  public resetPassword(id: string, firstName: string, lastName: string) {
+  resetPassword(id: string, firstName: string, lastName: string) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: `Reset user's password?`,
@@ -285,42 +250,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
         },
       ],
     });
-  }
-
-  private showNotification(
-    type: 'success' | 'error',
-    heading: string,
-    message: string,
-    autoDismiss: boolean,
-    dismissButton: IBannerButton | null = {
-      label: 'Dismiss',
-      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
-      style: 'secondary',
-    }
-  ) {
-    this.bannerService.showBanner({
-      type,
-      heading,
-      message,
-      button: dismissButton,
-      autoDismiss,
-    });
-  }
-
-  private async toggleUserStatus(
-    status: 'active' | 'inactive',
-    userPayload: UserStatusPayload,
-    userId: string
-  ) {
-    await this.userService.updateUser(
-      {
-        ...userPayload,
-        enabled: status === 'active',
-      },
-      userId
-    );
-    // table should retain its original filtered status and refresh rather than simply refresh
-    this.applyActiveFilters();
   }
 
   formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
@@ -362,6 +291,77 @@ export class UserTableComponent implements OnInit, OnDestroy {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
+    this.applyActiveFilters();
+  }
+
+  private refreshTableData(
+    additionalFilterFuncs: ITableRowFilterFunc[] = []
+  ): void {
+    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
+    if (this.datageneratorSubscription.unsubscribe) {
+      this.datageneratorSubscription.unsubscribe();
+    }
+    const [prevSearchString, prevCurrentPage] = [
+      this.dataGenerator.searchString || '', //prevSearchString
+      this.dataGenerator.currentPage || this.currentPage, //prevCurrentPage
+    ];
+    this.dataGeneratorFactoryOutputObserver =
+      this.tableDataService.dataGeneratorFactoryObs(
+        this.userService.fetchUsers(),
+        userTableHeader,
+        this.formatTableRowsWithUserData,
+        this.resultsPerPage,
+        prevCurrentPage,
+        () => {},
+        additionalFilterFuncs
+      );
+
+    this.datageneratorSubscription =
+      this.dataGeneratorFactoryOutputObserver.subscribe(
+        (dataGeneratorFactoryOutput) => {
+          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
+          this.dynamicRowData =
+            dataGeneratorFactoryOutput.tableRows as TableRow[];
+          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
+
+          this.dataGenerator.searchString = prevSearchString;
+        }
+      );
+  }
+
+  private showNotification(
+    type: 'success' | 'error',
+    heading: string,
+    message: string,
+    autoDismiss: boolean,
+    dismissButton: IBannerButton | null = {
+      label: 'Dismiss',
+      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      style: 'secondary',
+    }
+  ) {
+    this.bannerService.showBanner({
+      type,
+      heading,
+      message,
+      button: dismissButton,
+      autoDismiss,
+    });
+  }
+
+  private async toggleUserStatus(
+    status: 'active' | 'inactive',
+    userPayload: UserStatusPayload,
+    userId: string
+  ) {
+    await this.userService.updateUser(
+      {
+        ...userPayload,
+        enabled: status === 'active',
+      },
+      userId
+    );
+    // table should retain its original filtered status and refresh rather than simply refresh
     this.applyActiveFilters();
   }
 
