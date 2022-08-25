@@ -13,15 +13,14 @@
               gp-button
               gp-modal-trigger
               [modalTemplate]="createusertemplate"
-              [modalTitle]="createUserDialogTitle"
+              modalTitle="Add New User"
               [modalButtons]="createUserModalButtonsConfig"
-              [alertBanners]="createUserModalAlertBanners"
-              aria-label="blomp"
-              (click)="createUserModalAlertBanners=[]">
+              #createUserModalDirective="gpModalTrigger"
+              aria-label="blomp">
               Add New User
             </button>
             <ng-template #createusertemplate>
-              <toboggan-ws-create-user [returnHandle]="receiveCreateUserHandle">
+              <toboggan-ws-create-user #createUserModal [modalHandle]="createUserModalDirective.modalRef?.content">
               </toboggan-ws-create-user>
             </ng-template>
           </div>

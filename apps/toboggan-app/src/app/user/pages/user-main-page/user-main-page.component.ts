@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IAlertBanner, ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
+import { Component, ViewChild } from '@angular/core';
+import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
 @Component({
@@ -8,9 +8,8 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
   styleUrls: ['./user-main-page.component.scss'],
 })
 export class UserMainPageComponent {
-  createUserDialogTitle = 'Add New User';
-  createUserComponent?: CreateUserComponent;
-  createUserModalAlertBanners: IAlertBanner[] = []; 
+  @ViewChild('createUserModal', { static: false}) createUserModal?: CreateUserComponent;
+
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
       title: 'Cancel',
@@ -29,22 +28,10 @@ export class UserMainPageComponent {
   }
 
   async handleAddNewUserModalButton() {
-    if (!this.createUserComponent) {
+    if (!this.createUserModal) {
       return false;
     }
-    this.createUserModalAlertBanners = [];
-    const result = await this.createUserComponent.handleAddNewUserModalButton();
-    if(!result){
-      this.createUserModalAlertBanners.push({
-        type: 'error',
-        heading: 'Add New User',
-        message: 'Couldn\'t be completed.',
-      });
-    }
+    const result = await this.createUserModal.handleAddNewUserModalButton();
     return result;
   }
-
-  receiveCreateUserHandle = (handle: CreateUserComponent) => {
-    this.createUserComponent = handle;
-  };
 }

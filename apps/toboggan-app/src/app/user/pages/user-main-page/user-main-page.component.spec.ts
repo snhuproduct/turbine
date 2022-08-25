@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserAnimationsModule,
-  NoopAnimationsModule,
+  NoopAnimationsModule
 } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy } from 'jest-mock-extended';
@@ -61,12 +61,12 @@ describe('UserMainPageComponent', () => {
     const createUserFixture = TestBed.createComponent(CreateUserComponent);
     const createUserComponent = createUserFixture.componentInstance;
     createUserFixture.detectChanges();
-    component.createUserComponent = createUserComponent;
+    component.createUserModal = createUserComponent;
     const addNewUserButton = component.createUserModalButtonsConfig.find(
       (button) => button.title === 'Add New User'
     );
     const spy = jest.spyOn(
-      component.createUserComponent,
+      component.createUserModal ,
       'handleAddNewUserModalButton'
     );
 
