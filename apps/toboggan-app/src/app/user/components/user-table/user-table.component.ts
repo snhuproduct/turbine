@@ -44,7 +44,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
   users: IUser[] = [];
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
-  private datageneratorSubscription: Subscription = {} as Subscription;
+  private dataGeneratorSubscription: Subscription = {} as Subscription;
   private filters: Map<string, Record<string, boolean>> = new Map();
   private filterFuncs: { [key: string]: ITableRowFilterFunc } = {
     status: (tr: TableRow, columnMetadata = userTableHeader) => {
@@ -75,7 +75,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.datageneratorSubscription.unsubscribe();
+    this.dataGeneratorSubscription.unsubscribe();
   }
 
   getActionMenuItems(rowData: TableRow) {
@@ -298,8 +298,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
     additionalFilterFuncs: ITableRowFilterFunc[] = []
   ): void {
     // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
-    if (this.datageneratorSubscription.unsubscribe) {
-      this.datageneratorSubscription.unsubscribe();
+    if (this.dataGeneratorSubscription.unsubscribe) {
+      this.dataGeneratorSubscription.unsubscribe();
     }
     const [prevSearchString, prevCurrentPage] = [
       this.dataGenerator.searchString || '', //prevSearchString
@@ -316,9 +316,11 @@ export class UserTableComponent implements OnInit, OnDestroy {
         additionalFilterFuncs
       );
 
-    this.datageneratorSubscription =
+    this.dataGeneratorSubscription =
       this.dataGeneratorFactoryOutputObserver.subscribe(
         (dataGeneratorFactoryOutput) => {
+          console.log(dataGeneratorFactoryOutput);
+
           this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
           this.dynamicRowData =
             dataGeneratorFactoryOutput.tableRows as TableRow[];
