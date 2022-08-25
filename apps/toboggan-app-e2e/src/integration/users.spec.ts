@@ -22,6 +22,7 @@ describe('Users', () => {
       cy.get('table > tbody > tr').as('tableRows');
       cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn');
       cy.get('@tableRows').get('td:nth-child(4)').as('tableForthColumn');
+      cy.get('@tableRows').get('td:nth-child(5)').as('tableFifthColumn');
     });
 
     it('should have the table', () => {
@@ -88,10 +89,11 @@ describe('Users', () => {
     it('should deactivate the active user', () => {
       cy.get('@tableForthColumn')
         .contains('Active')
-        .parent()
-        .get('td:nth-child(5) button')
         .first()
-        .click({ force: true });
+        .parents('tr')
+        .as('tableFirstRow')
+
+      cy.get('@tableFirstRow').find('td:nth-child(5) button').click({ force: true })
 
       cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
 
@@ -105,7 +107,7 @@ describe('Users', () => {
 
       cy.get('.modal-content').should('not.exist');
       cy.get('.gp-banneralert').contains('\'s account has been deactivated.').should('exist');
-      cy.get('@tableForthColumn').first().contains('Inactive').should('exist');
+      cy.get('@tableFirstRow').contains('name0').should('not.exist');
     });
 
     it('should leave the user active', () => {
@@ -119,6 +121,16 @@ describe('Users', () => {
       cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
 
       cy.get('.modal-content button').contains('No, keep active').click();
+
+      cy.get('.modal-content').should('not.exist');
+    });
+
+    it('should navigate back to the Manage Users table when the administrator cancels the password reset', () => {
+      cy.get('@tableFifthColumn').find('button').first().click({ force: true });
+
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Reset password').click();
+
+      cy.get('.modal-content').contains('No, Cancel').click();
 
       cy.get('.modal-content').should('not.exist');
     });
