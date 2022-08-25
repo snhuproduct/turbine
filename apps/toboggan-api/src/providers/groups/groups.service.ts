@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class GroupsService {

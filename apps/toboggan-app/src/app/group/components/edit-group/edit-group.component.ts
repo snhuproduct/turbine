@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../services/group.service';
 
@@ -10,15 +11,18 @@ import { GroupService } from '../../services/group.service';
 })
 export class EditGroupComponent implements OnInit {
   editGroupForm!: FormGroup;
+  @Input() mode = 'edit';
+  @Input() group!: IGroup;
+  @Input() oldGroup!: IGroup;
   constructor(private groupService: GroupService) { }
 
   ngOnInit(): void {
     this.editGroupForm = new FormGroup({
-      name: new FormControl('', [
+      name: new FormControl(this.group.name, [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
       ]),
-      description: new FormControl('', [
+      description: new FormControl(this.group.description, [
         Validators.required,
         Validators.maxLength(300),
         this.specialCharactersValidation
@@ -60,6 +64,35 @@ export class EditGroupComponent implements OnInit {
       return !control.valid && (control.dirty || control.touched);
     }
     return false;
+  }
+
+  reviewGroup() {
+    this.editGroupForm.markAllAsTouched();
+    if (this.editGroupForm.valid) {
+      const group: IGroup = {
+        id: this.group.id,
+        name: this.editGroupForm.value.name,
+        description: this.editGroupForm.value.description,
+      };
+      return group;
+    }
+    return false;
+  }
+
+  approveChanges() {
+    const group: IGroup = {
+      id: this.group.id,
+      name: this.editGroupForm.value.name,
+      description: this.editGroupForm.value.description,
+    };
+    this.groupService.updateGroup(group).subscribe({
+      next: (response) => {
+        // handle success
+      },
+      error: (error) => {
+        // handle error scenario
+      },
+    });
   }
 
 }
