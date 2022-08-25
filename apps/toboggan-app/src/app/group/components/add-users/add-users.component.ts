@@ -33,14 +33,14 @@ export class AddUsersComponent implements OnInit {
     });
   }
 
-  addUsertoGroup() {
+  async addUsertoGroup() {
     const userEmail = this.addUserForm.value.user;
     if (!this.userEmails.includes(userEmail)) {
       this.addUserForm.get('user')?.setErrors({ incorrect: true });
       return;
     }
     if (this.addUserForm.valid) {
-      this.groupService
+      return this.groupService
         .addUsertoGroup(
           this.addUserForm.value.groupId,
           this.addUserForm.value.user
@@ -48,9 +48,11 @@ export class AddUsersComponent implements OnInit {
         .subscribe({
           next: (response) => {
             // handle success
+            return true;
           },
           error: (error) => {
             // handle error scenario
+            return false;
           },
         });
     }

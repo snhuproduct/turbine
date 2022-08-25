@@ -3,9 +3,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ModalButtonConfig,
-  ModalComponent
+  ModalComponent,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BannerService } from '../../../shared/services/banner/banner.service';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { CreateGroupComponent } from '../../components/create-group/create-group.component';
 @Component({
@@ -42,9 +43,12 @@ export class GroupMainPageComponent {
   addUserModalRef?: BsModalRef | null;
   addUserModalState!: ModalOptions;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(
+    private modalService: BsModalService,
+    private bannerService: BannerService
+  ) {}
 
-  openAddUserModal() {
+  async openAddUserModal() {
     this.modalService._hideModal();
     this.addUserModalState = {
       initialState: {
@@ -59,10 +63,7 @@ export class GroupMainPageComponent {
           {
             title: 'Add user',
             style: 'primary',
-            onClick: () => {
-              this.addUserComponent?.addUsertoGroup();
-              return false;
-            },
+            onClick: async () => this.addUser(),
           },
         ],
       },
@@ -72,6 +73,45 @@ export class GroupMainPageComponent {
       ModalComponent,
       this.addUserModalState
     );
+  }
+
+  _callErrorBanner() {
+    this.bannerService.showBanner({
+      type: 'error',
+      heading: `Add user`,
+      message: "to the group couldn't be completed",
+      button: {
+        label: 'Dismiss',
+        action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      },
+    });
+  }
+
+  _callSuccessBanner() {
+    this.bannerService.showBanner({
+      type: 'success',
+      heading: `[User's Name]`,
+      message: 'has been added to the [Group name]',
+      button: {
+        label: 'Dismiss',
+        action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      },
+    });
+  }
+
+  async addUser() {
+    {
+      const addUserStatus = await this.addUserComponent?.addUsertoGroup();
+      console.log(addUserStatus);
+      if (!addUserStatus) {
+        if (addUserStatus === false) this._callErrorBanner();
+        this.hideModal();
+        return false;
+      }
+      this._callSuccessBanner();
+      this.hideModal();
+      return true;
+    }
   }
 
   async hideModal() {
