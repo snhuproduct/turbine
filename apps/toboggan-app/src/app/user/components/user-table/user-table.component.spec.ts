@@ -70,4 +70,20 @@ describe('UserTableComponent', () => {
       'heading': `Reset user's password?`, 
      }))
   })  
+
+  it('activate user should bring the confirmation modal', () => {
+    const spy = jest.spyOn(modalAlertService, 'showModalAlert');
+    component.activateUser('id',{firstName:'first', lastName:'last', email:'email'});
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({
+      'heading': `Activate this user?`, 
+     }))
+  }) 
+
+  it('de-activate user should bring the confirmation modal', () => {
+    const spy = jest.spyOn(modalAlertService, 'showModalAlert');
+    component.deactivateUser('id',{firstName:'first', lastName:'last', email:'email'});
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({
+      'heading': `Deactivate this user?`, 
+     }))
+  }) 
 });

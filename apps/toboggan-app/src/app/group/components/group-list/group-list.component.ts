@@ -16,7 +16,6 @@ import {
   ITableDataGeneratorFactoryOutput,
   TableDataService
 } from '../../../shared/services/table-data/table-data.service';
-import { TableSortingService } from '../../../shared/services/table-sorting/table-sorting.service';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from '../edit-group/edit-group.component';
 import { groupTableHeader, RowActions } from './group-table.type';
@@ -46,7 +45,6 @@ export class GroupListComponent implements OnInit {
 
   constructor(
     private groupService: GroupService,
-    private tableSortingService: TableSortingService,
     private tableDataService: TableDataService,
     private modalAlertService: ModalAlertService,
     private router: Router,
@@ -67,7 +65,6 @@ export class GroupListComponent implements OnInit {
 
   onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
-
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     );
@@ -75,7 +72,7 @@ export class GroupListComponent implements OnInit {
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-
+    console.log(rowData);
     const { id: groupId } = rowData.cellData;
 
     switch (action) {

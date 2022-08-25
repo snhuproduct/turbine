@@ -3,7 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -56,7 +56,6 @@ export class CreateUserComponent implements AfterViewInit {
 
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
-        console.log('User created');
         this.bannerService.showBanner({
           type: 'success',
           heading: `${userObj.firstName} ${userObj.lastName}`,
@@ -69,6 +68,7 @@ export class CreateUserComponent implements AfterViewInit {
         });
         return true;
       } catch (error) {
+        this.failedToAddUser = true;
         console.log('Failed creating user', error);
         return false;
       } finally {
