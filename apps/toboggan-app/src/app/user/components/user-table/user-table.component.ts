@@ -99,6 +99,14 @@ export class UserTableComponent implements OnInit, OnDestroy {
       );
   }
 
+  getAllRows():TableRow[]{
+    return this.dataGenFactoryOutput.tableRows as TableRow[];
+  }
+
+  getAllUsers():IUser[]{
+    return this.dataGenFactoryOutput.rawData as IUser[];
+  }
+
   getActionMenuItems(rowData: TableRow) {
     const cellData = rowData.cellData as Record<string, JSONObject>;
     const actions = ['edit', 'reset password'];
@@ -139,7 +147,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(userId, first, last);
         break;
       case RowActions.Edit:
-        console.log(`%c rowEvent ${JSON.stringify(this.dataGenFactoryOutput.rawData, null, 2)}`, 'color:cyan');
+        console.log(`%c rows ${JSON.stringify(this.getAllUsers(), null, 2)}`, 'color:cyan');
         throw new Error('RowAction not implemented yet');
       case RowActions.Cancel:
         // just close the menu!
