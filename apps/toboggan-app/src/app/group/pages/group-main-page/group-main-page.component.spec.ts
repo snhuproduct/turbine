@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +17,10 @@ import { AddUsersComponent } from '../../components/add-users/add-users.componen
 import { CreateGroupComponent } from '../../components/create-group/create-group.component';
 import { GroupListComponent } from '../../components/group-list/group-list.component';
 import { GroupService } from '../../services/group.service';
-import { GroupMainPageComponent } from './group-main-page.component';
+import {
+  groupActionType,
+  GroupMainPageComponent,
+} from './group-main-page.component';
 
 const mockUsers = [
   {
@@ -98,90 +102,32 @@ describe('GroupMainPageComponent', () => {
     fixture = TestBed.createComponent(GroupMainPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    createGroupFixture = TestBed.createComponent(CreateGroupComponent);
-    createGroupComponent = createGroupFixture.componentInstance;
-    component.createGroupComponent = createGroupComponent;
-
-    createGroupButton = component.modalButtons.find(
-      (button) => button.title === 'Create user group'
-    ) as ModalButtonConfig;
-
-    cancelButton = component.modalButtons.find(
-      (button) => button.title === 'Cancel'
-    ) as ModalButtonConfig;
-    createGroupFixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Modal buttons should be configured', () => {
-    expect(createGroupButton).toBeTruthy();
-    expect(cancelButton).toBeTruthy();
+  it('should open create group modal', () => {
+    const createGroupBtn = fixture.debugElement.query(
+      By.css('.create-group-btn')
+    ).nativeElement;
+    createGroupBtn.click();
+    fixture.detectChanges();
+    expect(component.showCreategroup).toBeTruthy();
   });
 
-  it(' "Create user group" modal button calls createGroup on CreateGroupComponent', () => {
-    const createGroupSpy = jest.spyOn(
-      component.createGroupComponent,
-      'createGroup'
-    );
-    createGroupButton?.onClick();
-    expect(createGroupSpy).toHaveBeenCalled();
-  });
-
-  it('Cancel modal button is configured to call hideModal', () => {
-    const hideModalSpy = jest.spyOn(component, 'hideModal');
-    cancelButton?.onClick();
-    expect(hideModalSpy).toHaveBeenCalled();
-  });
-
-  it('should open "Add user to this group" modal once user successfully submits "Create Group" form', () => {
-    const group = {
-      name: 'new test group',
-      description: 'test description',
+  it('should open add user to group modal', () => {
+    const event: groupActionType = {
+      group: {
+        id: 'group-10',
+        name: 'group name 0',
+        description: 'description',
+      },
       addUser: true,
     };
-    const createGroupSpy = jest.spyOn(
-      component.createGroupComponent,
-      'createGroup'
-    );
-    const openAddUserModalSpy = jest.spyOn(component, 'openAddUserModal');
-    expect(component.addUserModalRef).toBeUndefined();
-
-    component.createGroupComponent.createGroupForm.setValue(group);
-    createGroupButton?.onClick();
-    expect(createGroupSpy).toHaveBeenCalled();
-    expect(openAddUserModalSpy).toHaveBeenCalled();
-  });
-
-  it('should call submit function when user clicks on "Add user" button ', () => {
-    const modalSpy = jest.spyOn(component, 'openAddUserModal');
-    component.openAddUserModal();
-    fixture.detectChanges();
-    const addUserFixture = TestBed.createComponent(AddUsersComponent);
-    const addUserComponent = addUserFixture.componentInstance;
-    component.addUserComponent = addUserComponent;
-    component.addUserComponent.ngOnInit();
-    addUserComponent.addUserForm.setValue({
-      user: 'email2@sada.com',
-      groupId: '2AE9GWE5E1A9',
-    });
-    const addUsertoGroupSpy = jest.spyOn(
-      component.addUserComponent,
-      'addUsertoGroup'
-    );
-    addUserFixture.detectChanges();
-    const button = document.querySelector(
-      'modal-container button.gp-button-primary'
-    );
-    button?.dispatchEvent(new Event('click'));
-
-    addUserFixture.detectChanges();
-    expect(addUsertoGroupSpy).toHaveBeenCalled();
-
-    // Check if whether API call is fired
-    const apiCallspy = jest.spyOn(mockGroupService, 'addUsertoGroup');
-    expect(apiCallspy).toHaveBeenCalled();
+    component.handleGroupCreateAction(event);
+    expect(component.showAddUserModal).toBeTruthy();
+    expect(component.dummyGroup).toBe(event.group);
   });
 });
