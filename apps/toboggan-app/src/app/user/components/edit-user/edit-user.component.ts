@@ -25,7 +25,6 @@ export class EditUserComponent implements OnChanges {
     public userService: UserService,
     private bannerService: BannerService
   ) {}
-  failedToUpdateUser = false;
   isLoading = false;
   reviewing?: Partial<IUser> | null = null;
   loaderType = InterstitialLoaderType.Large;
@@ -125,7 +124,6 @@ export class EditUserComponent implements OnChanges {
   async onSubmit() {
     try {
       if (this.user) {
-        this.failedToUpdateUser = false; //reset if there is an error from previous attempt
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
 
@@ -144,8 +142,6 @@ export class EditUserComponent implements OnChanges {
         });
       }
     } catch (error) {
-      this.failedToUpdateUser = true;
-
       this.bannerService.showBanner({
         type: 'error',
         heading: ``,
