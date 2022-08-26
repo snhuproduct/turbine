@@ -72,7 +72,6 @@ export class GroupListComponent implements OnInit {
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    console.log(rowData);
     const { id: groupId } = rowData.cellData;
 
     switch (action) {
