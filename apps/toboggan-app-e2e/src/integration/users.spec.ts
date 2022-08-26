@@ -134,5 +134,26 @@ describe('Users', () => {
 
       cy.get('.modal-content').should('not.exist');
     });
+
+    it('should contain first equal header titles', () => {
+      cy.get('.gp-table-x-headingwrapper').then(findText).should('deep.eq', [
+        "First name",
+        "Last name",
+        "E-mail address",
+        "Status",
+        "Actions"
+      ]);
+    });
+
+    it('should contain the word "Search"', () => {
+      cy.get('input[aria-label="Search"]').should('exist');
+    });
+
+    it('should not display sort button', () => {
+      cy.get('button')
+        .contains('Status')
+        .get('.gp-table-column-sort-disabled')
+        .should('exist');
+    });
   });
 })
