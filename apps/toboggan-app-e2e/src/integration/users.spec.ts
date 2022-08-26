@@ -184,6 +184,39 @@ describe('Users', () => {
         .should('exist');
     });
 
+    it('should display unsuccess banner', () => {
+      cy.intercept('POST', 'api/users', {
+        statusCode: 500,
+        body: {
+          error: 'Internal Server Error',
+        },
+      });
+
+      cy.get('.gp-button-x-label').contains('Add New User').click({ force: true });
+
+      cy.get('input[formcontrolname="firstName"]').type('abc', { force: true });
+      cy.get('input[formcontrolname="lastName"]').type('abc', { force: true });
+      cy.get('input[formcontrolname="email"]').type('abc@abc', { force: true });
+      cy.get('.modal-content button').contains('Add New User').click({ force: true });
+
+      cy.get('.gp-banneralert-x-message').contains('Couldn\'t be completed').should('exist');
+    });
+
+    it('should display success banner', () => {
+      cy.intercept('POST', 'api/users', {
+        statusCode: 201,
+      });
+
+      cy.get('.gp-button-x-label').contains('Add New User').click({ force: true });
+
+      cy.get('input[formcontrolname="firstName"]').type('abc', { force: true });
+      cy.get('input[formcontrolname="lastName"]').type('abc', { force: true });
+      cy.get('input[formcontrolname="email"]').type('abc@abc', { force: true });
+      cy.get('.modal-content button').contains('Add New User').click({ force: true });
+
+      cy.get('.gp-banneralert-x-message').contains('has been added as user').should('exist');
+    });
+
     it('should successfully reset password', () => {
       cy.intercept('PUT', 'api/users/155e8f7c-a591-4a5a-9a13-fbe8bdcd3cac/password', { statusCode: 200 });
 
