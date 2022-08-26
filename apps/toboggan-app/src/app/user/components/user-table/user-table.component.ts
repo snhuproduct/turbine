@@ -40,11 +40,14 @@ export class UserTableComponent implements OnInit, OnDestroy {
   private resultsPerPage = 10;
   itemName = 'Users';
   dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
-  dynamicRowData: TableRow[] = {} as ITableRow[];
-  users: IUser[] = [];
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
-  private dataGeneratorSubscription: Subscription = {} as Subscription;
+  private datageneratorSubscription: Subscription = {} as Subscription;
+  private dataGenFactoryOutput: ITableDataGeneratorFactoryOutput = {
+    dataGenerator: this.dataGenerator,
+    tableRows: [],
+    rawData: [],
+  };
   private filters: Map<string, Record<string, boolean>> = new Map();
   private filterFuncs: { [key: string]: ITableRowFilterFunc } = {
     status: (tr: TableRow, columnMetadata = userTableHeader) => {
@@ -75,7 +78,15 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dataGeneratorSubscription.unsubscribe();
+    this.datageneratorSubscription.unsubscribe();
+  }
+
+  getAllRows(): TableRow[] {
+    return this.dataGenFactoryOutput.tableRows as TableRow[];
+  }
+
+  getAllUsers(): IUser[] {
+    return this.dataGenFactoryOutput.rawData as IUser[];
   }
 
   getActionMenuItems(rowData: TableRow) {
@@ -119,9 +130,11 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(userId, first, last);
         break;
       case RowActions.Edit:
-        console.log('editing user here');
-        break;
-
+        console.log(
+          `%c rows ${JSON.stringify(this.getAllUsers(), null, 2)}`,
+          'color:cyan'
+        );
+        throw new Error('RowAction not implemented yet');
       case RowActions.Cancel:
         // just close the menu!
         break;
@@ -298,8 +311,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
     additionalFilterFuncs: ITableRowFilterFunc[] = []
   ): void {
     // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
-    if (this.dataGeneratorSubscription.unsubscribe) {
-      this.dataGeneratorSubscription.unsubscribe();
+    if (this.datageneratorSubscription.unsubscribe) {
+      this.datageneratorSubscription.unsubscribe();
     }
     const [prevSearchString, prevCurrentPage] = [
       this.dataGenerator.searchString || '', //prevSearchString
@@ -315,17 +328,11 @@ export class UserTableComponent implements OnInit, OnDestroy {
         () => {},
         additionalFilterFuncs
       );
-
-    this.dataGeneratorSubscription =
+    this.datageneratorSubscription =
       this.dataGeneratorFactoryOutputObserver.subscribe(
         (dataGeneratorFactoryOutput) => {
-          console.log(dataGeneratorFactoryOutput);
-
-          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
-          this.dynamicRowData =
-            dataGeneratorFactoryOutput.tableRows as TableRow[];
-          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
-
+          this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
+          this.dataGenerator = this.dataGenFactoryOutput.dataGenerator;
           this.dataGenerator.searchString = prevSearchString;
         }
       );
