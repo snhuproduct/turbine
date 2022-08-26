@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ModalButtonConfig,
-  StoriesModule,
-} from '@snhuproduct/toboggan-ui-components-library';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { of } from 'rxjs';
@@ -39,11 +35,6 @@ const mockUsers = [
   },
 ];
 
-const mockModalService = {
-  show: jest.fn(),
-  _hideModal: jest.fn(),
-};
-
 const mockUserService = {
   fetchUsers: jest.fn().mockReturnValue(of(mockUsers)),
 };
@@ -56,10 +47,6 @@ const mockGroupService = {
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;
   let fixture: ComponentFixture<GroupMainPageComponent>;
-  let createGroupFixture: ComponentFixture<CreateGroupComponent>;
-  let createGroupComponent: CreateGroupComponent;
-  let createGroupButton: ModalButtonConfig;
-  let cancelButton: ModalButtonConfig;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -91,13 +78,7 @@ describe('GroupMainPageComponent', () => {
           useValue: {},
         },
       ],
-    })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [AddUsersComponent],
-        },
-      })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GroupMainPageComponent);
     component = fixture.componentInstance;
