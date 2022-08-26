@@ -5,6 +5,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   JSONObject,
   SingleHeaderRowTableDataGenerator,
+  TableColumnDisplayMetadatum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
@@ -72,9 +73,14 @@ export class UserTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    //the table should load with only active users visible. Filter is set to "Active" by default
-    //hence the status filter is passed on-init
-    this.refreshTableData([this.filterFuncs['status']]);
+    //the table should load with only active users visible (check userTableHeader). Filter is set to "Active" by default
+    //hence the status filter is applied on-init
+    userTableHeader.map((aColMetadatum: TableColumnDisplayMetadatum) => {
+      if (aColMetadatum.filters) {
+        this.filters.set(aColMetadatum.dataKey, aColMetadatum.selectedFilters);
+      }
+    });
+    this.applyActiveFilters();
   }
 
   ngOnDestroy(): void {
@@ -252,6 +258,13 @@ export class UserTableComponent implements OnInit, OnDestroy {
           onClick: async () => {
             try {
               this.modalAlertService.hideModalAlert();
+              await this.userService.resetPassword(id);
+              this.showNotification(
+                'success',
+                ``, //passive voice is hard; like so many things in life, sometimes, the simplest solution is the best (:
+                `Reset password email has been sent to <b>[${firstName} ${lastName}]</b>`,
+                true
+              );
               /* Handle reset password */
             } catch (error) {
               console.error(error);
