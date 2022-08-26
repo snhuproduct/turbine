@@ -144,8 +144,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
           throw new Error('Could not find user with id: ' + userId);
         }
 
-        console.log(user);
-
         this.userService.setEditingUser(user);
         break;
 

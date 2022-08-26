@@ -130,10 +130,11 @@ export class EditUserComponent implements OnChanges {
         this.isLoading = true;
 
         await this.userService.patchUser(userObj, this.user?.id);
+
         this.bannerService.showBanner({
           type: 'success',
-          heading: `${userObj.firstName} ${userObj.lastName}`,
-          message: 'has been updated',
+          heading: ``,
+          message: `<b>${userObj.firstName} ${userObj.lastName}</b>'s user details have been edited.`,
           button: {
             label: 'Dismiss',
             action: (bannerId: number) =>
@@ -144,6 +145,18 @@ export class EditUserComponent implements OnChanges {
       }
     } catch (error) {
       this.failedToUpdateUser = true;
+
+      this.bannerService.showBanner({
+        type: 'error',
+        heading: ``,
+        message: `<b>Edit user</b> couldn't be completed.`,
+        button: {
+          label: 'Dismiss',
+          action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+        },
+        autoDismiss: true,
+      });
+
       return false;
     } finally {
       this.reviewing = null;
