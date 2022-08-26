@@ -1,19 +1,48 @@
-<p>Share some information about the group you want to create. You can always edit these details later.</p>
-<p>All fields are <strong>required</strong></p>
-<form [formGroup]="createGroupForm">
-    <gp-input size="default" label="User group name" [withIcon]="false" [error]="hasError('name')"
-        [errorMessage]="getErrorMessage('name','User group name')">
-        <input aria-label="input" placeholder="placeholder" type="text" formControlName="name" />
-    </gp-input><br />
+<toboggan-ws-modal
+  #createGroupModal
+  title="Create user group"
+  acceptButton="Create user group"
+  cancelButton="Cancel"
+  id="create-group"
+  (hidden)="hideModal()"
+  (accept)="createGroup()"
+>
+  <p>
+    Share some information about the group you want to create. You can always
+    edit these details later.
+  </p>
+  <p>All fields are <strong>required</strong></p>
+  <form [formGroup]="createGroupForm">
+    <gp-input
+      size="default"
+      label="User group name"
+      [withIcon]="false"
+      [error]="hasError('name')"
+      [errorMessage]="getErrorMessage('name', 'User group name')"
+    >
+      <input
+        aria-label="input"
+        placeholder="placeholder"
+        type="text"
+        formControlName="name"
+      /> </gp-input
+    ><br />
 
-    <gp-text-area size="default" label="User group description" [error]="hasError('description')"
-        [errorMessage]="getErrorMessage('description','User group description')">
-        <textarea aria-label="input"
-            placeholder="You might explain what makes this group unique, or why you're creating it"
-            formControlName="description"></textarea>
-    </gp-text-area><br />
+    <gp-text-area
+      size="default"
+      label="User group description"
+      [error]="hasError('description')"
+      [errorMessage]="getErrorMessage('description', 'User group description')"
+    >
+      <textarea
+        aria-label="input"
+        placeholder="You might explain what makes this group unique, or why you're creating it"
+        formControlName="description"
+      ></textarea></gp-text-area
+    ><br />
 
     <gp-checkbox label="Add users in next step" size="default">
-        <input type="checkbox" formControlName="addUser" />
-    </gp-checkbox><br />
-</form>
+      <input type="checkbox" formControlName="addUser" /> </gp-checkbox
+    ><br />
+  </form>
+</toboggan-ws-modal>

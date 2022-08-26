@@ -1,6 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { GroupService } from '../../services/group.service';
 
@@ -9,7 +21,10 @@ import { GroupService } from '../../services/group.service';
   templateUrl: './add-users.component.html',
   styleUrls: ['./add-users.component.scss'],
 })
-export class AddUsersComponent implements OnInit {
+export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('addUser') adduserModal!: ModalComponent;
+  @Output() addUserToGroupAction = new EventEmitter<boolean | undefined>();
+  @Input() group!: IGroup;
   addUserForm: FormGroup = new FormGroup({
     groupId: new FormControl(''),
     user: new FormControl('', [Validators.required, Validators.email]),
@@ -19,11 +34,23 @@ export class AddUsersComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private bannerService: BannerService
   ) {}
 
   ngOnInit(): void {
     this.getUsers();
+  }
+  ngOnChanges({ group }: SimpleChanges): void {
+    if (group.currentValue && !group.previousValue) {
+      this.addUserForm.patchValue({
+        groupId: group.currentValue.id,
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.adduserModal.open();
   }
 
   getUsers(): void {
@@ -40,6 +67,9 @@ export class AddUsersComponent implements OnInit {
       return;
     }
     if (this.addUserForm.valid) {
+      const user = this.users.find(
+        (user) => user.email == this.addUserForm.value.user
+      );
       this.groupService
         .addUsertoGroup(
           this.addUserForm.value.groupId,
@@ -48,14 +78,33 @@ export class AddUsersComponent implements OnInit {
         .subscribe({
           next: (response) => {
             // handle success
+            console.log(response);
+            this.addUserToGroupAction.emit(true);
+            this.adduserModal.close();
+            this.bannerService.showBanner({
+              type: 'success',
+              heading: '',
+              message: `<strong>${user?.firstName} ${user?.lastName}</strong> has been added to ${this.group.name}.`,
+              button: null,
+              autoDismiss: true,
+            });
           },
           error: (error) => {
             // handle error scenario
+            this.adduserModal.modal?.content?.alertBanners.push({
+              type: 'error',
+              heading: 'Add user to group',
+              message: "couldn't be completed.",
+            });
           },
         });
     }
 
     return false;
+  }
+
+  hideModal() {
+    this.adduserModal.close();
   }
 
   hasError(controlName: string) {
