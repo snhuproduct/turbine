@@ -60,7 +60,7 @@ describe('UserTableComponent', () => {
 
     expect(fetchUsers).toHaveBeenCalled();
 
-    expect(component.dynamicRowData).toHaveLength(mockUsers.length);
+    expect(component.getAllRows()).toHaveLength(mockUsers.length);
   });
 
   it('reset password should bring the confirmation modal', () => {
