@@ -139,6 +139,7 @@ export class EditUserComponent implements OnChanges {
             action: (bannerId: number) =>
               this.bannerService.hideBanner(bannerId),
           },
+          autoDismiss: true,
         });
       }
     } catch (error) {
