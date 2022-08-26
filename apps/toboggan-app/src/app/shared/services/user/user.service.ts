@@ -31,9 +31,7 @@ export class UserService {
   }
 
   async resetPassword(userId: string): Promise<unknown> {
-    // TODO: endpoint for reset password
-    // back-end doesn't have an endpoint to reset password yet; doing dummy GET
-    return firstValueFrom(this.http.get(`/api/users?id=${userId}`));
+    return firstValueFrom(this.http.put(`/api/users/${userId}/password`, {type:'reset'}));
   }
 
   async updateUser(updatedUser: IUpdatedUser, userId: string): Promise<void> {
