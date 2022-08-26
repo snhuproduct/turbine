@@ -130,11 +130,17 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(userId, first, last);
         break;
       case RowActions.Edit:
-        console.log(
-          `%c rows ${JSON.stringify(this.getAllUsers(), null, 2)}`,
-          'color:cyan'
-        );
-        throw new Error('RowAction not implemented yet');
+        const users = this.getAllUsers();
+
+        const user = users.find((user) => user.id === userId);
+
+        if (!user) {
+          throw new Error('Could not find user with id: ' + userId);
+        }
+
+        this.userService.setEditingUser(user);
+        break;
+
       case RowActions.Cancel:
         // just close the menu!
         break;

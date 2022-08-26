@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
-import { IUser } from '@toboggan-ws/toboggan-common';
 import { UserService } from '../../../shared/services/user/user.service';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
@@ -14,7 +13,7 @@ export class UserMainPageComponent {
 
   @ViewChild('createUserModal', { static: false })
   createUserModal?: CreateUserComponent;
-  editingUser?: IUser;
+
   createUserModalButtonsConfig: ModalButtonConfig[] = [
     {
       title: 'Cancel',

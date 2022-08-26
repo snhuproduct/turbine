@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -24,7 +24,7 @@ export class EditUserComponent implements OnChanges {
   constructor(
     public userService: UserService,
     private bannerService: BannerService
-  ) { }
+  ) {}
   failedToUpdateUser = false;
   isLoading = false;
   reviewing?: Partial<IUser> | null = null;
@@ -47,7 +47,7 @@ export class EditUserComponent implements OnChanges {
         lastName: user.currentValue.lastName,
         email: user.currentValue.email,
       });
-      this.editModal.open();
+      this.editModal?.open();
     }
   }
 
@@ -125,7 +125,6 @@ export class EditUserComponent implements OnChanges {
   async onSubmit() {
     try {
       if (this.user) {
-
         this.failedToUpdateUser = false; //reset if there is an error from previous attempt
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
