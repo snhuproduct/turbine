@@ -4,7 +4,7 @@ import {
   IGroup,
   INewUser,
   IUpdatedUser,
-  IUser
+  IUser,
 } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 
@@ -15,7 +15,9 @@ export class UserService {
   users: IUser[] = [];
   groups: IGroup[] = [];
 
-  constructor(private http: HttpClient) { }
+  editingUser: IUser | undefined;
+
+  constructor(private http: HttpClient) {}
 
   fetchUsers() {
     return this.http.get<IUser[]>(`/api/users`);
@@ -23,7 +25,8 @@ export class UserService {
 
   fetchPaginatedUsers(currentPage: number, resultsPerPage: number = 10) {
     return this.http.get<IUser[]>(
-      `/api/users?currentPage=${currentPage}&resultsPerPage=${resultsPerPage}`);
+      `/api/users?currentPage=${currentPage}&resultsPerPage=${resultsPerPage}`
+    );
   }
 
   async createUser(user: INewUser): Promise<unknown> {
@@ -31,11 +34,22 @@ export class UserService {
   }
 
   async resetPassword(userId: string): Promise<unknown> {
-    return firstValueFrom(this.http.put(`/api/users/${userId}/password`, {type:'reset'}));
+    return firstValueFrom(
+      this.http.put(`/api/users/${userId}/password`, { type: 'reset' })
+    );
   }
 
   async updateUser(updatedUser: IUpdatedUser, userId: string): Promise<void> {
     await firstValueFrom(this.http.put(`/api/users/${userId}`, updatedUser));
     this.fetchUsers();
+  }
+
+  async patchUser(patchUser: Partial<IUser>, userId: string): Promise<void> {
+    await firstValueFrom(this.http.patch(`/api/users/${userId}`, patchUser));
+    this.fetchUsers();
+  }
+
+  setEditingUser(user: IUser) {
+    this.editingUser = user;
   }
 }
