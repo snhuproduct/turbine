@@ -34,10 +34,13 @@ export class UserTableComponent implements OnInit, OnDestroy {
   private resultsPerPage = 10;
   itemName = "Users";
   dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
-  dynamicRowData: TableRow[] = {} as ITableRow[];
-  users = {} as IUser[];
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> = {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private dataGenFactoryOutput:ITableDataGeneratorFactoryOutput = {
+    dataGenerator: this.dataGenerator,
+    tableRows: [],
+    rawData: []
+  };
   private filters: Map<string, Record<string, boolean>> = new Map();
   private filterFuncs: { [key:string]: ITableRowFilterFunc } =
     {
@@ -89,9 +92,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.datageneratorSubscription =
       this.dataGeneratorFactoryOutputObserver.subscribe(
         (dataGeneratorFactoryOutput) => {
-          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
-          this.dynamicRowData = dataGeneratorFactoryOutput.tableRows as TableRow[];
-          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
+          this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
+          this.dataGenerator = this.dataGenFactoryOutput.dataGenerator;
           this.dataGenerator.searchString = prevSearchString;
         }
       );
@@ -137,6 +139,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(userId, first, last);
         break;
       case RowActions.Edit:
+        console.log(`%c rowEvent ${JSON.stringify(this.dataGenFactoryOutput.rawData, null, 2)}`, 'color:cyan');
         throw new Error('RowAction not implemented yet');
       case RowActions.Cancel:
         // just close the menu!
