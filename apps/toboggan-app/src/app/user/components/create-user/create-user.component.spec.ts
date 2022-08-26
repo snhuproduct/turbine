@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { ModalComponent, StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy, mockReset } from "jest-mock-extended";
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
@@ -38,11 +38,6 @@ describe('CreateUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return handle to itself if callback is supplied', () => {    
-    component.returnHandle = jest.fn();
-    component.ngAfterViewInit();
-    expect(component.returnHandle).toHaveBeenCalledWith(component); 
-  } )
 
   it('hasError should return false if control name is not found in the form', () => {
     expect(component.hasError('nonExistingControlName')).toBeFalsy();
@@ -82,6 +77,20 @@ describe('CreateUserComponent', () => {
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({
       'type': 'success', 
      }))
+  })
+
+  it('Given createUser on userService returned an error, error banner is added inside modal', async() => {
+    component.userForm.setValue(completedInputs);
+    mockUserService.createUser.mockRejectedValue('error');
+    const modalComponentFixture = TestBed.createComponent(ModalComponent);
+    component.modalHandle = modalComponentFixture.componentInstance;
+    await component.handleAddNewUserModalButton();
+    expect(component.modalHandle.alertBanners.length).toEqual(1);
+    expect(component.modalHandle.alertBanners[0]).toEqual({
+      type: 'error',
+      heading: 'Add New User',
+      message: 'Couldn\'t be completed.',
+    });    
   })
 
   it('Dissmiss button is configured to call hideService', async() => {

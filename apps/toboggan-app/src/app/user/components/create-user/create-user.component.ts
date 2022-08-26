@@ -1,12 +1,8 @@
 import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
+  Component, Input
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
+import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
@@ -16,9 +12,8 @@ import { UserService } from '../../../shared/services/user/user.service';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss'],
 })
-export class CreateUserComponent implements AfterViewInit {
-  @Output() changeTitle = new EventEmitter<string>();
-  @Input() returnHandle?: (hendle: CreateUserComponent) => void;
+export class CreateUserComponent {  
+  @Input() modalHandle?: ModalComponent;
 
   failedToAddUser = false; //indicated wether error banner is shown
 
@@ -36,21 +31,17 @@ export class CreateUserComponent implements AfterViewInit {
     private bannerService: BannerService
   ) {}
 
-  ngAfterViewInit(): void {
-    // provide own handle to the hosting component
-    if (this.returnHandle) {
-      this.returnHandle(this);
-    }
-  }
-
   async handleAddNewUserModalButton() {
     const delay = (ms: number) => {
       return new Promise((resolve) => setTimeout(resolve, ms));
     };
     this.userForm.markAllAsTouched();
     if (this.userForm.valid) {
-      try {
-        this.failedToAddUser = false; //reset if there is an error from previous attempt
+      try {        
+        if(this.modalHandle)
+        {
+          this.modalHandle.alertBanners = [];  //reset if there is was error from previous attempt
+        }
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
 
@@ -68,7 +59,11 @@ export class CreateUserComponent implements AfterViewInit {
         });
         return true;
       } catch (error) {
-        this.failedToAddUser = true;
+        this.modalHandle?.alertBanners.push({
+          type: 'error',
+          heading: 'Add New User',
+          message: 'Couldn\'t be completed.',
+        });
         console.log('Failed creating user', error);
         return false;
       } finally {
