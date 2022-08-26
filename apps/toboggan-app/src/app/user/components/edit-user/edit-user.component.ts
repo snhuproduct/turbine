@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -158,6 +158,7 @@ export class EditUserComponent implements OnChanges {
       this.reviewing = null;
       this.reviewModal.close();
       this.userChange.emit();
+      this.userService.publishUserEditComplete(this.user as IUser);
       this.isLoading = false;
     }
     return true;
