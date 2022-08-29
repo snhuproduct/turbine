@@ -1,3 +1,10 @@
-<gp-table [dataGenerator]="dataGenerator" [dynamic]="true" tableStyle="borders"
-    [getActionMenuItems]="getActionMenuItems" (onRowAction)="onRowAction($event)"
-    (onFilterChange)="onFilterChange($event)"></gp-table>
+<gp-table
+  [dataGenerator]="dataGenerator"
+  [dynamic]="true"
+  tableStyle="borders"
+  [getActionMenuItems]="getActionMenuItems"
+  (onRowAction)="onRowAction($event)"
+  (onFilterChange)="onFilterChange($event)"
+>
+  <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+</gp-table>

@@ -2,9 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  IGroup
-} from '@toboggan-ws/toboggan-common';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
 @Component({
   selector: 'toboggan-ws-group-details-page',
@@ -14,7 +12,11 @@ import { GroupService } from '../../services/group.service';
 export class GroupDetailsPageComponent implements OnInit {
   id: any;
   group!: IGroup;
-  constructor(private route: ActivatedRoute, private groupService: GroupService) { }
+  showAddUserModal = false;
+  constructor(
+    private route: ActivatedRoute,
+    private groupService: GroupService
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -27,4 +29,11 @@ export class GroupDetailsPageComponent implements OnInit {
     });
   }
 
+  openAddUserToGroupModal() {
+    this.showAddUserModal = true;
+  }
+
+  handleAddUserToGroupAction() {
+    this.showAddUserModal = false;
+  }
 }
