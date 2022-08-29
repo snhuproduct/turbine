@@ -7,7 +7,7 @@ import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
@@ -18,7 +18,7 @@ import { ModalAlertService } from '../../../shared/services/modal-alert/modal-al
 import {
   ITableDataGeneratorFactoryOutput,
   ITableRowFilterFunc,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -26,7 +26,7 @@ import {
   ICellRowData,
   IFilterChange,
   ITableRow,
-  RowActions,
+  RowActions
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
@@ -44,6 +44,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private editUserModalSubscription: Subscription = {} as Subscription;
   private dataGenFactoryOutput: ITableDataGeneratorFactoryOutput = {
     dataGenerator: this.dataGenerator,
     tableRows: [],
@@ -81,10 +82,17 @@ export class UserTableComponent implements OnInit, OnDestroy {
       }
     });
     this.applyActiveFilters();
+    // cypress complains without the guard clause
+    if(this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
+      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(()=>{
+        this.applyActiveFilters();
+      })
   }
 
   ngOnDestroy(): void {
-    this.datageneratorSubscription.unsubscribe();
+    [this.datageneratorSubscription, this.editUserModalSubscription].map(s=>{
+      if(s.unsubscribe) s.unsubscribe();
+    });
   }
 
   getAllRows(): TableRow[] {
@@ -137,21 +145,19 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
       case RowActions.Edit:
         const users = this.getAllUsers();
-
         const user = users.find((user) => user.id === userId);
-
         if (!user) {
           throw new Error('Could not find user with id: ' + userId);
         }
-
         this.userService.setEditingUser(user);
+        console.log(`%c ${JSON.stringify(event)}`,'color:pink');
         break;
-
       case RowActions.Cancel:
         // just close the menu!
         break;
     }
   }
+  
   activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
@@ -286,7 +292,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
 
   formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
     const users = fetchedData as IUser[];
-
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
       if (a.lastName && b.lastName) {
