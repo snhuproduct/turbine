@@ -144,7 +144,7 @@ export class GroupListComponent implements OnInit {
               if (status) {
                 this.editGroupData = status;
                 this.openReviewEditGroupModal()
-              };
+              }
             },
           },
         ],

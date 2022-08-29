@@ -1,4 +1,4 @@
-<div *ngIf="mode == 'edit'">
+<div *ngIf="mode === 'edit'">
     <p>Update the user group’s name or description here.</p>
     <form [formGroup]="editGroupForm">
         <gp-input size="default" label="Group name" [withIcon]="false" [error]="hasError('name')"
@@ -15,7 +15,7 @@
     </form>
 </div>
 
-<div *ngIf="mode == 'review'" class="review-grid">
+<div *ngIf="mode === 'review'" class="review-grid">
     <div class="row review-header py-2">
         <div class="col">
         </div>
