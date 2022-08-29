@@ -183,5 +183,30 @@ describe('Users', () => {
         .get('.gp-table-column-sort-disabled')
         .should('exist');
     });
+
+    it('should successfully reset password', () => {
+      cy.intercept('PUT', 'api/users/155e8f7c-a591-4a5a-9a13-fbe8bdcd3cac/password', { statusCode: 200 });
+
+      cy.get('@tableFifthColumn').find('button').first().click({ force: true });
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Reset password').click();
+      cy.get('.modal-content').contains('Yes, reset password').click();
+
+      cy.get('.gp-banneralert-x-content').contains('Reset password email has been sent to [name0 last0]').should('exist');
+    });
+
+    it('should unsuccessfully reset password', () => {
+      cy.intercept('PUT', 'api/users/155e8f7c-a591-4a5a-9a13-fbe8bdcd3cac/password', {
+        statusCode: 500,
+        body: {
+          error: 'Internal Server Error',
+        },
+      });
+
+      cy.get('@tableFifthColumn').find('button').first().click({ force: true });
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Reset password').click();
+      cy.get('.modal-content').contains('Yes, reset password').click();
+
+      cy.get('.gp-banneralert-x-content').contains('Reset password couldn\'t be completed').should('exist');
+    });
   });
 })
