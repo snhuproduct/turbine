@@ -7,11 +7,8 @@
       <div table-cta-right>
         <button
           gp-button
-          gp-modal-trigger
-          [modalTemplate]="createGroup"
-          [modalTitle]="title"
-          [modalButtons]="modalButtons"
-          aria-label="open modal"
+          class="create-group-btn"
+          (click)="openCreateGroupModal()"
         >
           Create user group
         </button>
@@ -21,7 +18,13 @@
   <ng-template #createGroup>
     <toboggan-ws-create-group></toboggan-ws-create-group>
   </ng-template>
-  <ng-template #addUsers>
-    <toboggan-ws-add-users></toboggan-ws-add-users>
-  </ng-template>
+  <toboggan-ws-create-group
+    *ngIf="showCreategroup"
+    (groupCreateAction)="handleGroupCreateAction($event)"
+  ></toboggan-ws-create-group>
+  <toboggan-ws-add-users
+    *ngIf="showAddUserModal"
+    (addUserToGroupAction)="handleAddUserToGroupAction()"
+    [group]="dummyGroup"
+  ></toboggan-ws-add-users>
 </gp-page>

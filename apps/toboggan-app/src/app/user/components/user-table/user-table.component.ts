@@ -3,8 +3,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  JSONObject, SingleHeaderRowTableDataGenerator, TableDataGenerator,
-  TableRow
+  JSONObject,
+  SingleHeaderRowTableDataGenerator,
+  TableColumnDisplayMetadatum,
+  TableDataGenerator,
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
@@ -13,13 +16,17 @@ import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
-  ITableDataGeneratorFactoryOutput, ITableRowFilterFunc, TableDataService
+  ITableDataGeneratorFactoryOutput,
+  ITableRowFilterFunc,
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import {
-  ICellRowData, IFilterChange, ITableRow,
-  RowActions
+  ICellRowData,
+  IFilterChange,
+  ITableRow,
+  RowActions,
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
@@ -32,23 +39,31 @@ type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
 export class UserTableComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private resultsPerPage = 10;
-  itemName = "Users";
+  itemName = 'Users';
   dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
-  dynamicRowData: TableRow[] = {} as ITableRow[];
-  users = {} as IUser[];
-  private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> = {} as Observable<ITableDataGeneratorFactoryOutput>;
+  private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
+    {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private dataGenFactoryOutput: ITableDataGeneratorFactoryOutput = {
+    dataGenerator: this.dataGenerator,
+    tableRows: [],
+    rawData: [],
+  };
   private filters: Map<string, Record<string, boolean>> = new Map();
-  private filterFuncs: { [key:string]: ITableRowFilterFunc } =
-    {
-      status: (tr:TableRow, columnMetadata=userTableHeader)=>{
-        const isInvalid = !(columnMetadata[columnMetadata.length-1].selectedFilters.Active ^ columnMetadata[columnMetadata.length-1].selectedFilters.Inactive);
-        const filterStatusStr = columnMetadata[columnMetadata.length-1].selectedFilters.Active ? 'Active' : 'Inactive';
-        const rowUserStatus = tr.cellData['status'] as Array<unknown>;
-        return isInvalid || (filterStatusStr===rowUserStatus[1]);
-      }
-    }
-  ;
+  private filterFuncs: { [key: string]: ITableRowFilterFunc } = {
+    status: (tr: TableRow, columnMetadata = userTableHeader) => {
+      const isInvalid = !(
+        columnMetadata[columnMetadata.length - 1].selectedFilters.Active ^
+        columnMetadata[columnMetadata.length - 1].selectedFilters.Inactive
+      );
+      const filterStatusStr = columnMetadata[columnMetadata.length - 1]
+        .selectedFilters.Active
+        ? 'Active'
+        : 'Inactive';
+      const rowUserStatus = tr.cellData['status'] as Array<unknown>;
+      return isInvalid || filterStatusStr === rowUserStatus[1];
+    },
+  };
 
   constructor(
     private userService: UserService,
@@ -58,43 +73,26 @@ export class UserTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    //the table should load with only active users visible. Filter is set to "Active" by default
-    //hence the status filter is passed on-init
-    this.refreshTableData([this.filterFuncs['status']]);
+    //the table should load with only active users visible (check userTableHeader). Filter is set to "Active" by default
+    //hence the status filter is applied on-init
+    userTableHeader.map((aColMetadatum: TableColumnDisplayMetadatum) => {
+      if (aColMetadatum.filters) {
+        this.filters.set(aColMetadatum.dataKey, aColMetadatum.selectedFilters);
+      }
+    });
+    this.applyActiveFilters();
   }
 
   ngOnDestroy(): void {
     this.datageneratorSubscription.unsubscribe();
   }
 
-  private refreshTableData(additionalFilterFuncs:ITableRowFilterFunc[]=[]):void {
-    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
-    if(this.datageneratorSubscription.unsubscribe){
-      this.datageneratorSubscription.unsubscribe();
-    }
-    const [prevSearchString, prevCurrentPage] = [
-      this.dataGenerator.searchString || '', //prevSearchString
-      this.dataGenerator.currentPage || this.currentPage //prevCurrentPage
-    ];
-    this.dataGeneratorFactoryOutputObserver =
-      this.tableDataService.dataGeneratorFactoryObs(
-        this.userService.fetchUsers(),
-        userTableHeader,
-        this.formatTableRowsWithUserData,
-        this.resultsPerPage,
-        prevCurrentPage,
-        ()=>{},
-        additionalFilterFuncs
-      );
-    this.datageneratorSubscription =
-      this.dataGeneratorFactoryOutputObserver.subscribe(
-        (dataGeneratorFactoryOutput) => {
-          this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
-          this.dynamicRowData = dataGeneratorFactoryOutput.tableRows as TableRow[];
-          this.users = dataGeneratorFactoryOutput.rawData as IUser[];
-          this.dataGenerator.searchString = prevSearchString;
-        }
-      );
+  getAllRows(): TableRow[] {
+    return this.dataGenFactoryOutput.tableRows as TableRow[];
+  }
+
+  getAllUsers(): IUser[] {
+    return this.dataGenFactoryOutput.rawData as IUser[];
   }
 
   getActionMenuItems(rowData: TableRow) {
@@ -116,6 +114,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     ) as ITableRow;
+
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
@@ -128,8 +127,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
     };
     switch (action) {
       case RowActions.Activate:
-          this.activateUser(userId, userPayload);
-          break;
+        this.activateUser(userId, userPayload);
+        break;
       case RowActions.Deactivate:
         this.deactivateUser(userId, userPayload);
         break;
@@ -137,60 +136,70 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(userId, first, last);
         break;
       case RowActions.Edit:
-        throw new Error('RowAction not implemented yet');
+        const users = this.getAllUsers();
+
+        const user = users.find((user) => user.id === userId);
+
+        if (!user) {
+          throw new Error('Could not find user with id: ' + userId);
+        }
+
+        this.userService.setEditingUser(user);
+        break;
+
       case RowActions.Cancel:
         // just close the menu!
         break;
     }
   }
-  public activateUser(id: string, userPayload: UserStatusPayload){
-        this.modalAlertService.showModalAlert({
-          type: 'warning',
-          heading: 'Activate this user?',
-          message: `If you activate ${userPayload.firstName} ${userPayload.lastName}, they'll have all the permissions associated with their assigned user group(s).`,
-          buttons: [
-            {
-              title: 'No, cancel',
-              onClick: () => {
-                this.modalAlertService.hideModalAlert();
-              },
-              style: 'secondary',
-            },
-            {
-              title: 'Yes, activate',
-              onClick: async () => {
-                try {
-                  this.modalAlertService.hideModalAlert();
-                  await this.toggleUserStatus('active', userPayload, id);
-
-                  this.showNotification(
-                    'success',
-                    `[${userPayload.firstName} ${userPayload.lastName}]`,
-                    `'s account has been activated.`,
-                    true
-                  );
-                } catch (error) {
-                  console.error(error);
-
-                  this.showNotification(
-                    'error',
-                    `Activate user`,
-                    `couldn't be completed.`,
-                    true,
-                    null
-                  );
-                }
-              },
-              style: 'primary',
-            },
-          ],
-        });
-  }
-
-  public deactivateUser(id: string, userPayload: UserStatusPayload){
+  activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
-      heading: 'Deactivate this user?',      
+      heading: 'Activate this user?',
+      message: `If you activate ${userPayload.firstName} ${userPayload.lastName}, they'll have all the permissions associated with their assigned user group(s).`,
+      buttons: [
+        {
+          title: 'No, cancel',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'secondary',
+        },
+        {
+          title: 'Yes, activate',
+          onClick: async () => {
+            try {
+              this.modalAlertService.hideModalAlert();
+              await this.toggleUserStatus('active', userPayload, id);
+
+              this.showNotification(
+                'success',
+                `[${userPayload.firstName} ${userPayload.lastName}]`,
+                `'s account has been activated.`,
+                true
+              );
+            } catch (error) {
+              console.error(error);
+
+              this.showNotification(
+                'error',
+                `Activate user`,
+                `couldn't be completed.`,
+                true,
+                null
+              );
+            }
+          },
+          style: 'primary',
+        },
+      ],
+    });
+  }
+
+  deactivateUser(id: string, userPayload: UserStatusPayload) {
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: 'Deactivate this user?',
       message: `If you deactivate ${userPayload.firstName} ${userPayload.lastName}, they'll no longer have any of the permissions associated with their assigned user group(s). This action is reversible.`,
       buttons: [
         {
@@ -230,8 +239,8 @@ export class UserTableComponent implements OnInit, OnDestroy {
       ],
     });
   }
-  
-  public resetPassword(id: string, firstName: string, lastName: string){
+
+  resetPassword(id: string, firstName: string, lastName: string) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: `Reset user's password?`,
@@ -249,6 +258,13 @@ export class UserTableComponent implements OnInit, OnDestroy {
           onClick: async () => {
             try {
               this.modalAlertService.hideModalAlert();
+              await this.userService.resetPassword(id);
+              this.showNotification(
+                'success',
+                ``, //passive voice is hard; like so many things in life, sometimes, the simplest solution is the best (:
+                `Reset password email has been sent to <b>[${firstName} ${lastName}]</b>`,
+                true
+              );
               /* Handle reset password */
             } catch (error) {
               console.error(error);
@@ -264,47 +280,13 @@ export class UserTableComponent implements OnInit, OnDestroy {
           },
           style: 'primary',
         },
-      ]});
-  }
-
-  private showNotification(
-    type: 'success' | 'error',
-    heading: string,
-    message: string,
-    autoDismiss: boolean,
-    dismissButton: IBannerButton | null = {
-      label: 'Dismiss',
-      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
-      style: 'secondary',
-    }
-  ) {
-    this.bannerService.showBanner({
-      type,
-      heading,
-      message,
-      button: dismissButton,
-      autoDismiss,
+      ],
     });
-  }
-
-  private async toggleUserStatus(
-    status: 'active' | 'inactive',
-    userPayload: UserStatusPayload,
-    userId: string
-  ) {
-    await this.userService.updateUser(
-      {
-        ...userPayload,
-        enabled: status === 'active',
-      },
-      userId
-    );
-    // table should retain its original filtered status and refresh rather than simply refresh
-    this.applyActiveFilters();
   }
 
   formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
     const users = fetchedData as IUser[];
+
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
       if (a.lastName && b.lastName) {
@@ -344,12 +326,78 @@ export class UserTableComponent implements OnInit, OnDestroy {
     this.applyActiveFilters();
   }
 
-  private applyActiveFilters(){
-    const additionalFilterFuncs:ITableRowFilterFunc[]= [];
-    this.filters.forEach((_,key)=>{
-      additionalFilterFuncs.push(this.filterFuncs[key]);
-    })
-    this.refreshTableData(additionalFilterFuncs);
+  private refreshTableData(
+    additionalFilterFuncs: ITableRowFilterFunc[] = []
+  ): void {
+    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
+    if (this.datageneratorSubscription.unsubscribe) {
+      this.datageneratorSubscription.unsubscribe();
+    }
+    const [prevSearchString, prevCurrentPage] = [
+      this.dataGenerator.searchString || '', //prevSearchString
+      this.dataGenerator.currentPage || this.currentPage, //prevCurrentPage
+    ];
+    this.dataGeneratorFactoryOutputObserver =
+      this.tableDataService.dataGeneratorFactoryObs(
+        this.userService.fetchUsers(),
+        userTableHeader,
+        this.formatTableRowsWithUserData,
+        this.resultsPerPage,
+        prevCurrentPage,
+        () => {},
+        additionalFilterFuncs
+      );
+    this.datageneratorSubscription =
+      this.dataGeneratorFactoryOutputObserver.subscribe(
+        (dataGeneratorFactoryOutput) => {
+          this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
+          this.dataGenerator = this.dataGenFactoryOutput.dataGenerator;
+          this.dataGenerator.searchString = prevSearchString;
+        }
+      );
   }
 
+  private showNotification(
+    type: 'success' | 'error',
+    heading: string,
+    message: string,
+    autoDismiss: boolean,
+    dismissButton: IBannerButton | null = {
+      label: 'Dismiss',
+      action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+      style: 'secondary',
+    }
+  ) {
+    this.bannerService.showBanner({
+      type,
+      heading,
+      message,
+      button: dismissButton,
+      autoDismiss,
+    });
+  }
+
+  private async toggleUserStatus(
+    status: 'active' | 'inactive',
+    userPayload: UserStatusPayload,
+    userId: string
+  ) {
+    await this.userService.updateUser(
+      {
+        ...userPayload,
+        enabled: status === 'active',
+      },
+      userId
+    );
+    // table should retain its original filtered status and refresh rather than simply refresh
+    this.applyActiveFilters();
+  }
+
+  private applyActiveFilters() {
+    const additionalFilterFuncs: ITableRowFilterFunc[] = [];
+    this.filters.forEach((_, key) => {
+      additionalFilterFuncs.push(this.filterFuncs[key]);
+    });
+    this.refreshTableData(additionalFilterFuncs);
+  }
 }

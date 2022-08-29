@@ -38,7 +38,10 @@ export class GroupsService {
   }
 
   createGroup(newGroup: IGroup) {
+    const newId = this.groups.length + 1;
+    newGroup.id = newId as unknown as string;
     this.groups.push(newGroup);
+    return newGroup;
   }
 
   updateGroup(id: string, updatedGroup: IGroup) {

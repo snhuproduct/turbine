@@ -1,27 +1,38 @@
-<p>
-  The new user will have access to all permissions associated with [Group Name].
-</p>
+<toboggan-ws-modal
+  #addUser
+  title="Add user to this group"
+  acceptButton="Add user"
+  cancelButton="Cancel"
+  id="add-user-group"
+  (hidden)="hideModal()"
+  (accept)="addUsertoGroup()"
+>
+  <p>
+    The new user will have access to all permissions associated with
+    {{ group && group.name }}.
+  </p>
 
-<form [formGroup]="addUserForm" class="add-user-form">
-  <gp-input
-    label="User's  email address"
-    size="default"
-    [errorMessage]="getFormError('user')"
-    [withIcon]="false"
-    iconId="gp-icon-edit"
-    [error]="hasError('user')"
-    [submitButton]="false"
-    [dark]="false"
-  >
-    <input
-      formControlName="user"
-      aria-label="input"
-      placeholder="placeholder"
-      [required]="false"
-      [typeahead]="users"
-      typeaheadOptionField="email"
-      [typeaheadMinLength]="3"
-      type="text"
-    />
-  </gp-input>
-</form>
+  <form [formGroup]="addUserForm" class="add-user-form">
+    <gp-input
+      label="User's  email address"
+      size="default"
+      [errorMessage]="getFormError('user')"
+      [withIcon]="false"
+      iconId="gp-icon-edit"
+      [error]="hasError('user')"
+      [submitButton]="false"
+      [dark]="false"
+    >
+      <input
+        formControlName="user"
+        aria-label="input"
+        placeholder="placeholder"
+        [required]="false"
+        [typeahead]="users"
+        typeaheadOptionField="email"
+        [typeaheadMinLength]="3"
+        type="text"
+      />
+    </gp-input>
+  </form>
+</toboggan-ws-modal>

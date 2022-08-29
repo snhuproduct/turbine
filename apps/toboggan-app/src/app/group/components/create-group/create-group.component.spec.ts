@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.module';
 import { GroupService } from '../../services/group.service';
 import { CreateGroupComponent } from './create-group.component';
 
@@ -10,16 +11,20 @@ describe('CreateGroupComponent', () => {
   let component: CreateGroupComponent;
   let fixture: ComponentFixture<CreateGroupComponent>;
 
-  const mockGroupService= {
-    createGroup: jest.fn().mockReturnValue(of({}))
-  }
-
+  const mockGroupService = {
+    createGroup: jest.fn().mockReturnValue(of({})),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateGroupComponent],
-      imports: [StoriesModule, ReactiveFormsModule, HttpClientModule],
-      providers: [{ provide: GroupService, useValue: mockGroupService }]
+      imports: [
+        StoriesModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        SharedModule,
+      ],
+      providers: [{ provide: GroupService, useValue: mockGroupService }],
     }).compileComponents();
     fixture = TestBed.createComponent(CreateGroupComponent);
     component = fixture.componentInstance;
@@ -31,35 +36,35 @@ describe('CreateGroupComponent', () => {
   });
 
   it('createGroup method should call', () => {
-    jest.spyOn(component, 'createGroup')
+    jest.spyOn(component, 'createGroup');
     component.createGroupForm.setValue({
-      "name": "name",
-      "description": "description",
-      "addUser": false
+      name: 'name',
+      description: 'description',
+      addUser: false,
     });
     component.createGroup();
     expect(mockGroupService.createGroup).toHaveBeenCalledTimes(1);
-  })
+  });
 
   it('getErrorMessage method should check name with special characters ! @ # $', () => {
-    jest.spyOn(component, 'getErrorMessage')
+    jest.spyOn(component, 'getErrorMessage');
     component.createGroupForm.setValue({
-      "name": "name@",
-      "description": "description",
-      "addUser": false
+      name: 'name@',
+      description: 'description',
+      addUser: false,
     });
     component.getErrorMessage('name', 'name');
     expect(component.createGroupForm.valid).toBeFalsy();
-  })
+  });
 
   it('getErrorMessage method should check name with other special characters', () => {
-    jest.spyOn(component, 'getErrorMessage')
+    jest.spyOn(component, 'getErrorMessage');
     component.createGroupForm.setValue({
-      "name": "name+",
-      "description": "description",
-      "addUser": false
+      name: 'name+',
+      description: 'description',
+      addUser: false,
     });
     component.getErrorMessage('name', 'name');
     expect(component.createGroupForm.valid).toBeFalsy();
-  })
+  });
 });

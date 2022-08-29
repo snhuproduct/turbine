@@ -4,7 +4,7 @@ import {
   IGroup,
   INewUser,
   IUpdatedUser,
-  IUser
+  IUser,
 } from '@toboggan-ws/toboggan-common';
 import { firstValueFrom } from 'rxjs';
 
@@ -15,7 +15,9 @@ export class UserService {
   users: IUser[] = [];
   groups: IGroup[] = [];
 
-  constructor(private http: HttpClient) { }
+  editingUser: IUser | undefined;
+
+  constructor(private http: HttpClient) {}
 
   fetchUsers() {
     return this.http.get<IUser[]>(`/api/users`);
@@ -31,9 +33,23 @@ export class UserService {
     return firstValueFrom(this.http.post('/api/users', user));
   }
 
+  async resetPassword(userId: string): Promise<unknown> {
+    return firstValueFrom(
+      this.http.put(`/api/users/${userId}/password`, { type: 'reset' })
+    );
+  }
+
   async updateUser(updatedUser: IUpdatedUser, userId: string): Promise<void> {
     await firstValueFrom(this.http.put(`/api/users/${userId}`, updatedUser));
-
     this.fetchUsers();
+  }
+
+  async patchUser(patchUser: Partial<IUser>, userId: string): Promise<void> {
+    await firstValueFrom(this.http.patch(`/api/users/${userId}`, patchUser));
+    this.fetchUsers();
+  }
+
+  setEditingUser(user: IUser) {
+    this.editingUser = user;
   }
 }

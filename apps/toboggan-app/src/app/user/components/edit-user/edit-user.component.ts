@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -24,8 +24,7 @@ export class EditUserComponent implements OnChanges {
   constructor(
     public userService: UserService,
     private bannerService: BannerService
-  ) { }
-  failedToUpdateUser = false;
+  ) {}
   isLoading = false;
   reviewing?: Partial<IUser> | null = null;
   loaderType = InterstitialLoaderType.Large;
@@ -47,7 +46,7 @@ export class EditUserComponent implements OnChanges {
         lastName: user.currentValue.lastName,
         email: user.currentValue.email,
       });
-      this.editModal.open();
+      this.editModal?.open();
     }
   }
 
@@ -125,25 +124,35 @@ export class EditUserComponent implements OnChanges {
   async onSubmit() {
     try {
       if (this.user) {
-
-        this.failedToUpdateUser = false; //reset if there is an error from previous attempt
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
 
-        await this.userService.updateUser(userObj, this.user?.id);
+        await this.userService.patchUser(userObj, this.user?.id);
+
         this.bannerService.showBanner({
           type: 'success',
-          heading: `${userObj.firstName} ${userObj.lastName}`,
-          message: 'has been updated',
+          heading: ``,
+          message: `<b>${userObj.firstName} ${userObj.lastName}</b>'s user details have been edited.`,
           button: {
             label: 'Dismiss',
             action: (bannerId: number) =>
               this.bannerService.hideBanner(bannerId),
           },
+          autoDismiss: true,
         });
       }
     } catch (error) {
-      this.failedToUpdateUser = true;
+      this.bannerService.showBanner({
+        type: 'error',
+        heading: ``,
+        message: `<b>Edit user</b> couldn't be completed.`,
+        button: {
+          label: 'Dismiss',
+          action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+        },
+        autoDismiss: true,
+      });
+
       return false;
     } finally {
       this.reviewing = null;

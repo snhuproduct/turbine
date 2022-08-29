@@ -78,6 +78,19 @@ export class UsersService {
     });
   }
 
+  resetPasswordOfUser(id: string) {
+    // forward the pwd-reset request to the back-end
+    // this does not do anything at the moment
+    this.users = this.users.map((user) => {
+      if (user.id === id) {
+        return {
+          ...user
+        };
+      }
+      return user;
+    });
+  }
+
   deleteUser(id: string) {
     this.users = this.users.filter((user) => {
       return user.id !== id;

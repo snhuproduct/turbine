@@ -1,7 +1,11 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { of } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';
+import { SharedModule } from '../../../shared/shared.module';
 import { GroupService } from '../../services/group.service';
 import { AddUsersComponent } from './add-users.component';
 
@@ -35,12 +39,18 @@ describe('AddUsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        StoriesModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        SharedModule,
+        TypeaheadModule.forRoot(),
+      ],
       declarations: [AddUsersComponent],
       providers: [
         { provide: UserService, useValue: mockUserService },
         { provide: GroupService, useValue: mockGroupService },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddUsersComponent);
