@@ -34,9 +34,12 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
       name: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]*$'),
-        this.specialCharactersValidation,
       ]),
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(300),
+        this.specialCharactersValidation
+      ]),
       addUser: new FormControl(false),
     });
   }
@@ -54,6 +57,8 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
         return `${FormError.characters} ! @ # $`;
       } else if (control.hasError('pattern')) {
         return `${FormError.lettersAndNumbers}`;
+      } else if (control.hasError('maxlength')) {
+        return `${FormError.maxLength}`;
       }
     return '';
   }

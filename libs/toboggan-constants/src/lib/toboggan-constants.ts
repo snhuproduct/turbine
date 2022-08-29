@@ -7,4 +7,5 @@ export enum FormError {
   empty = 'This field can’t be empty',
   lettersAndNumbers = 'Use only letters and numbers',
   characters = 'Don’t use these characters: ',
+  maxLength = 'You are exceeding the limit',
 }

@@ -11,6 +11,7 @@ import { ListUsersComponent } from './components/list-users/list-users.component
 import { groupRouting } from './group.routing';
 import { GroupDetailsPageComponent } from './pages/group-details-page/group-details-page.component';
 import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.component';
+import { EditGroupComponent } from './components/edit-group/edit-group.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
     AddUsersComponent,
     GroupListComponent,
     GroupDetailsPageComponent,
-    ListUsersComponent
+    ListUsersComponent,
+    EditGroupComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,7 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
     AddUsersComponent,
     GroupListComponent,
     GroupDetailsPageComponent,
-    ListUsersComponent
+    ListUsersComponent,
   ],
 })
-export class GroupModule { }
+export class GroupModule {}
