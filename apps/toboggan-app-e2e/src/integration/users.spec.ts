@@ -22,6 +22,7 @@ describe('Users', () => {
       cy.get('table > tbody > tr').as('tableRows');
       cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn');
       cy.get('@tableRows').get('td:nth-child(4)').as('tableForthColumn');
+      cy.get('@tableRows').get('td:nth-child(5)').as('tableFifthColumn');
     });
 
     it('should have the table', () => {
@@ -61,8 +62,8 @@ describe('Users', () => {
         "name4",
         "name3",
         "name2",
-        "name19",
-        "name18"
+        "name17",
+        "name16"
       ]);
     });
 
@@ -80,18 +81,47 @@ describe('Users', () => {
         "last4",
         "last3",
         "last2",
-        "last19",
-        "last18"
+        "last17",
+        "last16"
       ]);
+    });
+
+    it('should occur automatically after three characters are entered', () => {
+      cy.get('input[placeholder="Search"]').type('e10', { force: true });
+
+      cy.get('.gp-table-x-bodyrow').contains('name10').should('exist');
+    });
+
+    it('should occur after hitting “enter”', () => {
+      cy.get('input[placeholder="Search"]').type('10{enter}', { force: true });
+
+      cy.get('.gp-table-x-bodyrow').contains('name10').should('exist');
+    });
+
+    it('should search by no records criteria', function () {
+      cy.get('input[placeholder="Search"]').type('no exist', { force: true });
+
+      cy.get('.gp-table-x-noresults').should('exist');
+    });
+
+    it('should combine searching and filtering together', function () {
+      cy.get('input[placeholder="Search"]').type('name18', { force: true });
+
+      cy.get('#Status-filter-button').click({force: true});
+      cy.get('#Status-filter-menu').contains('Inactive').click({force: true});
+      cy.get('#Status-filter-menu').contains('OK').click({force: true});
+
+      cy.get('.gp-table-x-bodyrow').contains('name18').should('exist');
     });
 
     it('should deactivate the active user', () => {
       cy.get('@tableForthColumn')
         .contains('Active')
-        .parent()
-        .get('td:nth-child(5) button')
         .first()
-        .click({ force: true });
+        .parents('tr')
+        .as('tableFirstRow')
+
+      cy.get('@tableFirstRow').find('td:nth-child(5) button').click({ force: true })
 
       cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
 
@@ -105,7 +135,7 @@ describe('Users', () => {
 
       cy.get('.modal-content').should('not.exist');
       cy.get('.gp-banneralert').contains('\'s account has been deactivated.').should('exist');
-      cy.get('@tableForthColumn').first().contains('Inactive').should('exist');
+      cy.get('@tableFirstRow').contains('name0').should('not.exist');
     });
 
     it('should leave the user active', () => {
@@ -121,6 +151,37 @@ describe('Users', () => {
       cy.get('.modal-content button').contains('No, keep active').click();
 
       cy.get('.modal-content').should('not.exist');
+    });
+
+    it('should navigate back to the Manage Users table when the administrator cancels the password reset', () => {
+      cy.get('@tableFifthColumn').find('button').first().click({ force: true });
+
+      cy.get('.gp-table-x-dropdownmenubutton').contains('Reset password').click();
+
+      cy.get('.modal-content').contains('No, Cancel').click();
+
+      cy.get('.modal-content').should('not.exist');
+    });
+
+    it('should contain first equal header titles', () => {
+      cy.get('.gp-table-x-headingwrapper').then(findText).should('deep.eq', [
+        "First name",
+        "Last name",
+        "E-mail address",
+        "Status",
+        "Actions"
+      ]);
+    });
+
+    it('should contain the word "Search"', () => {
+      cy.get('input[aria-label="Search"]').should('exist');
+    });
+
+    it('should not display sort button', () => {
+      cy.get('button')
+        .contains('Status')
+        .get('.gp-table-column-sort-disabled')
+        .should('exist');
     });
   });
 })

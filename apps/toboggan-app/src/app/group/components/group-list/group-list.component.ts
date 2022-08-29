@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -13,7 +13,7 @@ import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { GroupService } from '../../services/group.service';
 import { groupTableHeader, RowActions } from './group-table.type';
