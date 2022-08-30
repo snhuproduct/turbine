@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { of } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.module';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from './edit-group.component';
 
@@ -18,7 +19,12 @@ describe('EditGroupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditGroupComponent],
-      imports: [HttpClientTestingModule, StoriesModule, ReactiveFormsModule],
+      imports: [
+        HttpClientTestingModule,
+        StoriesModule,
+        ReactiveFormsModule,
+        SharedModule,
+      ],
       providers: [{ provide: GroupService, useValue: mockGroupService }],
     }).compileComponents();
 
@@ -61,12 +67,12 @@ describe('EditGroupComponent', () => {
   });
 
   it('getErrorMessage method should check name with numbers', () => {
-    jest.spyOn(component, 'reviewGroup');
+    jest.spyOn(component, 'handleSubmit');
     component.editGroupForm.setValue({
       name: 'name',
       description: 'description',
     });
-    component.reviewGroup();
+    component.handleSubmit();
     expect(component.editGroupForm.valid).toBeTruthy();
   });
 

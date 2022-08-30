@@ -43,7 +43,7 @@ describe('GroupService', () => {
         description: '',
       };
       service.updateGroup(group).subscribe();
-      const req = httpMock.expectOne('/api/groups/:' + group.id);
+      const req = httpMock.expectOne('/api/groups/' + group.id);
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toBe(group);
       req.flush(group);
