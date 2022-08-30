@@ -1,16 +1,34 @@
 <gp-page [loggedin]="true" title="Application Admin">
-    <div class="p-5">
-        <a gp-link iconId="gp-icon-west" iconVariations="iconleft">Back to User Groups</a>
-        <div class="gp-level-4 mt-6">User Group</div>
-        <div *ngIf="group">
-            <div class="gp-level-5">{{group.name}}</div>
-            <div class="my-6"> {{group.description}} </div>
-        </div>
-        <gp-tabs>
-            <gp-tab label="Users">
-                <toboggan-ws-list-users></toboggan-ws-list-users>
-            </gp-tab>
-            <gp-tab label="Permissions">Permissions</gp-tab>
-        </gp-tabs>
+  <div class="p-5">
+    <toboggan-ws-banner></toboggan-ws-banner>
+    <a gp-link iconId="gp-icon-west" iconVariations="iconleft"
+      >Back to User Groups</a
+    >
+    <div class="gp-level-4 mt-6">User Group</div>
+    <div *ngIf="group">
+      <div class="gp-level-5">{{ group.name }}</div>
+      <div class="my-6">{{ group.description }}</div>
     </div>
+    <gp-tabs>
+      <gp-tab label="Users">
+        <toboggan-ws-list-users>
+          <div table-cta-right>
+            <button
+              gp-button
+              class="add-user-group-btn"
+              (click)="openAddUserToGroupModal()"
+            >
+              Add user
+            </button>
+          </div>
+        </toboggan-ws-list-users>
+      </gp-tab>
+      <gp-tab label="Permissions">Permissions</gp-tab>
+    </gp-tabs>
+  </div>
+  <toboggan-ws-add-users
+    *ngIf="showAddUserModal"
+    (addUserToGroupAction)="handleAddUserToGroupAction()"
+    [group]="group"
+  ></toboggan-ws-add-users>
 </gp-page>
