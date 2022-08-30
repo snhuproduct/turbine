@@ -57,6 +57,7 @@ export class CreateUserComponent {
               this.bannerService.hideBanner(bannerId),
           },
         });
+        this.userService.publishUserEditComplete(userObj);
         return true;
       } catch (error) {
         this.modalHandle?.alertBanners.push({

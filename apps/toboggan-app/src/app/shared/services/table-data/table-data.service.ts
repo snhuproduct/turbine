@@ -8,7 +8,6 @@ import { Observable, Subscription } from 'rxjs';
 import { TableSortingService } from '../table-sorting/table-sorting.service';
 
 export interface ITableRowFilterFunc{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (tr:TableRow, columnMetadata?:TableColumnDisplayMetadatum[], searchVal?:unknown): boolean;
 }
 

@@ -150,7 +150,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
           throw new Error('Could not find user with id: ' + userId);
         }
         this.userService.setEditingUser(user);
-        console.log(`%c ${JSON.stringify(event)}`,'color:pink');
         break;
       case RowActions.Cancel:
         // just close the menu!
