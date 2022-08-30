@@ -1,6 +1,7 @@
 import {
   TableColumnAlignmentEnum,
   TableColumnDisplayMetadatum,
+  TableColumnSortStateEnum
 } from '@snhuproduct/toboggan-ui-components-library';
 
 export const groupTableHeader: TableColumnDisplayMetadatum[] = [
@@ -18,6 +19,7 @@ export const groupTableHeader: TableColumnDisplayMetadatum[] = [
     parents: '',
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Left,
+    sort: TableColumnSortStateEnum.Disabled
   },
 ];
 
