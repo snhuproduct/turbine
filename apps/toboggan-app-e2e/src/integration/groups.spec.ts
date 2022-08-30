@@ -20,7 +20,7 @@ describe('Groups', () => {
     cy.get('@tableRows').should('not.have.lengthOf.greaterThan', 10);
   });
 
-  it.only('should display "no users" message in table when groups are missing', () => {
+  it('should display "no users" message in table when groups are missing', () => {
     cy.intercept({ method: 'GET', url: 'api/groups' }, []).as('getGroups');
 
     cy.visit('/group');
