@@ -1,0 +1,102 @@
+[
+  {
+    "id": "f77fe3d2-0df0-4d66-9a22-8b4c3d352810",
+    "name": "Group name-0",
+    "description": "Lorem ipsum 1"
+  },
+  {
+    "id": "3b29f3b7-d043-4153-a96c-bb11b88036e5",
+    "name": "Group name-1",
+    "description": "Lorem ipsum 2"
+  },
+  {
+    "id": "edf611cd-885f-4191-b2d9-c9121b0b4a1a",
+    "name": "Group name-2",
+    "description": "Lorem ipsum 3"
+  },
+  {
+    "id": "63777528-7949-4e5d-94df-cd9036591c13",
+    "name": "Group name-3",
+    "description": "Lorem ipsum 4"
+  },
+  {
+    "id": "6b22f1b8-19f5-4f1d-a1c7-9edd05163e9b",
+    "name": "Group name-4",
+    "description": "Lorem ipsum 5"
+  },
+  {
+    "id": "4caa3fe7-9b8f-4925-b474-c1d5455ed661",
+    "name": "Group name-5",
+    "description": "Lorem ipsum 6"
+  },
+  {
+    "id": "08ff7a10-456f-4fd7-b70e-2a4b739e7a1c",
+    "name": "Group name-6",
+    "description": "Lorem ipsum 7"
+  },
+  {
+    "id": "a1a8e5e3-81a8-4652-94b4-bf9fa016d896",
+    "name": "Group name-7",
+    "description": "Lorem ipsum 8"
+  },
+  {
+    "id": "86bfce22-8849-402f-906e-9b2fed31a396",
+    "name": "Group name-8",
+    "description": "Lorem ipsum 9"
+  },
+  {
+    "id": "d7aa224b-6f1c-435a-a76a-92d4a333bd88",
+    "name": "Group name-9",
+    "description": "Lorem ipsum 10"
+  },
+  {
+    "id": "26977acc-54b4-47fa-8251-5524f6efe1eb",
+    "name": "Group name-10",
+    "description": "Lorem ipsum 11"
+  },
+  {
+    "id": "f1836249-818b-4704-9617-a1dcf7ae82ca",
+    "name": "Group name-11",
+    "description": "Lorem ipsum 12"
+  },
+  {
+    "id": "20ebfdb8-a3e7-4da6-a647-4109caf3608d",
+    "name": "Group name-12",
+    "description": "Lorem ipsum 13"
+  },
+  {
+    "id": "bb0167fd-136f-4c61-b91d-7b23e4289712",
+    "name": "Group name-13",
+    "description": "Lorem ipsum 14"
+  },
+  {
+    "id": "7f9f3245-f2ff-4080-b56b-746787b3e2f4",
+    "name": "Group name-14",
+    "description": "Lorem ipsum 15"
+  },
+  {
+    "id": "6b19a025-3380-42a1-8710-6f5bd3997c9a",
+    "name": "Group name-15",
+    "description": "Lorem ipsum 16"
+  },
+  {
+    "id": "3fcfec92-4f3d-4aea-b0e9-34c3015ad776",
+    "name": "Group name-16",
+    "description": "Lorem ipsum 17"
+  },
+  {
+    "id": "7e46d58e-7176-4cbd-bd3c-052c2416d9dc",
+    "name": "Group name-17",
+    "description": "Lorem ipsum "
+  },
+  {
+    "id": "f86ecaa1-e76e-49b2-b762-2bc1c9687150",
+    "name": "Group name-18",
+    "description": "Lorem ipsum "
+  },
+  {
+    "id": "b9bf82ef-4271-4f85-b942-9eaaabff0ea8",
+    "name": "Group name-19",
+    "description": "Lorem ipsum "
+  }
+]
