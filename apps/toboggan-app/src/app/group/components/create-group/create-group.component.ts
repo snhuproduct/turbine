@@ -4,7 +4,7 @@ import {
   EventEmitter,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
@@ -94,7 +94,6 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
       this.groupService.createGroup(group).subscribe({
         next: (response) => {
           // handle success
-          console.log(response);
           this.groupCreateAction.emit({
             group: response as IGroup,
             addUser: this.createGroupForm.value?.addUser,
