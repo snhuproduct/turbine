@@ -1,9 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  ModalComponent, TableColumnDisplayMetadatum,
+  TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -14,7 +20,7 @@ import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from '../edit-group/edit-group.component';
@@ -25,7 +31,7 @@ import { groupTableHeader, RowActions } from './group-table.type';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
 })
-export class GroupListComponent implements OnInit {
+export class GroupListComponent implements OnInit, OnDestroy {
   editTitle = 'Edit user group details';
   dataGenerator: TableDataGenerator = {} as TableDataGenerator;
   groupList: TableRow[] = [];
@@ -35,13 +41,14 @@ export class GroupListComponent implements OnInit {
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private updateTableSubscription: Subscription = {} as Subscription;
   @ViewChild('editGroup') editGroupTemplate?: ElementRef;
   @ViewChild(EditGroupComponent) editGroupComponent!: EditGroupComponent;
   editModalState!: ModalOptions;
   editModalRef?: BsModalRef | null;
   editGroupMode = 'edit';
   editGroupData!: IGroup;
-  editOldGroupData!: IGroup;
+  showEditGroupModal = false;
 
   constructor(
     private groupService: GroupService,
@@ -51,10 +58,26 @@ export class GroupListComponent implements OnInit {
     private route: ActivatedRoute,
     private bannerService: BannerService,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.refreshTableData();
+    if (
+      this.groupService.groupUpdated$ &&
+      this.groupService.groupUpdated$.subscribe
+    ) {
+      this.updateTableSubscription = this.groupService.groupUpdated$.subscribe(
+        () => {
+          this.refreshTableData();
+        }
+      );
+    }
+  }
+
+  ngOnDestroy(): void {
+    [this.datageneratorSubscription, this.updateTableSubscription].map((s) => {
+      if (s.unsubscribe) s.unsubscribe();
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -77,7 +100,6 @@ export class GroupListComponent implements OnInit {
     switch (action) {
       case RowActions.Edit:
         this.editGroupData = rowData.cellData as unknown as IGroup;
-        this.editOldGroupData = { ...this.editGroupData };
         this.openEditGroupModal();
         break;
       case RowActions.ViewDetails:
@@ -124,71 +146,11 @@ export class GroupListComponent implements OnInit {
   }
 
   openEditGroupModal() {
-    this.modalService._hideModal();
-    this.editGroupMode = 'edit';
-    this.editModalState = {
-      initialState: {
-        templateRef: this.editGroupTemplate,
-        title: 'Edit user group details',
-        modalButtons: [
-          {
-            title: 'Cancel',
-            style: 'secondary',
-            onClick: () => { return true },
-          },
-          {
-            title: 'Review changes',
-            style: 'primary',
-            onClick: async () => {
-              const status = this.editGroupComponent.reviewGroup();
-              if (status) {
-                this.editGroupData = status;
-                this.openReviewEditGroupModal()
-              }
-            },
-          },
-        ],
-      },
-      class: 'gp-modal',
-    };
-    this.editModalRef = this.modalService.show(
-      ModalComponent,
-      this.editModalState
-    );
+    this.showEditGroupModal = true;
   }
 
-  openReviewEditGroupModal() {
-    this.modalService._hideModal();
-    this.editGroupMode = 'review';
-    this.editModalState = {
-      initialState: {
-        templateRef: this.editGroupTemplate,
-        title: 'Approve changes?',
-        modalButtons: [
-          {
-            title: 'No, keep editing',
-            style: 'secondary',
-            onClick: () => {
-              this.openEditGroupModal();
-              return false
-            },
-          },
-          {
-            title: 'Yes, approve',
-            style: 'primary',
-            onClick: async () => {
-              this.editGroupComponent.approveChanges();
-              return false;
-            },
-          },
-        ],
-      },
-      class: 'gp-modal',
-    };
-    this.editModalRef = this.modalService.show(
-      ModalComponent,
-      this.editModalState
-    );
+  handleEditGroupClose() {
+    this.showEditGroupModal = false;
   }
 
   openDeleteGroupConfirmation(group: IGroup) {
@@ -217,6 +179,7 @@ export class GroupListComponent implements OnInit {
                 `The <strong>${name}</strong> user group has been deleted.`,
                 true
               );
+              this.refreshTableData();
             } catch (error) {
               console.error(error);
 
@@ -248,7 +211,7 @@ export class GroupListComponent implements OnInit {
         this.itemsPerPage,
         prevCurrentPage,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => { },
+        () => {},
         []
       );
     this.datageneratorSubscription =
@@ -264,7 +227,6 @@ export class GroupListComponent implements OnInit {
 
   private async deleteGroup(id: string) {
     await this.groupService.deleteGroup(id);
-    this.refreshTableData();
   }
 
   private showNotification(

@@ -78,7 +78,6 @@ export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
         .subscribe({
           next: (response) => {
             // handle success
-            console.log(response);
             this.addUserToGroupAction.emit(true);
             this.adduserModal.close();
             this.bannerService.showBanner({
@@ -91,11 +90,11 @@ export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
           },
           error: (error) => {
             // handle error scenario
-            this.adduserModal.modal?.content?.alertBanners.push({
-              type: 'error',
-              heading: 'Add user to group',
-              message: "couldn't be completed.",
-            });
+            this.adduserModal.showBannerAlert(
+              'error',
+              'Add user to group',
+              "couldn't be completed."
+            );
           },
         });
     }

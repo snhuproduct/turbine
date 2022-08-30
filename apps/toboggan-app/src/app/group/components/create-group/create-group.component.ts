@@ -38,7 +38,7 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
       description: new FormControl('', [
         Validators.required,
         Validators.maxLength(300),
-        this.specialCharactersValidation
+        this.specialCharactersValidation,
       ]),
       addUser: new FormControl(false),
     });
@@ -94,7 +94,6 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
       this.groupService.createGroup(group).subscribe({
         next: (response) => {
           // handle success
-          console.log(response);
           this.groupCreateAction.emit({
             group: response as IGroup,
             addUser: this.createGroupForm.value?.addUser,
@@ -108,14 +107,15 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
             button: null,
             autoDismiss: true,
           });
+          this.groupService.onGroupUpdate(response as IGroup);
         },
         error: (error) => {
           // handle error scenario
-          this.createGroupModal.modal?.content?.alertBanners.push({
-            type: 'error',
-            heading: 'Create Group',
-            message: "couldn't be completed.",
-          });
+          this.createGroupModal.showBannerAlert(
+            'error',
+            'Create Group',
+            "couldn't be completed."
+          );
         },
       });
     }

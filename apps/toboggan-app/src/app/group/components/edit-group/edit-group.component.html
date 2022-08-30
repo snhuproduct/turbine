@@ -1,52 +1,77 @@
-<div *ngIf="mode === 'edit'">
+<toboggan-ws-modal
+  #editGroupModal
+  [title]="modalTitle"
+  [acceptButton]="acceptButton"
+  [cancelButton]="cancelButton"
+  id="edit-group"
+  (closeAction)="handleCancelAction()"
+  (accept)="handleSubmit()"
+  [isCloseActionHandled]="true"
+>
+  <div *ngIf="mode === 'edit'">
     <p>Update the user group’s name or description here.</p>
     <form [formGroup]="editGroupForm">
-        <gp-input size="default" label="Group name" [withIcon]="false" [error]="hasError('name')"
-            [errorMessage]="getErrorMessage('name','Group name')">
-            <input aria-label="input" placeholder="placeholder" type="text" formControlName="name" />
-        </gp-input><br />
+      <gp-input
+        size="default"
+        label="Group name"
+        [withIcon]="false"
+        [error]="hasError('name')"
+        [errorMessage]="getErrorMessage('name', 'Group name')"
+      >
+        <input
+          aria-label="input"
+          placeholder="placeholder"
+          type="text"
+          formControlName="name"
+        /> </gp-input
+      ><br />
 
-        <gp-text-area size="default" label="Group description" [error]="hasError('description')"
-            [errorMessage]="getErrorMessage('description','Group description')">
-            <textarea aria-label="input"
-                placeholder="You might explain what makes this group unique, or why you're creating it"
-                formControlName="description"></textarea>
-        </gp-text-area>
+      <gp-text-area
+        size="default"
+        label="Group description"
+        [error]="hasError('description')"
+        [errorMessage]="getErrorMessage('description', 'Group description')"
+      >
+        <textarea
+          aria-label="input"
+          placeholder="You might explain what makes this group unique, or why you're creating it"
+          formControlName="description"
+        ></textarea>
+      </gp-text-area>
     </form>
-</div>
+  </div>
 
-<div *ngIf="mode === 'review'" class="review-grid">
+  <div *ngIf="mode === 'review'" class="review-grid">
     <div class="row review-header py-2">
-        <div class="col">
-        </div>
-        <div class="col">
-            <b>Original</b>
-        </div>
-        <div class="col">
-            <b>New</b>
-        </div>
+      <div class="col"></div>
+      <div class="col">
+        <b>Original</b>
+      </div>
+      <div class="col">
+        <b>New</b>
+      </div>
     </div>
     <div class="row py-4">
-        <div class="col">
-            <b>User group name</b>
-        </div>
-        <div class="col">
-            {{oldGroup.name}}
-        </div>
-        <div class="col">
-            {{group.name}}
-        </div>
+      <div class="col">
+        <b>User group name</b>
+      </div>
+      <div class="col">
+        {{ oldGroup.name }}
+      </div>
+      <div class="col">
+        {{ group.name }}
+      </div>
     </div>
     <div class="row">
-        <div class="col">
-            <b>User group description</b>
-        </div>
-        <div class="col">
-            {{oldGroup.description}}
-        </div>
-        <div class="col">
-            {{group.description}}
-        </div>
+      <div class="col">
+        <b>User group description</b>
+      </div>
+      <div class="col">
+        {{ oldGroup.description }}
+      </div>
+      <div class="col">
+        {{ group.description }}
+      </div>
     </div>
-
-</div>
+  </div>
+</toboggan-ws-modal>

@@ -31,10 +31,10 @@ export class GroupMainPageComponent {
   }
 
   handleGroupCreateAction(event: groupActionType) {
-    if (event.group) {
+    if (event?.group) {
       this.dummyGroup = event.group;
     }
-    if (event.addUser) {
+    if (event?.addUser) {
       this.showAddUserModal = true;
     }
     this.showCreategroup = false;

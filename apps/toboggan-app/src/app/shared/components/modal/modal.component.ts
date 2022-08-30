@@ -2,19 +2,25 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ModalComponent as TobogganModalComponent } from '@snhuproduct/toboggan-ui-components-library';
+import {
+  ModalButtonConfig,
+  ModalComponent as TobogganModalComponent,
+} from '@snhuproduct/toboggan-ui-components-library';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'toboggan-ws-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
 })
-export class ModalComponent {
+export class ModalComponent implements OnChanges {
   constructor(public service: BsModalService) {}
+
   public modal?: BsModalRef;
   state = false;
   @Input() id!: string;
@@ -24,6 +30,8 @@ export class ModalComponent {
   @Output() accept = new EventEmitter();
   @Output() hidden = new EventEmitter();
   @Output() hide = new EventEmitter();
+  @Input() isCloseActionHandled = false;
+  @Output() closeAction = new EventEmitter();
 
   @ViewChild('content') ref!: TemplateRef<HTMLElement>;
 
@@ -62,7 +70,39 @@ export class ModalComponent {
     return true;
   };
   close = async () => {
-    this.modal?.hide();
-    return true;
+    if (this.closeAction && this.isCloseActionHandled) {
+      this.closeAction.emit();
+      return false;
+    } else {
+      this.modal?.hide();
+      return true;
+    }
   };
+
+  ngOnChanges({ title, acceptButton, cancelButton }: SimpleChanges): void {
+    if (!title?.firstChange && this.modal) {
+      this.modal.content.title = title.currentValue;
+    }
+    if (!acceptButton?.firstChange && this.modal) {
+      this.modal.content.modalButtons.find(
+        (button: ModalButtonConfig) =>
+          button.title == acceptButton.previousValue
+      ).title = acceptButton.currentValue;
+    }
+    if (!cancelButton?.firstChange && this.modal) {
+      this.modal.content.modalButtons.find(
+        (button: ModalButtonConfig) =>
+          button.title == cancelButton.previousValue
+      ).title = cancelButton.currentValue;
+    }
+  }
+
+  //add banners in modal
+  showBannerAlert(type: string, heading: string, message: string) {
+    this.modal?.content?.alertBanners.push({
+      type,
+      heading,
+      message,
+    });
+  }
 }

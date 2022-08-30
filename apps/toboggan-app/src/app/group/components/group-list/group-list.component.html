@@ -1,11 +1,20 @@
 <div class="table-container">
-  <ng-template #editGroup>
-    <toboggan-ws-edit-group [mode]="editGroupMode" [group]="editGroupData" [oldGroup]="editOldGroupData">
-    </toboggan-ws-edit-group>
-  </ng-template>
-  <gp-table [dataGenerator]="dataGenerator" [dynamic]="true" tableStyle="borders"
-    [getActionMenuItems]="getActionMenuItems" noResultsHeading="No groups yet"
-    noResultsText="Once you create one, it’ll show up here." (onRowAction)="onRowAction($event)" itemName="user groups">
+  <toboggan-ws-edit-group
+    *ngIf="showEditGroupModal"
+    [group]="editGroupData"
+    (handleEditGroupClose)="handleEditGroupClose()"
+  >
+  </toboggan-ws-edit-group>
+  <gp-table
+    [dataGenerator]="dataGenerator"
+    [dynamic]="true"
+    tableStyle="borders"
+    [getActionMenuItems]="getActionMenuItems"
+    noResultsHeading="No groups yet"
+    noResultsText="Once you create one, it’ll show up here."
+    (onRowAction)="onRowAction($event)"
+    itemName="user groups"
+  >
     <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
   </gp-table>
 </div>

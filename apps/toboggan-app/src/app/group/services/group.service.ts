@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GroupService {
-  constructor(private http: HttpClient) { }
+  private _groupUpdated = new BehaviorSubject<IGroup>({} as IGroup);
+  groupUpdated$ = this._groupUpdated.asObservable();
+  constructor(private http: HttpClient) {}
 
   // Fetch all groups
   fetchGroups() {
@@ -25,7 +27,7 @@ export class GroupService {
 
   // Updates group
   updateGroup(group: IGroup) {
-    return this.http.put('/api/groups/:' + group.id, group);
+    return this.http.put('/api/groups/' + group.id, group);
   }
 
   // Add user to group
@@ -36,5 +38,10 @@ export class GroupService {
   //Delete group
   async deleteGroup(groupId: string) {
     await firstValueFrom(this.http.delete(`/api/groups/${groupId}`));
+  }
+
+  //group CRUD complete
+  onGroupUpdate(group?: IGroup) {
+    this._groupUpdated.next(group as IGroup);
   }
 }
