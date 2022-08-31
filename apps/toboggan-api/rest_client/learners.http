@@ -1,0 +1,46 @@
+
+## Groups :: Get all learners
+
+GET {{baseUrl}}/learners HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+## Groups :: Create a learner
+
+POST {{baseUrl}}/learners HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "groupName": "My Learner",
+  "type": "This is my learner"
+}
+
+###
+
+## Groups :: Update a learner
+
+PUT {{baseUrl}}/learners/e59b03ab-e304-41cf-9fc4-22bbbb32531f HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "groupName": "Updated learner",
+  "type": "This is my UPDATED learner"
+}
+
+###
+
+## Groups :: Patch a learner
+
+PATCH {{baseUrl}}/learners/e59b03ab-e304-41cf-9fc4-22bbbb32531f HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "type": "This is NOT my learner"
+}
+
+

@@ -29,3 +29,10 @@ export interface IAddUserToGroup {
   groupId: string;
   email: string;
 }
+
+export interface ILearner {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+}
