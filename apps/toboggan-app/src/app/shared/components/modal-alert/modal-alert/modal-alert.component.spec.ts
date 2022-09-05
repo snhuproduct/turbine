@@ -51,7 +51,6 @@ describe('ModalAlertComponent', () => {
     });
 
     fixture.detectChanges();
-
     const modalAlert = fixture.nativeElement.querySelector(
       '.modal-alert-container'
     );
