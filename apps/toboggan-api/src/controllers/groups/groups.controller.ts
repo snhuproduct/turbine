@@ -57,4 +57,10 @@ export class GroupsController {
   addUsersToGroup(@Body() request: IAddUserToGroup) {
     return this.groupsService.addUsersToGroup(request);
   }
+
+  //Remove user from a group
+  @Delete('/:id/user/:userid')
+  removeUserFromGroup(@Param('id') groupId, @Param('userId') userId) {
+    console.log(groupId, userId);
+  }
 }

@@ -4,12 +4,32 @@
     modalAlertService.modalAlert && modalAlertService.modalAlert.alertCondition
   "
 >
-  <div
-    gp-modal-alert
-    [alertCondition]="modalAlertService.modalAlert.alertCondition"
-    [alertType]="modalAlertService.modalAlert.type"
-    [alertHeading]="modalAlertService.modalAlert.heading"
-    [alertMsg]="modalAlertService.modalAlert.message"
-    [alertButtons]="modalAlertService.modalAlert.buttons"
-  ></div>
+  <ng-container
+    *ngIf="isHTML(modalAlertService.modalAlert.message); else textTemplate"
+  >
+    <div
+      gp-modal-alert
+      [alertCondition]="modalAlertService.modalAlert.alertCondition"
+      [alertType]="modalAlertService.modalAlert.type"
+      [alertHeading]="modalAlertService.modalAlert.heading"
+      [alertButtons]="modalAlertService.modalAlert.buttons"
+      [template]="htmlTemplate"
+    >
+      <ng-template #htmlTemplate
+        ><span
+          [innerHTML]="modalAlertService.modalAlert.message | safeHtml"
+        ></span
+      ></ng-template>
+    </div>
+  </ng-container>
+  <ng-template #textTemplate>
+    <div
+      gp-modal-alert
+      [alertCondition]="modalAlertService.modalAlert.alertCondition"
+      [alertType]="modalAlertService.modalAlert.type"
+      [alertHeading]="modalAlertService.modalAlert.heading"
+      [alertMsg]="modalAlertService.modalAlert.message"
+      [alertButtons]="modalAlertService.modalAlert.buttons"
+    ></div>
+  </ng-template>
 </div>

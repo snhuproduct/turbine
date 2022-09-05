@@ -8,4 +8,8 @@ import { ModalAlertService } from '../../../services/modal-alert/modal-alert.ser
 })
 export class ModalAlertComponent {
   constructor(public modalAlertService: ModalAlertService) {}
+
+  isHTML(message: string) {
+    return /<\/?[a-z][\s\S]*>/i.test(message);
+  }
 }

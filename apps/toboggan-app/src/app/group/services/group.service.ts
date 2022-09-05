@@ -7,7 +7,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class GroupService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Fetch all groups
   fetchGroups() {
@@ -36,5 +36,12 @@ export class GroupService {
   //Delete group
   async deleteGroup(groupId: string) {
     await firstValueFrom(this.http.delete(`/api/groups/${groupId}`));
+  }
+
+  //Remvove user from group
+  async removeUserFromGroup(groupId: string, userId: string) {
+    await firstValueFrom(
+      this.http.delete(`/api/groups/${groupId}/user/${userId}`)
+    );
   }
 }
