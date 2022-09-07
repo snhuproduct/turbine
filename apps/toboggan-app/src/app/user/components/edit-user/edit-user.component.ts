@@ -10,6 +10,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
+import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import * as R from 'ramda';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -34,8 +35,10 @@ export class EditUserComponent implements OnChanges {
   @Output() userChange = new EventEmitter<IUser | undefined>();
 
   userForm = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    firstName: new FormControl('', [ Validators.required, 
+      Validators.pattern(ValidatorPattern.nameValidation)]),
+    lastName: new FormControl('', [ Validators.required, 
+      Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
@@ -48,25 +51,6 @@ export class EditUserComponent implements OnChanges {
       });
       this.editModal?.open();
     }
-  }
-
-  hasError(controlName: string) {
-    const control = this.userForm.get(controlName);
-    if (control) {
-      return !control.valid && (control.dirty || control.touched);
-    }
-    return false;
-  }
-
-  getErrorMessage(controlName: string, friendlyName: string) {
-    const control = this.userForm.get(controlName);
-    if (control)
-      if (control.hasError('required')) {
-        return friendlyName + ' is required';
-      } else if (control.hasError('email')) {
-        return friendlyName + ' format is invalid';
-      }
-    return '';
   }
 
   editModalHidden() {

@@ -39,7 +39,7 @@ type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
 export class UserTableComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private resultsPerPage = 10;
-  itemName = 'Users';
+  itemName = 'users';
   dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;

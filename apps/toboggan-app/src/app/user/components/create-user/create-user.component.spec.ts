@@ -5,6 +5,7 @@ import { ModalComponent, StoriesModule } from '@snhuproduct/toboggan-ui-componen
 import { mock, MockProxy, mockReset } from "jest-mock-extended";
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
+import { SharedModule } from '../../../shared/shared.module';
 import { CreateUserComponent } from './create-user.component';
 
 describe('CreateUserComponent', () => {
@@ -21,7 +22,7 @@ describe('CreateUserComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateUserComponent],
-      imports: [StoriesModule, ReactiveFormsModule, HttpClientTestingModule],
+      imports: [StoriesModule, SharedModule, ReactiveFormsModule, HttpClientTestingModule],
       providers: [{ provide: UserService, useValue: mockUserService }]
     }).compileComponents();
     mockReset(mockUserService);
@@ -36,30 +37,9 @@ describe('CreateUserComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  });  
 
-
-  it('hasError should return false if control name is not found in the form', () => {
-    expect(component.hasError('nonExistingControlName')).toBeFalsy();
-  })
-
-  it('for invalid email adddress getError should return appropriate message', () => {
-    component.userForm.setValue({
-      "firstName": "", 
-      "lastName": "",
-      "email": "invalidemail"
-    });
-    expect(component.getErrorMessage('email', 'Email')).toEqual('Email format is invalid');
-  })
-
-  it('when control is valid getError should return empty string', () => {
-    component.userForm.setValue({
-      "firstName": "Bob", 
-      "lastName": "",
-      "email": ""
-    });
-    expect(component.getErrorMessage('firstName', 'First Name')).toEqual('');
-  })
+  
 
   it('handleAddNewUserModalButton calls user service if form is valid', async() => {
     component.userForm.setValue(completedInputs);
@@ -88,8 +68,8 @@ describe('CreateUserComponent', () => {
     expect(component.modalHandle.alertBanners.length).toEqual(1);
     expect(component.modalHandle.alertBanners[0]).toEqual({
       type: 'error',
-      heading: 'Add New User',
-      message: 'Couldn\'t be completed.',
+      heading: 'Add new user',
+      message: 'couldn\'t be completed.',
     });    
   })
 

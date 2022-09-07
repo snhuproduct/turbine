@@ -1,6 +1,6 @@
 <gp-page [loggedin]="true">
   <toboggan-ws-banner></toboggan-ws-banner>
-  <div class="gp-level-4 page-heading mb-5">User Groups</div>
+  <div class="gp-level-4 page-heading mb-5">User groups</div>
   <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
   <div class="group-list-container p-5">
     <toboggan-ws-group-list>
@@ -8,8 +8,7 @@
         <button
           gp-button
           class="create-group-btn"
-          (click)="openCreateGroupModal()"
-        >
+          (click)="openCreateGroupModal()">
           Create user group
         </button>
       </div>
@@ -20,11 +19,9 @@
   </ng-template>
   <toboggan-ws-create-group
     *ngIf="showCreategroup"
-    (groupCreateAction)="handleGroupCreateAction($event)"
-  ></toboggan-ws-create-group>
+    (groupCreateAction)="handleGroupCreateAction($event)"></toboggan-ws-create-group>
   <toboggan-ws-add-users
     *ngIf="showAddUserModal"
     (addUserToGroupAction)="handleAddUserToGroupAction()"
-    [group]="dummyGroup"
-  ></toboggan-ws-add-users>
+    [group]="dummyGroup"></toboggan-ws-add-users>
 </gp-page>
