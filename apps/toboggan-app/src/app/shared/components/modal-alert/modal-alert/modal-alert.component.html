@@ -9,7 +9,13 @@
     [alertCondition]="modalAlertService.modalAlert.alertCondition"
     [alertType]="modalAlertService.modalAlert.type"
     [alertHeading]="modalAlertService.modalAlert.heading"
-    [alertMsg]="modalAlertService.modalAlert.message"
     [alertButtons]="modalAlertService.modalAlert.buttons"
-  ></div>
+    [template]="htmlTemplate"
+  >
+    <ng-template #htmlTemplate
+      ><span
+        [innerHTML]="modalAlertService.modalAlert.message | safeHtml"
+      ></span
+    ></ng-template>
+  </div>
 </div>

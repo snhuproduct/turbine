@@ -19,7 +19,7 @@ describe('GroupMainPage', () => {
 
   it('should not allow the special characters in the user group name field', () => {
     cy.get('input[placeholder="placeholder"]').type('Name!@#');
-    cy.get('.gp-input-x-error > span').should('contain', 'Don’t use these characters:  ! @ # $');
+    cy.get('.gp-input-x-error > span').should('contain', 'Use only letters and numbers');
   });
 
   it('should approve validation of the user group name field in the form on submission', () => {
@@ -54,7 +54,7 @@ describe('GroupMainPage', () => {
       cy.get('@postGroup');
       cy.get('@getUsers');
 
-      cy.get('input[placeholder="placeholder"]').as('emailField');
+      cy.get('input[placeholder="placeholder"]:visible').as('emailField');
     });
 
     it('should open the modal', () => {

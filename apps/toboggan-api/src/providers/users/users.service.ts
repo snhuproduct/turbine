@@ -23,7 +23,7 @@ export class UsersService {
     // generate mocked data for 20 users
     for (let i = 0; i < 20; i++) {
       this.users.push({
-        id: uuidv4(),
+        id: `id-${i}`,
         userName: `user${i}`,
         firstName: `name${i}`,
         lastName: `last${i}`,
@@ -84,7 +84,7 @@ export class UsersService {
     this.users = this.users.map((user) => {
       if (user.id === id) {
         return {
-          ...user
+          ...user,
         };
       }
       return user;
