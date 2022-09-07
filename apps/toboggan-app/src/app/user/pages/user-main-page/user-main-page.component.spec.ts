@@ -48,7 +48,7 @@ describe('UserMainPageComponent', () => {
 
   it('Modal buttons should be configured', () => {
     const addNewUserButton = component.createUserModalButtonsConfig.find(
-      (button) => button.title === 'Add New User'
+      (button) => button.title === 'Add new user'
     );
     expect(addNewUserButton).toBeTruthy();
 
@@ -65,7 +65,7 @@ describe('UserMainPageComponent', () => {
     createUserFixture.detectChanges();
     component.createUserModal = createUserComponent;
     const addNewUserButton = component.createUserModalButtonsConfig.find(
-      (button) => button.title === 'Add New User'
+      (button) => button.title === 'Add new user'
     );
     const spy = jest.spyOn(
       component.createUserModal ,
