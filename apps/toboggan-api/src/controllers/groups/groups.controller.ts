@@ -28,7 +28,7 @@ export class GroupsController {
   }
 
   @Get('/:id')
-  getGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+  getGroup() {
     return this.groupsService.getGroup();
   }
 
