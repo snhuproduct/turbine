@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
+import { BannerService } from '../../../shared/services/banner/banner.service';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class EditGroupComponent implements OnInit {
   @Input() mode = 'edit';
   @Input() group!: IGroup;
   @Input() oldGroup!: IGroup;
-  constructor(private groupService: GroupService) { }
+  constructor(private groupService: GroupService ,private bannerService: BannerService) { }
 
   ngOnInit(): void {
     this.editGroupForm = new FormGroup({
@@ -88,9 +89,32 @@ export class EditGroupComponent implements OnInit {
     this.groupService.updateGroup(group).subscribe({
       next: (response) => {
         // handle success
+        this.bannerService.showBanner({
+          type: 'success',
+          heading: ``,
+          message: `The <strong>${group.name}</strong> user group's details have been edited.`,
+          button: {
+            label: 'Dismiss',
+            action: (bannerId: number) =>
+              this.bannerService.hideBanner(bannerId),
+          },
+          autoDismiss: true,
+        });
       },
       error: (error) => {
         // handle error scenario
+        this.bannerService.showBanner({
+          type: 'error',
+          heading: ``,
+          message: `<b>Edit user</b> couldn't be completed.`,
+          button: {
+            label: 'Dismiss',
+            action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+          },
+          autoDismiss: true,
+        });
+  
+        return false;
       },
     });
   }

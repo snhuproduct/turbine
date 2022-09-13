@@ -177,24 +177,7 @@ export class GroupListComponent implements OnInit {
             title: 'Yes, approve',
             style: 'primary',
             onClick: async () => {
-              try {
-                this.editGroupComponent.approveChanges();     
-                this.showNotification(
-                  'success',
-                  ``,
-                  `The <strong>${'Name'}</strong> user group's details have been edited.`,
-                  true
-                );
-              } catch (error) {
-                console.error(error);
-                this.showNotification(
-                  'error',
-                  `Edit group`,
-                  `couldn't be completed.`,
-                  true,
-                  null
-                );
-              }
+              this.editGroupComponent.approveChanges();
               return true;
             },
           },
