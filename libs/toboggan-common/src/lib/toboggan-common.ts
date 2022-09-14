@@ -29,3 +29,11 @@ export interface IAddUserToGroup {
   groupId: string;
   email: string;
 }
+
+export interface IPermission {
+  id: string;
+  application: string;
+  module: string;
+  accessLevel: string;
+  userGroups: IGroup[];
+}
