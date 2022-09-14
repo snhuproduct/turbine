@@ -106,7 +106,7 @@ export class EditGroupComponent implements OnInit {
         this.bannerService.showBanner({
           type: 'error',
           heading: ``,
-          message: `<b>Edit user</b> group's details couldn't be completed.`,
+          message: `<b>Edit group details</b> couldn't be completed.`,
           button: {
             label: 'Dismiss',
             action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
