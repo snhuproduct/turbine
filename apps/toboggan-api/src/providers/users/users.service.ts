@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 
 import * as arrayPaginate from 'array-paginate';
 
 import { v4 as uuidv4 } from 'uuid';
+
+import { CreateUserDto, PatchUserDto } from "../../dto/users.dto";
 
 @Injectable()
 export class UsersService {
@@ -47,14 +49,14 @@ export class UsersService {
     return paginatedUsers;
   }
 
-  createUser(user: INewUser) {
+  createUser(user: CreateUserDto) {
     this.users.push({
       id: uuidv4(),
       ...user,
     });
   }
 
-  updateUser(id: string, updatedUser: IUser) {
+  updateUser(id: string, updatedUser: CreateUserDto) {
     this.users = this.users.map((user) => {
       if (user.id === id) {
         return {
@@ -66,7 +68,7 @@ export class UsersService {
     });
   }
 
-  patchUser(id: string, updatedUser: IUser) {
+  patchUser(id: string, updatedUser: PatchUserDto) {
     this.users = this.users.map((user) => {
       if (user.id === id) {
         return {

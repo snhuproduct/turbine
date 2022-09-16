@@ -34,6 +34,7 @@
     "@angular/router": "14.1.1",
     "@nestjs/common": "9.0.8",
     "@nestjs/core": "9.0.8",
+    "@nestjs/mapped-types": "^1.1.0",
     "@nestjs/platform-express": "9.0.8",
     "@nrwl/angular": "14.5.4",
     "@snhuproduct/toboggan-ui-components-library": "^1.4.20",

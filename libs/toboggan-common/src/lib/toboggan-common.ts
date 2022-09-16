@@ -14,9 +14,9 @@ export type INewGroup = Omit<IGroup, 'id'>;
 export interface IUser {
   id: string;
   userName: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
   groups?: IGroup[];
   enabled: boolean;
 }

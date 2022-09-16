@@ -11,7 +11,7 @@ import {
   Put,
   Query
 } from '@nestjs/common';
-import { IUser } from '@toboggan-ws/toboggan-common';
+import { CreateUserDto, PatchUserDto } from "../../dto/users.dto";
 import { UsersService } from '../../providers/users/users.service';
 
 @Controller('users')
@@ -30,12 +30,12 @@ export class UsersController {
   }
 
   @Post('/')
-  createUser(@Body() user: IUser) {
+  createUser(@Body() user: CreateUserDto) {
     return this.usersService.createUser(user);
   }
 
   @Put('/:id')
-  updateUser(@Param('id') id, @Body() user: IUser) {
+  updateUser(@Param('id') id, @Body() user: CreateUserDto) {
     return this.usersService.updateUser(id, user);
   }
 
@@ -53,7 +53,7 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  patchUser(@Param('id') id, @Body() user: IUser) {
+  patchUser(@Param('id') id, @Body() user: PatchUserDto) {
     return this.usersService.patchUser(id, user);
   }
 
