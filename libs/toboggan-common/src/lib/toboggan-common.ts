@@ -6,7 +6,7 @@ export interface IGroup {
   id: string;
   name: string;
   type?: number;
-  description: string | null;
+  description?: string | null;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;

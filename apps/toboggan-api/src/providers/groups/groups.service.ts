@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
 import { v4 as uuidv4 } from 'uuid';
+import { CreateGroupDto, PatchGroupDto, IAddUserToGroupDto } from "../../dto/groups.dto";
 
 @Injectable()
 export class GroupsService {
@@ -37,14 +38,16 @@ export class GroupsService {
     return paginatedGroups;
   }
 
-  createGroup(newGroup: IGroup) {
+  createGroup(newGroup: CreateGroupDto) {
     const newId = this.groups.length + 1;
-    newGroup.id = newId as unknown as string;
-    this.groups.push(newGroup);
+    this.groups.push({
+      ...newGroup,
+      id: newId as unknown as string,
+    });
     return newGroup;
   }
 
-  updateGroup(id: string, updatedGroup: IGroup) {
+  updateGroup(id: string, updatedGroup: CreateGroupDto) {
     this.groups = this.groups.map((group) => {
       if (group.id === id) {
         return {
@@ -56,7 +59,7 @@ export class GroupsService {
     });
   }
 
-  patchGroup(id: string, updatedGroup: IGroup) {
+  patchGroup(id: string, updatedGroup: PatchGroupDto) {
     this.groups = this.groups.map((group) => {
       if (group.id === id) {
         return {
@@ -72,7 +75,7 @@ export class GroupsService {
     this.groups = this.groups.filter((group) => group.id !== id);
   }
 
-  addUsersToGroup(request: IAddUserToGroup) {
+  addUsersToGroup(request: IAddUserToGroupDto) {
     console.log(request);
   }
 }
