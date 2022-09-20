@@ -14,7 +14,7 @@
     "prepare": "husky install",
     "app:lint": "nx run toboggan-app:lint --fix",
     "api:lint": "nx run toboggan-api:lint --fix",
-    "lint": "yarn app:lint && api:lint",
+    "lint": "yarn app:lint && yarn api:lint",
     "tsc": "yarn app:tsc && yarn api:tsc",
     "app:tsc": "tsc -p apps/toboggan-app/tsconfig.json --noEmit --incremental",
     "api:tsc": "tsc -p apps/toboggan-api/tsconfig.json --noEmit --incremental"
