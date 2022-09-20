@@ -26,7 +26,7 @@ jobs:
         with:
           dot-npmrc: ${{ secrets.DOT_NPMRC }}
       - name: Run install
-        run: yarn install
+        run: npm run install
       - name: Run typescript and linter
         run: yarn tsc && yarn lint
       - name: Run tests
