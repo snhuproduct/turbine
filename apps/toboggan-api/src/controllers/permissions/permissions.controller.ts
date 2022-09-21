@@ -8,7 +8,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { IPermission } from '@toboggan-ws/toboggan-common';
+import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
 import { PermissionService } from '../../providers/permissions/permissions.service';
 
 @Controller('permissions')
@@ -35,7 +35,7 @@ export class PermissionsController {
   }
 
   @Post('/')
-  createPermission(@Body() permission: IPermission) {
+  createPermission(@Body() permission: INewPermission) {
     return this.permissionService.createPermission(permission);
   }
 

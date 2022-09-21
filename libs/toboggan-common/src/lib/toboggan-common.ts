@@ -37,3 +37,5 @@ export interface IPermission {
   accessLevel: string;
   userGroups: IGroup[];
 }
+
+export type INewPermission = Omit<IPermission, 'id'>;

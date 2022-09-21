@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { IGroup, IPermission } from '@toboggan-ws/toboggan-common';
+import {
+  IGroup,
+  INewPermission,
+  IPermission,
+} from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
 
 @Injectable()
 export class PermissionService {
   private permissions: IPermission[] = [];
-  private groups: IGroup[] = [
-    {
-      id: 'group-id-0',
-      name: 'group1',
-      type: 0,
-      description: '',
-    },
-  ];
+  private groups: IGroup[] = [];
   private accessLevels = [
     'View',
     'Create',
@@ -34,19 +31,31 @@ export class PermissionService {
   ];
 
   constructor() {
+    const groupList = [
+      'Content Management',
+      'Content Authoring',
+      'Assessment Authoring',
+    ];
     // generate mocked data for 20 users
-    for (let i = 0, j = 0, k = 0; i < 20; i++) {
+    for (let i = 0, j = 0, k = 0, m = 0; i < 20; i++) {
       if (j == this.accessLevels.length) j = 0;
       if (k == this.modules.length) k = 0;
+      if (m == groupList.length) m = 0;
+      const group = {
+        id: `group-id-${i}`,
+        name: groupList[m],
+        description: '',
+      };
       this.permissions.push({
         id: `id-${i}`,
         application: 'Application Admin',
         module: this.modules[k],
         accessLevel: this.accessLevels[j],
-        userGroups: this.groups,
+        userGroups: [group],
       });
       j++;
       k++;
+      m++;
     }
   }
 
@@ -70,8 +79,11 @@ export class PermissionService {
     );
   }
 
-  createPermission(permission: IPermission) {
-    this.permissions.push(permission);
+  createPermission(permission: INewPermission) {
+    this.permissions.push({
+      id: `id-${this.permissions.length}`,
+      ...permission,
+    });
   }
 
   updatePermission(id: string, updatedPermission: IPermission) {

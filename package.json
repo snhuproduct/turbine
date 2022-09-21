@@ -36,7 +36,7 @@
     "@nestjs/core": "9.0.8",
     "@nestjs/platform-express": "9.0.8",
     "@nrwl/angular": "14.5.4",
-    "@snhuproduct/toboggan-ui-components-library": "^1.4.20",
+    "@snhuproduct/toboggan-ui-components-library": "^1.4.21",
     "@types/uuid": "^8.3.4",
     "array-paginate": "^1.0.2",
     "concurrently": "^7.3.0",
