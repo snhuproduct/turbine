@@ -80,23 +80,4 @@ describe('Groups', () => {
         "Group name-18"
       ]);
   });
-
-  it('should sort descending the second column by double click in the table', () => {
-    cy.get('@tableRows').get(':nth-child(1) > th:nth-child(2) button').dblclick({ force: true });
-
-    cy.get('@tableRows').get(':nth-child(1) > td:nth-child(2)').contains('Lorem ipsum 9');
-
-    cy.get('@tableRows').get('td:nth-child(2)').then(findText).should('deep.eq', [
-        "Lorem ipsum 9",
-        "Lorem ipsum 8",
-        "Lorem ipsum 7",
-        "Lorem ipsum 6",
-        "Lorem ipsum 5",
-        "Lorem ipsum 4",
-        "Lorem ipsum 3",
-        "Lorem ipsum 2",
-        "Lorem ipsum 17",
-        "Lorem ipsum 16"
-      ]);
-  });
 })

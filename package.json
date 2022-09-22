@@ -14,6 +14,7 @@
     "prepare": "husky install",
     "app:lint": "nx run toboggan-app:lint --fix",
     "api:lint": "nx run toboggan-api:lint --fix",
+    "lint": "yarn app:lint && yarn api:lint",
     "tsc": "yarn app:tsc && yarn api:tsc",
     "app:tsc": "tsc -p apps/toboggan-app/tsconfig.json --noEmit --incremental",
     "api:tsc": "tsc -p apps/toboggan-api/tsconfig.json --noEmit --incremental"
@@ -36,7 +37,7 @@
     "@nestjs/core": "9.0.8",
     "@nestjs/platform-express": "9.0.8",
     "@nrwl/angular": "14.5.4",
-    "@snhuproduct/toboggan-ui-components-library": "^1.4.19",
+    "@snhuproduct/toboggan-ui-components-library": "^1.4.20",
     "@types/uuid": "^8.3.4",
     "array-paginate": "^1.0.2",
     "concurrently": "^7.3.0",
@@ -54,7 +55,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "14.1.1",
+    "@angular-devkit/build-angular": "^14.1.1",
     "@angular-eslint/eslint-plugin": "~14.0.0",
     "@angular-eslint/eslint-plugin-template": "~14.0.0",
     "@angular-eslint/template-parser": "~14.0.0",

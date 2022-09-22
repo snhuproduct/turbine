@@ -4,7 +4,7 @@ import {
   IGroup,
   INewUser,
   IUpdatedUser,
-  IUser
+  IUser,
 } from '@toboggan-ws/toboggan-common';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class UserService {
   groups: IGroup[] = [];
 
   editingUser: IUser | undefined;
-  private _userUpdated =  new BehaviorSubject<IUser>({} as IUser);
+  private _userUpdated = new BehaviorSubject<IUser>({} as IUser);
   userUpdated$ = this._userUpdated.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -55,7 +55,7 @@ export class UserService {
     this.editingUser = user;
   }
 
-  publishUserEditComplete(user:IUser){
+  publishUserEditComplete(user: IUser) {
     this._userUpdated.next(user);
   }
 }

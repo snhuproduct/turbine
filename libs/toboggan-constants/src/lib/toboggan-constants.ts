@@ -9,3 +9,9 @@ export enum FormError {
   characters = 'Don’t use these characters: ',
   maxLength = 'You are exceeding the limit',
 }
+
+export enum ValidatorPattern {
+  // eslint-disable-next-line
+  // letters, periods, hyphen s, spaces, and apostrophes, accented characters such as é, ö, û
+  nameValidation = '^[A-Za-zÀ-ÖØ-öø-ÿ\\.\\- \']+$', 
+}

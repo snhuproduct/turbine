@@ -28,7 +28,7 @@ export class GroupsController {
   }
 
   @Get('/:id')
-  getGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+  getGroup() {
     return this.groupsService.getGroup();
   }
 
@@ -56,5 +56,11 @@ export class GroupsController {
   @Post('/addusertogroup')
   addUsersToGroup(@Body() request: IAddUserToGroup) {
     return this.groupsService.addUsersToGroup(request);
+  }
+
+  //Remove user from a group
+  @Delete('/:id/user/:userid')
+  removeUserFromGroup(@Param('id') groupId, @Param('userId') userId) {
+    console.log(groupId, userId);
   }
 }

@@ -5,6 +5,7 @@ import { BannerComponent } from './components/banner/banner.component';
 import { FormChangesTableComponent } from './components/form-changes-table/form-changes-table.component';
 import { ModalAlertComponent } from './components/modal-alert/modal-alert/modal-alert.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ErrorMessageDirective } from './error-message/error-message.directive';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     SafeHtmlPipe,
     FormChangesTableComponent,
     ModalComponent,
+    ErrorMessageDirective,
   ],
   imports: [CommonModule, StoriesModule],
   exports: [
@@ -23,6 +25,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     StoriesModule,
     FormChangesTableComponent,
     ModalAlertComponent,
+    ErrorMessageDirective,
   ],
 })
 export class SharedModule {}

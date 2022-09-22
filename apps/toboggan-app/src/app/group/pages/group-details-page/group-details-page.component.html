@@ -1,6 +1,7 @@
 <gp-page [loggedin]="true" title="Application Admin">
   <div class="p-5">
     <toboggan-ws-banner></toboggan-ws-banner>
+    <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
     <a gp-link iconId="gp-icon-west" iconVariations="iconleft"
       >Back to User Groups</a
     >
@@ -11,7 +12,7 @@
     </div>
     <gp-tabs>
       <gp-tab label="Users">
-        <toboggan-ws-list-users>
+        <toboggan-ws-list-users [group]="group">
           <div table-cta-right>
             <button
               gp-button

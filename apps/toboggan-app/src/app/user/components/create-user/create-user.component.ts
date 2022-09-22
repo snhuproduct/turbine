@@ -4,6 +4,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
 import { IUser } from '@toboggan-ws/toboggan-common';
+import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
 
@@ -21,8 +22,10 @@ export class CreateUserComponent {
   loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    firstName: new FormControl('', [ Validators.required, 
+      Validators.pattern(ValidatorPattern.nameValidation)]),
+    lastName: new FormControl('', [ Validators.required, 
+      Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
@@ -43,6 +46,7 @@ export class CreateUserComponent {
           this.modalHandle.alertBanners = [];  //reset if there is was error from previous attempt
         }
         const userObj = this.userForm.getRawValue() as IUser;
+        userObj.enabled = true;
         this.isLoading = true;
 
         await delay(400); // add delay if need to demo loader
@@ -50,7 +54,7 @@ export class CreateUserComponent {
         this.bannerService.showBanner({
           type: 'success',
           heading: `${userObj.firstName} ${userObj.lastName}`,
-          message: 'has been added as user',
+          message: 'has been added as a user.',
           button: {
             label: 'Dismiss',
             action: (bannerId: number) =>
@@ -62,8 +66,8 @@ export class CreateUserComponent {
       } catch (error) {
         this.modalHandle?.alertBanners.push({
           type: 'error',
-          heading: 'Add New User',
-          message: 'Couldn\'t be completed.',
+          heading: 'Add new user',
+          message: 'couldn\'t be completed.',
         });
         console.log('Failed creating user', error);
         return false;
@@ -74,24 +78,5 @@ export class CreateUserComponent {
       // don't close modal
       return false;
     }
-  }
-
-  hasError(controlName: string) {
-    const control = this.userForm.get(controlName);
-    if (control) {
-      return !control.valid && (control.dirty || control.touched);
-    }
-    return false;
-  }
-
-  getErrorMessage(controlName: string, friendlyName: string) {
-    const control = this.userForm.get(controlName);
-    if (control)
-      if (control.hasError('required')) {
-        return friendlyName + ' is required';
-      } else if (control.hasError('email')) {
-        return friendlyName + ' format is invalid';
-      }
-    return '';
-  }
+  } 
 }

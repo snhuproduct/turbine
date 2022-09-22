@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  StoriesModule, TableComponent
+  StoriesModule,
+  TableComponent,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
 import { UserService } from '../../../shared/services/user/user.service';

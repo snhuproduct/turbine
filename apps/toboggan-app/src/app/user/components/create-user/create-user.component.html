@@ -5,21 +5,33 @@
     <p class="gp-paragraph">Share some information about the new user. You can always edit these details
         later.</p>
     <gp-input
-        label="First Name"
-        [error]="hasError('firstName')"
-        [errorMessage]="getErrorMessage('firstName', 'First Name')">
+        label="First name"
+        toboggan-ws-error-message
+        #firstNameErrMsg="tbWsErrMsg"
+        [form]="userForm"
+        controlName="firstName"
+        [error]="firstNameErrMsg.hasError"
+        [errorMessage]="firstNameErrMsg.errorMessage">
         <input type="text" formControlName="firstName">
     </gp-input>
     <gp-input
-        label="Last Name"
-        [error]="hasError('lastName')"
-        [errorMessage]="getErrorMessage('lastName', 'Last Name')">
+        label="Last name"
+        toboggan-ws-error-message
+        #lastNameErrMsg="tbWsErrMsg"
+        [form]="userForm"
+        controlName="lastName"
+        [error]="lastNameErrMsg.hasError"
+        [errorMessage]="lastNameErrMsg.errorMessage">
         <input type="text" formControlName="lastName">
     </gp-input>
     <gp-input
-        label="Email Address"
-        [error]="hasError('email')"
-        [errorMessage]="getErrorMessage('email', 'Email')">
+        label="Email address"
+        toboggan-ws-error-message
+        #emailErrMsg="tbWsErrMsg"
+        [form]="userForm"
+        controlName="email"
+        [error]="emailErrMsg.hasError"
+        [errorMessage]="emailErrMsg.errorMessage">
         <input type="email" formControlName="email">
     </gp-input>
 </form>

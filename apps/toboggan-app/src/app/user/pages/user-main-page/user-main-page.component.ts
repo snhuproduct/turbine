@@ -21,7 +21,7 @@ export class UserMainPageComponent {
       style: 'secondary',
     },
     {
-      title: 'Add New User',
+      title: 'Add new user',
       onClick: () => this.handleAddNewUserModalButton(),
       style: 'primary',
     },

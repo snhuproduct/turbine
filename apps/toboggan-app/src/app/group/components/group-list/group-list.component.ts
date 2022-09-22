@@ -1,9 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  ModalComponent, TableColumnDisplayMetadatum,
+  ModalComponent,
+  TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -14,7 +21,7 @@ import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from '../edit-group/edit-group.component';
@@ -25,7 +32,7 @@ import { groupTableHeader, RowActions } from './group-table.type';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
 })
-export class GroupListComponent implements OnInit {
+export class GroupListComponent implements OnInit, OnDestroy {
   editTitle = 'Edit user group details';
   dataGenerator: TableDataGenerator = {} as TableDataGenerator;
   groupList: TableRow[] = [];
@@ -51,10 +58,14 @@ export class GroupListComponent implements OnInit {
     private route: ActivatedRoute,
     private bannerService: BannerService,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.refreshTableData();
+  }
+
+  ngOnDestroy(): void {
+    this.datageneratorSubscription.unsubscribe();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,7 +102,7 @@ export class GroupListComponent implements OnInit {
     }
   }
 
-  formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
+  formatTableRowsWithGroupData(fetchedData: unknown): TableRow[] {
     //API call
     const groups = fetchedData as IGroup[];
 
@@ -134,7 +145,9 @@ export class GroupListComponent implements OnInit {
           {
             title: 'Cancel',
             style: 'secondary',
-            onClick: () => { return true },
+            onClick: () => {
+              return true;
+            },
           },
           {
             title: 'Review changes',
@@ -143,7 +156,7 @@ export class GroupListComponent implements OnInit {
               const status = this.editGroupComponent.reviewGroup();
               if (status) {
                 this.editGroupData = status;
-                this.openReviewEditGroupModal()
+                this.openReviewEditGroupModal();
               }
             },
           },
@@ -170,7 +183,7 @@ export class GroupListComponent implements OnInit {
             style: 'secondary',
             onClick: () => {
               this.openEditGroupModal();
-              return false
+              return false;
             },
           },
           {
@@ -236,6 +249,9 @@ export class GroupListComponent implements OnInit {
   }
 
   private refreshTableData() {
+    if (this.datageneratorSubscription.unsubscribe) {
+      this.datageneratorSubscription.unsubscribe();
+    }
     const [prevSearchString, prevCurrentPage] = [
       this.dataGenerator.searchString || '',
       this.dataGenerator.currentPage || this.currentPage,
@@ -244,11 +260,11 @@ export class GroupListComponent implements OnInit {
       this.tableDataService.dataGeneratorFactoryObs(
         this.groupService.fetchGroups(),
         groupTableHeader,
-        this.formatTableRowsWithUserData,
+        this.formatTableRowsWithGroupData,
         this.itemsPerPage,
         prevCurrentPage,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => { },
+        () => {},
         []
       );
     this.datageneratorSubscription =
