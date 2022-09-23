@@ -53,7 +53,7 @@ describe('PermissionsListComponent', () => {
       const tableRows = fixture.debugElement.queryAll(
         By.css('.gp-table-x-table tbody tr')
       );
-      expect(tableHeaders.length).toBe(permissionTableHeader.length + 1);
+      expect(tableHeaders.length).toBe(permissionTableHeader.length);
       expect(tableRows.length).toBe(10);
     });
   });
