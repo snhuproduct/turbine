@@ -3,11 +3,11 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
-import { IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
-
+import { mockGroups } from '../mock/groupsMock';
 @Component({
   selector: 'toboggan-ws-create-user',
   templateUrl: './create-user.component.html',
@@ -33,6 +33,8 @@ export class CreateUserComponent {
     public userService: UserService,
     private bannerService: BannerService
   ) {}
+
+  userGroups :IGroup[] = mockGroups()
 
   async handleAddNewUserModalButton() {
     const delay = (ms: number) => {
