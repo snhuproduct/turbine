@@ -13,7 +13,7 @@ import { mockGroups } from '../mock/groupsMock';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss'],
 })
-export class CreateUserComponent {  
+export class CreateUserComponent {
   @Input() modalHandle?: ModalComponent;
 
   failedToAddUser = false; //indicated wether error banner is shown
@@ -22,28 +22,27 @@ export class CreateUserComponent {
   loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
-    firstName: new FormControl('', [ Validators.required, 
-      Validators.pattern(ValidatorPattern.nameValidation)]),
-    lastName: new FormControl('', [ Validators.required, 
-      Validators.pattern(ValidatorPattern.nameValidation)]),
+    firstName: new FormControl('', [ Validators.required,
+    Validators.pattern(ValidatorPattern.nameValidation)]),
+    lastName: new FormControl('', [ Validators.required,
+    Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
   constructor(
     public userService: UserService,
     private bannerService: BannerService
-  ) {}
-
-  userGroups :IGroup[] = mockGroups()
-  groups:any=[] ;
-  selectGroup(e:any,data:any){
-    if(e.target.checked){
+  ) { }
+  userGroups: IGroup[] = mockGroups()
+  groups: IGroup[] = [];
+  selectGroup(e: any, data: any) {
+    if (e.target.checked) {
       this.groups.push(data);
-    }else {
+    } else {
       let i = 0;
       this.groups.forEach((item: any) => {
         if (item.id == e.target.id) {
-          this.groups.splice(i,1);
+          this.groups.splice(i, 1);
           return;
         }
         i++;
@@ -56,7 +55,7 @@ export class CreateUserComponent {
     };
     this.userForm.markAllAsTouched();
     if (this.userForm.valid) {
-      try {        
+      try {
         if(this.modalHandle)
         {
           this.modalHandle.alertBanners = [];  //reset if there is was error from previous attempt
@@ -94,5 +93,5 @@ export class CreateUserComponent {
       // don't close modal
       return false;
     }
-  } 
+  }
 }
