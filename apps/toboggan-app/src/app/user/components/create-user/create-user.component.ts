@@ -35,7 +35,21 @@ export class CreateUserComponent {
   ) {}
 
   userGroups :IGroup[] = mockGroups()
-
+  groups:any=[] ;
+  selectGroup(e:any,data:any){
+    if(e.target.checked){
+      this.groups.push(data);
+    }else {
+      let i = 0;
+      this.groups.forEach((item: any) => {
+        if (item.id == e.target.id) {
+          this.groups.splice(i,1);
+          return;
+        }
+        i++;
+      });
+    }
+  }
   async handleAddNewUserModalButton() {
     const delay = (ms: number) => {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -50,7 +64,7 @@ export class CreateUserComponent {
         const userObj = this.userForm.getRawValue() as IUser;
         userObj.enabled = true;
         this.isLoading = true;
-
+        userObj.groups = this.groups;
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
         this.bannerService.showBanner({
