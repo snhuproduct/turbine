@@ -1,8 +1,9 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserAnimationsModule,
-  NoopAnimationsModule
+  NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy } from 'jest-mock-extended';
@@ -33,6 +34,7 @@ describe('UserMainPageComponent', () => {
         ReactiveFormsModule,
         SharedModule,
         BrowserAnimationsModule,
+        HttpClientModule,
       ],
       providers: [{ provide: UserService, useValue: mockUserService }],
     }).compileComponents();
@@ -68,7 +70,7 @@ describe('UserMainPageComponent', () => {
       (button) => button.title === 'Add new user'
     );
     const spy = jest.spyOn(
-      component.createUserModal ,
+      component.createUserModal,
       'handleAddNewUserModalButton'
     );
 
