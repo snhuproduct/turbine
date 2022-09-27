@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent, StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy, mockReset } from "jest-mock-extended";
+import { of } from 'rxjs';
+import { GroupService } from '../../../group/services/group.service';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { SharedModule } from '../../../shared/shared.module';
@@ -13,17 +15,23 @@ describe('CreateUserComponent', () => {
   let fixture: ComponentFixture<CreateUserComponent>;
   let bannerService: BannerService;
   const mockUserService: MockProxy<UserService> = mock<UserService>();
+  const mockGroupService = {
+    fetchGroups: jest.fn().mockReturnValue(of([])),   
+  };
   const completedInputs = {
     "firstName": "Bob", 
     "lastName": "Jackson",
-    "email": "BobJackson@test.com"
+    "email": "BobJackson@test.com",
+    "groups":[]
   }
-
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateUserComponent],
       imports: [StoriesModule, SharedModule, ReactiveFormsModule, HttpClientTestingModule],
-      providers: [{ provide: UserService, useValue: mockUserService }]
+      providers: [{ provide: UserService, useValue: mockUserService  },
+        {provide: GroupService, useValue: mockGroupService}
+      ]
     }).compileComponents();
     mockReset(mockUserService);
   });
