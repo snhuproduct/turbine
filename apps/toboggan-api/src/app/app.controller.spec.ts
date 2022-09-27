@@ -5,20 +5,17 @@ import { AppService } from './app.service';
 
 describe('AppController', () => {
   let app: TestingModule;
+  let controller: AppController;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
     }).compile();
+    controller = app.get<AppController>(AppController);
   });
 
-  describe('getData', () => {
-    it('should return "Welcome to toboggan-api!"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({
-        message: 'Welcome to toboggan-api!',
-      });
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 });

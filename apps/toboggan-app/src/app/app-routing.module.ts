@@ -9,9 +9,15 @@ const routes: Routes = [
   },
   {
     path: 'group',
-    loadChildren: () => import('./group/group.module').then((m) => m.GroupModule),
+    loadChildren: () =>
+      import('./group/group.module').then((m) => m.GroupModule),
   },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'permission',
+    loadChildren: () =>
+      import('./permission/permission.module').then((m) => m.PermissionModule),
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
