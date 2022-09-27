@@ -191,7 +191,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
             style: 'primary',
             onClick: async () => {
               this.editGroupComponent.approveChanges();
-              return false;
+              return true;
             },
           },
         ],
