@@ -22,6 +22,12 @@ describe('GroupService', () => {
   });
 
   describe('Group Service', () => {
+    it('should have called api for fetching groups', () => {
+      service.fetchGroups().subscribe();
+      const req = httpMock.expectOne(`/api/groups`);
+      expect(req.request.method).toBe('GET');
+      req.flush([]);
+    });
     it('should have called api for create group', () => {
       const group: IGroup = {
         id: '2AE9GWE5E1A9',
