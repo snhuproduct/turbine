@@ -103,7 +103,6 @@ describe('EditGroupComponent', () => {
   });
 
   it('Should call banner service', fakeAsync((done: () => void) => {
-    //jest.spyOn(component, 'approveChanges');
     const showBannerSpy = jest.spyOn(mockBannerService, 'showBanner');
     component.editGroupForm.setValue({
       name: 'name',
@@ -115,6 +114,5 @@ describe('EditGroupComponent', () => {
       expect(showBannerSpy).toBeCalled();
       done();
     });
-    // fixture.detectChanges();
   }));
 });
