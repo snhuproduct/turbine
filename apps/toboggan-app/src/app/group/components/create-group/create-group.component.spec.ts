@@ -53,7 +53,7 @@ describe('CreateGroupComponent', () => {
       description: 'description',
       addUser: false,
     });
-    component.getErrorMessage('name', 'name');
+    component.getErrorMessage('name');
     expect(component.createGroupForm.valid).toBeFalsy();
   });
 
@@ -64,7 +64,7 @@ describe('CreateGroupComponent', () => {
       description: 'description',
       addUser: false,
     });
-    component.getErrorMessage('name', 'name');
+    component.getErrorMessage('name');
     expect(component.createGroupForm.valid).toBeFalsy();
   });
 });
