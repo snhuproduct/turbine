@@ -15,7 +15,10 @@ export class EditGroupComponent implements OnInit {
   @Input() mode = 'edit';
   @Input() group!: IGroup;
   @Input() oldGroup!: IGroup;
-  constructor(private groupService: GroupService ,private bannerService: BannerService) { }
+  constructor(
+    private groupService: GroupService,
+    private bannerService: BannerService
+  ) {}
 
   ngOnInit(): void {
     this.editGroupForm = new FormGroup({
@@ -26,22 +29,22 @@ export class EditGroupComponent implements OnInit {
       description: new FormControl(this.group.description, [
         Validators.required,
         Validators.maxLength(300),
-        this.specialCharactersValidation
-      ])
+        this.specialCharactersValidation,
+      ]),
     });
   }
 
-  getErrorMessage(controlName: string, friendlyName: string) {
+  getErrorMessage(controlName: string) {
     const control = this.editGroupForm.get(controlName);
     if (control)
       if (control.hasError('required')) {
-        return `${friendlyName} ${FormError.isRequired}`;
+        return `${FormError.empty}`;
       } else if (control.hasError('specialCharacters')) {
         return `${FormError.characters} ! @ # $`;
       } else if (control.hasError('pattern')) {
         return `${FormError.lettersAndNumbers}`;
       } else if (control.hasError('maxlength')) {
-        return `${FormError.maxLength}`;
+        return 'Shorten the description';
       }
     return '';
   }
@@ -109,7 +112,8 @@ export class EditGroupComponent implements OnInit {
           message: `<b>Edit group details</b> couldn't be completed.`,
           button: {
             label: 'Dismiss',
-            action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+            action: (bannerId: number) =>
+              this.bannerService.hideBanner(bannerId),
           },
           autoDismiss: true,
         });
@@ -117,5 +121,4 @@ export class EditGroupComponent implements OnInit {
       },
     });
   }
-
 }

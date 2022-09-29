@@ -63,8 +63,8 @@ describe('EditGroupComponent', () => {
       description: 'description@',
     });
     component.hasError('name');
-    component.getErrorMessage('name', 'name');
-    component.getErrorMessage('description', 'description');
+    component.getErrorMessage('name');
+    component.getErrorMessage('description');
     expect(component.editGroupForm.valid).toBeFalsy();
   });
 
@@ -75,8 +75,8 @@ describe('EditGroupComponent', () => {
       description:
         'description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description',
     });
-    component.getErrorMessage('name', 'name');
-    component.getErrorMessage('description', 'description');
+    component.getErrorMessage('name');
+    component.getErrorMessage('description');
     expect(component.editGroupForm.valid).toBeFalsy();
   });
 

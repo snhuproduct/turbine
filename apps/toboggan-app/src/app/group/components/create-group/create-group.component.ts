@@ -4,7 +4,7 @@ import {
   EventEmitter,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
@@ -38,7 +38,7 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
       description: new FormControl('', [
         Validators.required,
         Validators.maxLength(300),
-        this.specialCharactersValidation
+        this.specialCharactersValidation,
       ]),
       addUser: new FormControl(false),
     });
@@ -48,17 +48,17 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
     this.createGroupModal.open();
   }
 
-  getErrorMessage(controlName: string, friendlyName: string) {
+  getErrorMessage(controlName: string) {
     const control = this.createGroupForm.get(controlName);
     if (control)
       if (control.hasError('required')) {
-        return `${friendlyName} ${FormError.isRequired}`;
+        return `${FormError.empty}`;
       } else if (control.hasError('specialCharacters')) {
         return `${FormError.characters} ! @ # $`;
       } else if (control.hasError('pattern')) {
         return `${FormError.lettersAndNumbers}`;
       } else if (control.hasError('maxlength')) {
-        return `${FormError.maxLength}`;
+        return 'Shorten the description';
       }
     return '';
   }
