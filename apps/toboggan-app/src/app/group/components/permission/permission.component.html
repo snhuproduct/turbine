@@ -14,7 +14,7 @@
         </gp-radio-group>
         <br />
         <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            help="Optional" [required]="false">
+            [optional]="true">
             <gp-checkbox label="Archive">
                 <input type="checkbox" name="data.name" id="data.id" value="data.id"
                     (change)="onCheckboxToggle($event)" />
@@ -33,7 +33,7 @@
         </gp-radio-group>
         <br />
         <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            help="Optional" [required]="false">
+            [optional]="true">
             <gp-checkbox label="Archive">
                 <input type="checkbox" name="data.name" id="data.id" value="data.id"
                     (change)="onCheckboxToggle($event)" />
@@ -52,7 +52,7 @@
         </gp-radio-group>
         <br />
         <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            help="Optional" [required]="false">
+            [optional]="true">
             <gp-checkbox label="Archive">
                 <input type="checkbox" name="data.name" id="data.id" value="data.id"
                     (change)="onCheckboxToggle($event)" />
