@@ -9,7 +9,9 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from '../../../shared/shared.module';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { ListUsersComponent } from '../../components/list-users/list-users.component';
+import { PermissionComponent } from '../../components/permission/permission.component';
 import { GroupDetailsPageComponent } from './group-details-page.component';
+
 describe('GroupDetailsPageComponent', () => {
   let component: GroupDetailsPageComponent;
   let fixture: ComponentFixture<GroupDetailsPageComponent>;
@@ -30,6 +32,7 @@ describe('GroupDetailsPageComponent', () => {
         GroupDetailsPageComponent,
         ListUsersComponent,
         AddUsersComponent,
+        PermissionComponent
       ],
     }).compileComponents();
 
