@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
-import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../../group/services/group.service';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -22,9 +22,9 @@ export class CreateUserComponent {
   loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
-    firstName: new FormControl('', [ Validators.required,
+    firstName: new FormControl('', [Validators.required,
     Validators.pattern(ValidatorPattern.nameValidation)]),
-    lastName: new FormControl('', [ Validators.required,
+    lastName: new FormControl('', [Validators.required,
     Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     groups: new FormArray([]),
@@ -34,30 +34,30 @@ export class CreateUserComponent {
     public userService: UserService,
     private bannerService: BannerService,
     private groupService: GroupService
-    ) {
-      this.groupService.fetchGroups().subscribe(response=>{
-        this.userGroups = response;
-      })  
-     }
-    
-     onCheckboxToggle(e:any) {
-      const groups: FormArray = this.userForm.get('groups') as FormArray;
-      if (e.target.checked) {
-        const userGroup = this.userGroups.find(group=> group.id == e.target.value)
-        groups.push(new FormControl(userGroup));
-      } else {
-        let i = 0;
-        groups.controls.forEach((item: any) => {
-          if (item.value.id == e.target.value) {
-            groups.removeAt(i);
-            return;
-          }
-          i++;
-        });
-      }
+  ) {
+    this.groupService.fetchGroups().subscribe(response => {
+      this.userGroups = response;
+    })
+  }
+
+  onCheckboxToggle(e: any) {
+    const groups: FormArray = this.userForm.get('groups') as FormArray;
+    if (e.target.checked) {
+      const userGroup = this.userGroups.find(group => group.id == e.target.value)
+      groups.push(new FormControl(userGroup));
+    } else {
+      let i = 0;
+      groups.controls.forEach((item: any) => {
+        if (item.value.id == e.target.value) {
+          groups.removeAt(i);
+          return;
+        }
+        i++;
+      });
     }
-  
- 
+  }
+
+
   async handleAddNewUserModalButton() {
     const delay = (ms: number) => {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -65,8 +65,7 @@ export class CreateUserComponent {
     this.userForm.markAllAsTouched();
     if (this.userForm.valid) {
       try {
-        if(this.modalHandle)
-        {
+        if (this.modalHandle) {
           this.modalHandle.alertBanners = [];  //reset if there is was error from previous attempt
         }
         const userObj = this.userForm.getRawValue() as unknown as IUser;
@@ -92,7 +91,6 @@ export class CreateUserComponent {
           heading: 'Add new user',
           message: 'couldn\'t be completed.',
         });
-        console.log('Failed creating user', error);
         return false;
       } finally {
         this.isLoading = false;

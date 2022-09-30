@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { GroupService } from '../../services/group.service';
+import { applicationTab } from './data/applicationTab';
 @Component({
   selector: 'toboggan-ws-group-details-page',
   templateUrl: './group-details-page.component.html',
@@ -13,10 +14,12 @@ export class GroupDetailsPageComponent implements OnInit {
   id: any;
   group!: IGroup;
   showAddUserModal = false;
+  leftTabs = applicationTab;
+  activeLeftTab = 0;
   constructor(
     private route: ActivatedRoute,
     private groupService: GroupService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -35,5 +38,16 @@ export class GroupDetailsPageComponent implements OnInit {
 
   handleAddUserToGroupAction() {
     this.showAddUserModal = false;
+  }
+
+  changeTab(tab: any) {
+    this.activeLeftTab = tab.id;
+    this.leftTabs.forEach(data => {
+      if (data.id === tab.id) {
+        data.active = true;
+      } else {
+        data.active = false;
+      }
+    })
   }
 }
