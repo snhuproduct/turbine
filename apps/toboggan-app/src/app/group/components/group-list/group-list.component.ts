@@ -31,7 +31,6 @@ import { groupTableHeader, RowActions } from './group-table.type';
   styleUrls: ['./group-list.component.scss'],
 })
 export class GroupListComponent implements OnInit, OnDestroy {
-  editTitle = 'Edit user group details';
   dataGenerator: TableDataGenerator = {} as TableDataGenerator;
   groupList: TableRow[] = [];
   currentPage = 1;
