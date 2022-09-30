@@ -41,6 +41,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private updateGroupSubscription: Subscription = {} as Subscription;
   @ViewChild('editGroup') editGroupTemplate?: ElementRef;
   @ViewChild(EditGroupComponent) editGroupComponent!: EditGroupComponent;
   editModalState!: ModalOptions;
@@ -62,15 +63,22 @@ export class GroupListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.groupService.groupUpdated$.subscribe(() => {
-      this.showEditGroupModal = false;
-      this.refreshTableData();
-    });
+    if (this.groupService.groupUpdated$) {
+      this.updateGroupSubscription = this.groupService.groupUpdated$.subscribe(
+        () => {
+          this.showEditGroupModal = false;
+          this.refreshTableData();
+        }
+      );
+    }
+
     this.refreshTableData();
   }
 
   ngOnDestroy(): void {
-    this.datageneratorSubscription.unsubscribe();
+    [this.datageneratorSubscription, this.updateGroupSubscription].map((s) => {
+      if (s.unsubscribe) s.unsubscribe();
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

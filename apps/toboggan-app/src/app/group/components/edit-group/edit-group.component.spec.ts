@@ -1,16 +1,13 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup } from '@toboggan-ws/toboggan-common';
+import { mock, MockProxy } from 'jest-mock-extended';
 import { of } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
+import { SharedModule } from '../../../shared/shared.module';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from './edit-group.component';
 
@@ -18,9 +15,7 @@ describe('EditGroupComponent', () => {
   let component: EditGroupComponent;
   let fixture: ComponentFixture<EditGroupComponent>;
 
-  const mockGroupService = {
-    updateGroup: jest.fn().mockReturnValue(of({})),
-  };
+  const mockGroupService: MockProxy<GroupService> = mock<GroupService>();
 
   const mockBannerService = {
     showBanner: jest.fn().mockReturnValueOnce(of(true)),
@@ -34,9 +29,10 @@ describe('EditGroupComponent', () => {
         HttpClientTestingModule,
         StoriesModule,
         ReactiveFormsModule,
+        SharedModule,
       ],
       providers: [
-        GroupService,
+        { provide: GroupService, useValue: mockGroupService },
         { provide: BannerService, useValue: mockBannerService },
       ],
     }).compileComponents();
@@ -81,12 +77,12 @@ describe('EditGroupComponent', () => {
   });
 
   it('getErrorMessage method should check name with numbers', () => {
-    jest.spyOn(component, 'reviewGroup');
+    jest.spyOn(component, 'editModalAccept');
     component.editGroupForm.setValue({
       name: 'name',
       description: 'description',
     });
-    component.reviewGroup();
+    component.editModalAccept();
     expect(component.editGroupForm.valid).toBeTruthy();
   });
 
@@ -102,17 +98,13 @@ describe('EditGroupComponent', () => {
     expect(approveGroupSpy).toBeCalled();
   });
 
-  it('Should call banner service', fakeAsync((done: () => void) => {
+  it('Should call banner service', async () => {
     const showBannerSpy = jest.spyOn(mockBannerService, 'showBanner');
     component.editGroupForm.setValue({
       name: 'name',
       description: 'description',
     });
-    component.approveChanges();
-    tick();
-    groupService.updateGroup(component.editGroupForm.value).subscribe(() => {
-      expect(showBannerSpy).toBeCalled();
-      done();
-    });
-  }));
+    await component.approveChanges();
+    expect(showBannerSpy).toBeCalled();
+  });
 });
