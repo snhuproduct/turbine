@@ -53,7 +53,6 @@ describe('EditGroupComponent', () => {
   });
 
   it('getErrorMessage method should check name with special characters ! @ # $', () => {
-    jest.spyOn(component, 'getErrorMessage');
     component.editGroupForm.setValue({
       name: 'name@',
       description: 'description@',
@@ -64,8 +63,7 @@ describe('EditGroupComponent', () => {
     expect(component.editGroupForm.valid).toBeFalsy();
   });
 
-  it('getErrorMessage method should check name with numbers', () => {
-    jest.spyOn(component, 'getErrorMessage');
+  it('getErrorMessage method should check description character count', () => {
     component.editGroupForm.setValue({
       name: '',
       description:
@@ -76,18 +74,17 @@ describe('EditGroupComponent', () => {
     expect(component.editGroupForm.valid).toBeFalsy();
   });
 
-  it('getErrorMessage method should check name with numbers', () => {
-    jest.spyOn(component, 'editModalAccept');
+  it('should open review modal ', () => {
     component.editGroupForm.setValue({
       name: 'name',
       description: 'description',
     });
     component.editModalAccept();
     expect(component.editGroupForm.valid).toBeTruthy();
+    expect(component.reviewModal).toBeDefined();
   });
 
-  it('getErrorMessage method should check name with numbers', () => {
-    jest.spyOn(component, 'approveChanges');
+  it('should call update call updategroup with valid input', () => {
     const approveGroupSpy = jest.spyOn(groupService, 'updateGroup');
     component.editGroupForm.setValue({
       name: 'name',
