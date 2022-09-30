@@ -7,14 +7,12 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  ModalComponent,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, Subscription } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
@@ -33,7 +31,6 @@ import { groupTableHeader, RowActions } from './group-table.type';
   styleUrls: ['./group-list.component.scss'],
 })
 export class GroupListComponent implements OnInit, OnDestroy {
-  editTitle = 'Edit user group details';
   dataGenerator: TableDataGenerator = {} as TableDataGenerator;
   groupList: TableRow[] = [];
   currentPage = 1;
@@ -42,13 +39,13 @@ export class GroupListComponent implements OnInit, OnDestroy {
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
+  private updateGroupSubscription: Subscription = {} as Subscription;
   @ViewChild('editGroup') editGroupTemplate?: ElementRef;
   @ViewChild(EditGroupComponent) editGroupComponent!: EditGroupComponent;
-  editModalState!: ModalOptions;
-  editModalRef?: BsModalRef | null;
   editGroupMode = 'edit';
   editGroupData!: IGroup;
-  editOldGroupData!: IGroup;
+
+  showEditGroupModal = false;
 
   constructor(
     private groupService: GroupService,
@@ -56,16 +53,26 @@ export class GroupListComponent implements OnInit, OnDestroy {
     private modalAlertService: ModalAlertService,
     private router: Router,
     private route: ActivatedRoute,
-    private bannerService: BannerService,
-    private modalService: BsModalService
+    private bannerService: BannerService
   ) {}
 
   ngOnInit(): void {
+    if (this.groupService.groupUpdated$) {
+      this.updateGroupSubscription = this.groupService.groupUpdated$.subscribe(
+        () => {
+          this.showEditGroupModal = false;
+          this.refreshTableData();
+        }
+      );
+    }
+
     this.refreshTableData();
   }
 
   ngOnDestroy(): void {
-    this.datageneratorSubscription.unsubscribe();
+    [this.datageneratorSubscription, this.updateGroupSubscription].map((s) => {
+      if (s.unsubscribe) s.unsubscribe();
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -88,8 +95,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     switch (action) {
       case RowActions.Edit:
         this.editGroupData = rowData.cellData as unknown as IGroup;
-        this.editOldGroupData = { ...this.editGroupData };
-        this.openEditGroupModal();
+        this.showEditGroupModal = true;
         break;
       case RowActions.ViewDetails:
         this.router.navigate([`/group/details/${groupId}`], {
@@ -132,76 +138,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
     });
 
     return data as TableRow[];
-  }
-
-  openEditGroupModal() {
-    this.modalService._hideModal();
-    this.editGroupMode = 'edit';
-    this.editModalState = {
-      initialState: {
-        templateRef: this.editGroupTemplate,
-        title: 'Edit user group details',
-        modalButtons: [
-          {
-            title: 'Cancel',
-            style: 'secondary',
-            onClick: () => {
-              return true;
-            },
-          },
-          {
-            title: 'Review changes',
-            style: 'primary',
-            onClick: async () => {
-              const status = this.editGroupComponent.reviewGroup();
-              if (status) {
-                this.editGroupData = status;
-                this.openReviewEditGroupModal();
-              }
-            },
-          },
-        ],
-      },
-      class: 'gp-modal',
-    };
-    this.editModalRef = this.modalService.show(
-      ModalComponent,
-      this.editModalState
-    );
-  }
-
-  openReviewEditGroupModal() {
-    this.modalService._hideModal();
-    this.editGroupMode = 'review';
-    this.editModalState = {
-      initialState: {
-        templateRef: this.editGroupTemplate,
-        title: 'Approve changes?',
-        modalButtons: [
-          {
-            title: 'No, keep editing',
-            style: 'secondary',
-            onClick: () => {
-              this.openEditGroupModal();
-              return false;
-            },
-          },
-          {
-            title: 'Yes, approve',
-            style: 'primary',
-            onClick: async () => {
-              this.editGroupComponent.approveChanges();
-              return true;
-            },
-          },
-        ],
-      },
-      class: 'gp-modal',
-    };
-    this.editModalRef = this.modalService.show(
-      ModalComponent,
-      this.editModalState
-    );
   }
 
   openDeleteGroupConfirmation(group: IGroup) {
