@@ -13,7 +13,6 @@ import {
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, Subscription } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
@@ -44,11 +43,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
   private updateGroupSubscription: Subscription = {} as Subscription;
   @ViewChild('editGroup') editGroupTemplate?: ElementRef;
   @ViewChild(EditGroupComponent) editGroupComponent!: EditGroupComponent;
-  editModalState!: ModalOptions;
-  editModalRef?: BsModalRef | null;
   editGroupMode = 'edit';
   editGroupData!: IGroup;
-  editOldGroupData!: IGroup;
 
   showEditGroupModal = false;
 
@@ -58,8 +54,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     private modalAlertService: ModalAlertService,
     private router: Router,
     private route: ActivatedRoute,
-    private bannerService: BannerService,
-    private modalService: BsModalService
+    private bannerService: BannerService
   ) {}
 
   ngOnInit(): void {
@@ -101,9 +96,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     switch (action) {
       case RowActions.Edit:
         this.editGroupData = rowData.cellData as unknown as IGroup;
-        this.editOldGroupData = { ...this.editGroupData };
         this.showEditGroupModal = true;
-        // this.openEditGroupModal();
         break;
       case RowActions.ViewDetails:
         this.router.navigate([`/group/details/${groupId}`], {
