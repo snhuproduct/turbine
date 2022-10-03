@@ -9,7 +9,7 @@ describe('Groups', () => {
     cy.wait('@getGroups');
 
     cy.get('table > tbody > tr').as('tableRows');
-    cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn')
+    cy.get('@tableRows').get('td:nth-child(1)').as('tableFirstColumn');
   });
 
   it('should have the table', () => {
@@ -79,5 +79,45 @@ describe('Groups', () => {
         "Group name-19",
         "Group name-18"
       ]);
+  });
+
+  it('should display the default state of the user group when changes are not approved', () => {
+    cy.get('@tableRows').get('td:nth-child(3)').find('button').first().click({ force: true });
+
+    cy.get('.gp-table-x-dropdownmenubutton').contains('Edit').click();
+
+    cy.get('.modal-content:visible').as('editModal');
+
+    cy.get('@editModal').find('.gp-input').clear().type('123');
+    cy.get('@editModal').find('.gp-textarea').clear().type('123');
+
+    cy.get('@editModal').contains('Review changes').click({ force: true });
+
+    cy.get('.modal-content:visible').as('reviewModal');
+
+    cy.get('@reviewModal').contains('No, keep editing').click({ force: true });
+
+    cy.get('@editModal').contains('Cancel').click({ force: true });
+
+    cy.get('@tableRows').should('not.contain', '123');
+  });
+
+  it('should display changes after approving', () => {
+    cy.get('@tableRows').get('td:nth-child(3)').find('button').first().click({ force: true });
+
+    cy.get('.gp-table-x-dropdownmenubutton').contains('Edit').click();
+
+    cy.get('.modal-content:visible').as('editModal');
+
+    cy.get('@editModal').find('.gp-input').clear().type('123');
+    cy.get('@editModal').find('.gp-textarea').clear().type('123');
+
+    cy.get('@editModal').contains('Review changes').click({ force: true });
+
+    cy.get('.modal-content:visible').as('reviewModal');
+
+    cy.get('@reviewModal').contains('Yes, approve').click({ force: true });
+
+    cy.get('.gp-banneralert').should('exist');
   });
 })
