@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { permissionRadio } from './data/permissions';
 
@@ -11,11 +11,12 @@ import { permissionRadio } from './data/permissions';
 })
 export class PermissionComponent implements OnInit {
   groupPermissionForm!: FormGroup;
-  permissions!: any[];
+  permissionsCheck!: any[];
+  @Input() permissions!: any[];
   constructor() { }
 
   ngOnInit(): void {
-    this.permissions = permissionRadio;
+    this.permissionsCheck = permissionRadio;
     this.groupPermissionForm = new FormGroup({
       contentobject: new FormControl('0'),
       learningexperience: new FormControl('0'),

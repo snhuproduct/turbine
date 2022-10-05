@@ -23,7 +23,9 @@
           <div class="col-3">
             <div class="p-4">
               <button gp-button iconVariations="iconleft" label="Edit app access" size="default" styleType="secondary"
-                iconId="gp-icon-settings" [isLoading]="false"></button>
+                iconId="gp-icon-settings" [isLoading]="false" (click)="openPermissionModal()"></button>
+              <toboggan-ws-add-permission *ngIf="openPermission" (hidden)="openPermission=false">
+              </toboggan-ws-add-permission>
               <div class="slide-left">
                 <div class="gp-level-6 mb-4">Applications</div>
                 <button *ngFor="let tab of leftTabs" gp-button [label]="tab.label" size="default"

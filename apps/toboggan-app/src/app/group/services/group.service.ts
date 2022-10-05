@@ -9,7 +9,7 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 export class GroupService {
   private _groupUpdated = new BehaviorSubject<IGroup>({} as IGroup);
   groupUpdated$ = this._groupUpdated.asObservable();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Fetch all groups
   fetchGroups() {

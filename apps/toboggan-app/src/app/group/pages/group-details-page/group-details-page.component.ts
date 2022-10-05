@@ -16,6 +16,7 @@ export class GroupDetailsPageComponent implements OnInit {
   showAddUserModal = false;
   leftTabs = applicationTab;
   activeLeftTab = 0;
+  openPermission = false;
   constructor(
     private route: ActivatedRoute,
     private groupService: GroupService
@@ -24,6 +25,10 @@ export class GroupDetailsPageComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getGroupDetails();
+  }
+
+  openPermissionModal(): void {
+    this.openPermission = true;
   }
 
   getGroupDetails(): void {
