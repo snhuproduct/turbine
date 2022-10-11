@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { IComponentCanDeactivate } from '../../services/pending-changes.guard';
 import { permissionRadio } from './data/permissions';
 
 @Component({
@@ -9,10 +11,15 @@ import { permissionRadio } from './data/permissions';
   templateUrl: './permission.component.html',
   styleUrls: ['./permission.component.scss'],
 })
-export class PermissionComponent implements OnInit {
+export class PermissionComponent implements OnInit, IComponentCanDeactivate {
   groupPermissionForm!: FormGroup;
   permissions!: any[];
-  constructor() { }
+  constructor() {}
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.groupPermissionForm.pristine;
+  }
 
   ngOnInit(): void {
     this.permissions = permissionRadio;
@@ -23,10 +30,9 @@ export class PermissionComponent implements OnInit {
     });
   }
 
-  onCheckboxToggle(e: any) {
-  }
+  onCheckboxToggle(e: any) {}
 
   onSubmit() {
-    console.log(this.groupPermissionForm)
+    console.log(this.groupPermissionForm);
   }
 }
