@@ -33,14 +33,12 @@ describe('AddPermissionComponent', () => {
   });
 
   it('modal should close', () => {
-    jest.spyOn(component, 'hideModal');
     jest.spyOn(component.addPermissionModal, 'close');
     component.hideModal();
     expect(component.addPermissionModal.close).toHaveBeenCalled();
   });
 
   it('shold call addPermission', () => {
-    jest.spyOn(component, 'addPermission');
     jest.spyOn(component.addPermissionModal, 'close');
     component.addPermission();
     expect(component.addPermissionModal.close).toHaveBeenCalled();

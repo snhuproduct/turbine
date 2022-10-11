@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PermissionService } from '../../../permission/services/permission.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
@@ -9,7 +9,7 @@ import { BannerService } from '../../../shared/services/banner/banner.service';
   templateUrl: './add-permission.component.html',
   styleUrls: ['./add-permission.component.scss'],
 })
-export class AddPermissionComponent {
+export class AddPermissionComponent implements AfterViewInit {
   @ViewChild('addPermissionModal') addPermissionModal!: ModalComponent;
   @Output() addPermissionAction = new EventEmitter<boolean | undefined>();
   @Output() hidden = new EventEmitter();
