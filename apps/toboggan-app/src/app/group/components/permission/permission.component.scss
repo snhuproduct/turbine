@@ -13,3 +13,14 @@
 .text-right {
   text-align: right;
 }
+
+.p-12 {
+  padding: 48px;
+}
+
+.no-permission {
+  p {
+    margin: 5px;
+    padding: 0;
+  }
+}

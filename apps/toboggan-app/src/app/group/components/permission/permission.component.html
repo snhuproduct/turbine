@@ -1,4 +1,4 @@
-<div class="gp-container p-6">
+<div class="gp-container p-6" *ngIf="permissions">
     <div class="gp-level-4">Admin Application</div>
     <hr class="gp-hr" />
 
@@ -7,7 +7,7 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group size="default" label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissions" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
                 <input [value]="data.value" type="radio" name="contentobject" id="radio1"
                     formControlName="contentobject" [checked]="data.value" />
             </gp-radio>
@@ -26,7 +26,7 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group size="default" label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissions" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
                 <input type="radio" [value]="data.value" name="learningexperience" id="radio2"
                     formControlName="learningexperience" />
             </gp-radio>
@@ -45,7 +45,7 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group size="default" label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissions" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
                 <input [value]="data.value" type="radio" name="learningresources" id="radio3"
                     formControlName="learningresources" />
             </gp-radio>
@@ -64,4 +64,9 @@
 
     </form>
 
+</div>
+
+<div class="gp-container p-12 no-permission" *ngIf="!permissions">
+    <p class="text-center"><b>No permissions yet</b></p>
+    <p class="text-center">Add an application to grant permissions to this user group.</p>
 </div>

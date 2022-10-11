@@ -1,0 +1,57 @@
+<toboggan-ws-modal #addPermissionModal title="Grant access" acceptButton="Grant access" cancelButton="Cancel"
+    (hidden)="hideModal()" (accept)="addPermission()" id="add-permission">
+    <div class="permission-check">
+        <div class="row">
+            <div class="col">
+                <b>Applications</b>
+            </div>
+            <div class="col-auto">
+                <span class="header-left">View Access</span>
+            </div>
+        </div>
+        <form [formGroup]="addPermissionForm">
+            <div class="row">
+                <div class="col">
+                    Admin Application
+                </div>
+                <div class="col-auto">
+                    <gp-toggle size="default" [icon]="true" [error]="false">
+                        <input type="checkbox" id="default" formControlName="adminApplication" />
+                    </gp-toggle>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Assessment Authoring
+                </div>
+                <div class="col-auto">
+                    <gp-toggle size="default" [icon]="true" [error]="false">
+                        <input type="checkbox" id="default" formControlName="assessmentAuthoring" />
+                    </gp-toggle>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    Content Authoring
+                </div>
+                <div class="col-auto">
+                    <gp-toggle size="default" [icon]="true" [error]="false">
+                        <input type="checkbox" id="default" formControlName="contentAuthoring" />
+                    </gp-toggle>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    Content Management
+                </div>
+                <div class="col-auto">
+                    <gp-toggle size="default" [icon]="true" [error]="false">
+                        <input type="checkbox" id="default" formControlName="contentManagement" />
+                    </gp-toggle>
+                </div>
+            </div>
+        </form>
+    </div>
+</toboggan-ws-modal>

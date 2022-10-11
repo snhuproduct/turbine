@@ -2,13 +2,7 @@
   <div class="p-5">
     <toboggan-ws-banner></toboggan-ws-banner>
     <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
-    <a
-      gp-link
-      iconId="gp-icon-west"
-      iconVariations="iconleft"
-      routerLink="/group"
-      >Back to User Groups</a
-    >
+    <a gp-link iconId="gp-icon-west" iconVariations="iconleft" routerLink="/group">Back to User Groups</a>
     <div class="gp-level-4 mt-6">User Group</div>
     <div *ngIf="group">
       <div class="gp-level-5">{{ group.name }}</div>
@@ -18,11 +12,7 @@
       <gp-tab label="Users">
         <toboggan-ws-list-users [group]="group">
           <div table-cta-right>
-            <button
-              gp-button
-              class="add-user-group-btn"
-              (click)="openAddUserToGroupModal()"
-            >
+            <button gp-button class="add-user-group-btn" (click)="openAddUserToGroupModal()">
               Add user
             </button>
           </div>
@@ -32,41 +22,24 @@
         <div class="row pb-5 pb-md-8 g-5 g-md-8">
           <div class="col-3">
             <div class="p-4">
-              <button
-                gp-button
-                iconVariations="iconleft"
-                label="Edit app access"
-                size="default"
-                styleType="secondary"
-                iconId="gp-icon-settings"
-                [isLoading]="false"
-              ></button>
+              <button gp-button iconVariations="iconleft" label="Edit app access" size="default" styleType="secondary"
+                iconId="gp-icon-settings" [isLoading]="false" (click)="openPermissionModal()"></button>
+              <toboggan-ws-add-permission *ngIf="openPermission" (hidden)="openPermission=false">
+              </toboggan-ws-add-permission>
               <div class="slide-left">
                 <div class="gp-level-6 mb-4">Applications</div>
-                <button
-                  *ngFor="let tab of leftTabs"
-                  gp-button
-                  [label]="tab.label"
-                  size="default"
-                  [styleType]="tab.active ? 'secondary' : 'tertiary'"
-                  (click)="changeTab(tab)"
-                ></button>
+                <button *ngFor="let tab of leftTabs" gp-button [label]="tab.label" size="default"
+                  [styleType]="tab.active ? 'secondary' : 'tertiary'" (click)="changeTab(tab)"></button>
               </div>
             </div>
           </div>
           <div class="col-9">
-            <toboggan-ws-permission
-              *ngIf="activeLeftTab === 0"
-            ></toboggan-ws-permission>
+            <toboggan-ws-permission *ngIf="activeLeftTab === 0"></toboggan-ws-permission>
           </div>
         </div>
       </gp-tab>
     </gp-tabs>
   </div>
-  <toboggan-ws-add-users
-    *ngIf="showAddUserModal"
-    (addUserToGroupAction)="handleAddUserToGroupAction()"
-    [group]="group"
-  >
+  <toboggan-ws-add-users *ngIf="showAddUserModal" (addUserToGroupAction)="handleAddUserToGroupAction()" [group]="group">
   </toboggan-ws-add-users>
 </gp-page>

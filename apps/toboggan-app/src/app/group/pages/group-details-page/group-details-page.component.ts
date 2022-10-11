@@ -16,13 +16,13 @@ import { applicationTab } from './data/applicationTab';
   styleUrls: ['./group-details-page.component.scss'],
 })
 export class GroupDetailsPageComponent
-  implements OnInit, IComponentCanDeactivate
-{
+  implements OnInit, IComponentCanDeactivate {
   id: any;
   group!: IGroup;
   showAddUserModal = false;
   leftTabs = applicationTab;
   activeLeftTab = 0;
+  openPermission = false;
 
   @ViewChild(TabsComponent) tabsComponent: TabsComponent = {} as TabsComponent;
   @ViewChild(PermissionComponent) permissionComponent: PermissionComponent =
@@ -31,13 +31,16 @@ export class GroupDetailsPageComponent
     private route: ActivatedRoute,
     private groupService: GroupService,
     private modalAlertService: ModalAlertService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getGroupDetails();
   }
 
+  openPermissionModal(): void {
+    this.openPermission = true;
+  }
   canDeactivate(): Observable<boolean> | boolean {
     if (this.tabsComponent.activeTabIndex == 1) {
       return this.permissionComponent.canDeactivate();
