@@ -2,13 +2,13 @@
   <div class="p-5">
     <toboggan-ws-banner></toboggan-ws-banner>
     <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
-    <a gp-link iconId="gp-icon-west" iconVariations="iconleft">Back to User Groups</a>
+    <a gp-link iconId="gp-icon-west" iconVariations="iconleft" routerLink="/group">Back to User Groups</a>
     <div class="gp-level-4 mt-6">User Group</div>
     <div *ngIf="group">
       <div class="gp-level-5">{{ group.name }}</div>
       <div class="my-6">{{ group.description }}</div>
     </div>
-    <gp-tabs>
+    <gp-tabs (click)="onTabChange($event)">
       <gp-tab label="Users">
         <toboggan-ws-list-users [group]="group">
           <div table-cta-right>
@@ -29,7 +29,7 @@
               <div class="slide-left">
                 <div class="gp-level-6 mb-4">Applications</div>
                 <button *ngFor="let tab of leftTabs" gp-button [label]="tab.label" size="default"
-                  [styleType]="tab.active?'secondary':'tertiary'" (click)="changeTab(tab)"></button>
+                  [styleType]="tab.active ? 'secondary' : 'tertiary'" (click)="changeTab(tab)"></button>
               </div>
             </div>
           </div>
