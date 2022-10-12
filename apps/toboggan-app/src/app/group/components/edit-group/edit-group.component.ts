@@ -1,7 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
+import * as R from 'ramda';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { GroupService } from '../../services/group.service';
 
@@ -9,29 +20,48 @@ import { GroupService } from '../../services/group.service';
   selector: 'toboggan-ws-edit-group',
   templateUrl: './edit-group.component.html',
   styleUrls: ['./edit-group.component.scss'],
+  providers: [SafeHtmlPipe],
 })
-export class EditGroupComponent implements OnInit {
-  editGroupForm!: FormGroup;
+export class EditGroupComponent implements OnChanges, AfterViewInit {
+  // editGroupForm!: FormGroup;
   @Input() mode = 'edit';
-  @Input() group!: IGroup;
-  @Input() oldGroup!: IGroup;
+  @Input() group: IGroup = {} as IGroup;
+  @Input() oldGroup: IGroup = {} as IGroup;
+  @ViewChild('edit') editModal!: ModalComponent;
+  @ViewChild('review') reviewModal!: ModalComponent;
+  reviewing?: Partial<IGroup> | null = null;
+  isLoading = false;
+  loaderType = InterstitialLoaderType.Large;
+  editGroupForm = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[a-zA-Z0-9 ]*$'),
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(300),
+      this.specialCharactersValidation,
+    ]),
+  });
   constructor(
     private groupService: GroupService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private safeHtmlPipe: SafeHtmlPipe
   ) {}
 
-  ngOnInit(): void {
-    this.editGroupForm = new FormGroup({
-      name: new FormControl(this.group.name, [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9 ]*$'),
-      ]),
-      description: new FormControl(this.group.description, [
-        Validators.required,
-        Validators.maxLength(300),
-        this.specialCharactersValidation,
-      ]),
-    });
+  // ngOnInit(): void {}
+
+  ngOnChanges({ group }: SimpleChanges): void {
+    if (group.currentValue && !group.previousValue) {
+      this.editGroupForm.patchValue({
+        name: group.currentValue.name,
+        description: group.currentValue.description,
+      });
+      this.oldGroup = group.currentValue;
+    }
+  }
+  ngAfterViewInit(): void {
+    if (this.group) this.editModal?.open();
   }
 
   getErrorMessage(controlName: string) {
@@ -70,55 +100,71 @@ export class EditGroupComponent implements OnInit {
     return false;
   }
 
-  reviewGroup() {
-    this.editGroupForm.markAllAsTouched();
-    if (this.editGroupForm.valid) {
-      const group: IGroup = {
-        id: this.group.id,
-        name: this.editGroupForm.value.name,
-        description: this.editGroupForm.value.description,
-      };
-      return group;
+  editModalHidden() {
+    if (!this.reviewing) {
+      this.editGroupForm.reset();
+      this.groupService.publishGroupCompleted(this.group as IGroup);
     }
-    return false;
   }
 
-  approveChanges() {
+  editModalAccept() {
+    this.editGroupForm.markAllAsTouched();
+    if (this.editGroupForm.valid) {
+      const reviewing = this.editGroupForm.getRawValue();
+      if (!R.equals(R.pick(R.keys(reviewing), this.group), reviewing)) {
+        this.reviewing = this.editGroupForm.getRawValue() as IGroup;
+        this.group = { ...this.group, ...(this.reviewing as IGroup) };
+        this.editModal.close();
+        this.reviewModal.open();
+      }
+    }
+  }
+  reviewModalHidden() {
+    if (this.reviewing) {
+      this.reviewing = null;
+      setTimeout(() => {
+        this.editModal.open();
+      }, 200);
+    }
+  }
+
+  async approveChanges() {
     const group: IGroup = {
       id: this.group.id,
-      name: this.editGroupForm.value.name,
-      description: this.editGroupForm.value.description,
+      name: this.editGroupForm.value.name as string,
+      description: this.editGroupForm.value.description as string,
     };
-    this.groupService.updateGroup(group).subscribe({
-      next: (response) => {
-        // handle success
-        this.bannerService.showBanner({
-          type: 'success',
-          heading: ``,
-          message: `The <strong>${group.name}</strong> user group's details have been edited.`,
-          button: {
-            label: 'Dismiss',
-            action: (bannerId: number) =>
-              this.bannerService.hideBanner(bannerId),
-          },
-          autoDismiss: true,
-        });
-      },
-      error: (error) => {
-        // handle error scenario
-        this.bannerService.showBanner({
-          type: 'error',
-          heading: ``,
-          message: `<b>Edit group details</b> couldn't be completed.`,
-          button: {
-            label: 'Dismiss',
-            action: (bannerId: number) =>
-              this.bannerService.hideBanner(bannerId),
-          },
-          autoDismiss: true,
-        });
-        return false;
-      },
-    });
+    try {
+      this.isLoading = true;
+      if (this.reviewModal && this.reviewModal.modal) {
+        this.reviewModal.modal.content.alertBanners = [];
+      }
+
+      await this.groupService.updateGroup(group);
+      // handle success
+      this.bannerService.showBanner({
+        type: 'success',
+        heading: ``,
+        message: `The <strong>${group.name}</strong> user group's details have been edited.`,
+        button: {
+          label: 'Dismiss',
+          action: (bannerId: number) => this.bannerService.hideBanner(bannerId),
+        },
+        autoDismiss: true,
+      });
+      this.reviewing = null;
+      this.reviewModal.close();
+      this.groupService.publishGroupCompleted(group as IGroup);
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      this.reviewModal.modal?.content?.alertBanners.push({
+        type: 'error',
+        heading: 'Create Group',
+        message: "<b>Edit group details</b> couldn't be completed.`",
+      });
+      return false;
+    }
+    return true;
   }
 }

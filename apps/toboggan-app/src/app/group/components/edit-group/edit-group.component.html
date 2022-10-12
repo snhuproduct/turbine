@@ -1,5 +1,11 @@
-<div *ngIf="mode === 'edit'">
-  <p>Update the user group’s name or description here.</p>
+<toboggan-ws-modal
+  #edit
+  title="Edit user group details"
+  acceptButton="Review changes"
+  id="edit-group"
+  (hidden)="editModalHidden()"
+  (accept)="editModalAccept()"
+>
   <form [formGroup]="editGroupForm">
     <gp-input
       size="default"
@@ -29,38 +35,55 @@
       ></textarea>
     </gp-text-area>
   </form>
+</toboggan-ws-modal>
+
+<div *ngIf="isLoading">
+  <gp-interstitial-loader
+    [isOverlayVisible]="true"
+    [type]="loaderType"
+  ></gp-interstitial-loader>
 </div>
 
-<div *ngIf="mode === 'review'" class="review-grid">
-  <div class="row review-header py-2">
-    <div class="col"></div>
-    <div class="col">
-      <b>Original</b>
+<toboggan-ws-modal
+  #review
+  title="Approve changes?"
+  acceptButton="Yes, approve"
+  cancelButton="No, keep editing"
+  id="edit-group-review"
+  (hidden)="reviewModalHidden()"
+  (accept)="approveChanges()"
+>
+  <div class="review-grid">
+    <div class="row review-header py-2">
+      <div class="col"></div>
+      <div class="col">
+        <b>Original</b>
+      </div>
+      <div class="col">
+        <b>New</b>
+      </div>
     </div>
-    <div class="col">
-      <b>New</b>
+    <div class="row py-4">
+      <div class="col">
+        <b>User group name</b>
+      </div>
+      <div class="col">
+        {{ oldGroup.name }}
+      </div>
+      <div class="col">
+        {{ group.name }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <b>User group description</b>
+      </div>
+      <div class="col">
+        {{ oldGroup.description }}
+      </div>
+      <div class="col">
+        {{ group.description }}
+      </div>
     </div>
   </div>
-  <div class="row py-4">
-    <div class="col">
-      <b>User group name</b>
-    </div>
-    <div class="col">
-      {{ oldGroup.name }}
-    </div>
-    <div class="col">
-      {{ group.name }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <b>User group description</b>
-    </div>
-    <div class="col">
-      {{ oldGroup.description }}
-    </div>
-    <div class="col">
-      {{ group.description }}
-    </div>
-  </div>
-</div>
+</toboggan-ws-modal>

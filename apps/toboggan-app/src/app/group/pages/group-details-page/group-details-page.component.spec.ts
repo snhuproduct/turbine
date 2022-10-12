@@ -9,7 +9,9 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from '../../../shared/shared.module';
 import { AddUsersComponent } from '../../components/add-users/add-users.component';
 import { ListUsersComponent } from '../../components/list-users/list-users.component';
+import { PermissionComponent } from '../../components/permission/permission.component';
 import { GroupDetailsPageComponent } from './group-details-page.component';
+
 describe('GroupDetailsPageComponent', () => {
   let component: GroupDetailsPageComponent;
   let fixture: ComponentFixture<GroupDetailsPageComponent>;
@@ -30,6 +32,7 @@ describe('GroupDetailsPageComponent', () => {
         GroupDetailsPageComponent,
         ListUsersComponent,
         AddUsersComponent,
+        PermissionComponent,
       ],
     }).compileComponents();
 
@@ -49,5 +52,51 @@ describe('GroupDetailsPageComponent', () => {
     addUserBtn.click();
     fixture.detectChanges();
     expect(component.showAddUserModal).toBeTruthy();
+  });
+
+  it('should open user confirmation', () => {
+    const usersTabButton = fixture.debugElement
+      .queryAll(By.css('button'))
+      .find(
+        (buttonDebugEl) =>
+          buttonDebugEl.nativeElement.textContent.trim() === 'Users'
+      );
+
+    const permissionTabButton = fixture.debugElement
+      .queryAll(By.css('button'))
+      .find(
+        (buttonDebugEl) =>
+          buttonDebugEl.nativeElement.textContent.trim() === 'Permissions'
+      );
+
+    permissionTabButton?.nativeElement.click();
+    fixture.detectChanges();
+
+    component.permissionComponent.groupPermissionForm.markAsDirty();
+    fixture.detectChanges();
+
+    usersTabButton?.nativeElement.click();
+
+    fixture.detectChanges();
+
+    const backToGroupLink = fixture.debugElement
+      .queryAll(By.css('a'))
+      .find(
+        (buttonDebugEl) =>
+          buttonDebugEl.nativeElement.textContent.trim() ===
+          'Back to User Groups'
+      );
+    const onTabChangeSpy = jest.spyOn(component, 'onTabChange');
+    const userConfirmationSpy = jest.spyOn(
+      component,
+      'openUserConfirmationModal'
+    );
+    backToGroupLink?.nativeElement.click();
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      expect(onTabChangeSpy).toHaveBeenCalled();
+      expect(userConfirmationSpy).toHaveBeenCalled();
+    });
   });
 });

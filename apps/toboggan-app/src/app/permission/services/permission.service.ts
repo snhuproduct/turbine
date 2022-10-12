@@ -6,7 +6,11 @@ import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
   providedIn: 'root',
 })
 export class PermissionService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
+  addPermission(permission: INewPermission) {
+    return this.http.post('/api/permissions', permission);
+  }
 
   // Fetch all permissions
   fetchPermissions() {

@@ -1,0 +1,26 @@
+.gp-container {
+  border: 1px solid #B2C5CA;
+  box-shadow: 0 2px 15px rgba(126, 159, 166, 0.25);
+  border-radius: 16px;
+}
+
+.gp-hr {
+  border-top: 0;
+  border-bottom: 1px solid #B2C5CA;
+  margin: 20px 0px
+}
+
+.text-right {
+  text-align: right;
+}
+
+.p-12 {
+  padding: 48px;
+}
+
+.no-permission {
+  p {
+    margin: 5px;
+    padding: 0;
+  }
+}
