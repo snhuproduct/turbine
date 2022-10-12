@@ -44,6 +44,6 @@ describe('ListUsersComponent', () => {
   it('should render all users', () => {
     const fetchUsers = jest.spyOn(mockUserService, 'fetchUsers');
     expect(fetchUsers).toHaveBeenCalled();
-    expect(component.dynamicRowData).toHaveLength(mockUsers.length);
+    expect(component.getAllRows()).toHaveLength(mockUsers.length);
   });
 });
