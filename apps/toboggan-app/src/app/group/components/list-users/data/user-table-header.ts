@@ -1,10 +1,11 @@
 import {
   TableColumnAlignmentEnum,
   TableColumnDataTypeEnum,
+  TableColumnDisplayMetadatum,
   TableColumnSortStateEnum
 } from '@snhuproduct/toboggan-ui-components-library';
 
-export const userTableHeader = [
+export const userTableHeader: TableColumnDisplayMetadatum[] =  [
   {
     title: 'First name',
     dataKey: 'first',
