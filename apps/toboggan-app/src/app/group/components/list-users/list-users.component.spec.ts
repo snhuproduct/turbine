@@ -7,6 +7,7 @@ import {
   TableComponent,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
+import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { ListUsersComponent } from './list-users.component';
 import { mockUsers } from './mock/usersMock';
@@ -18,6 +19,7 @@ const mockUserService = {
 describe('ListUsersComponent', () => {
   let component: ListUsersComponent;
   let fixture: ComponentFixture<ListUsersComponent>;
+  let modalAlertService: ModalAlertService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,6 +35,7 @@ describe('ListUsersComponent', () => {
       declarations: [ListUsersComponent, TableComponent],
     }).compileComponents();
 
+    modalAlertService = TestBed.inject(ModalAlertService);
     fixture = TestBed.createComponent(ListUsersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -46,4 +49,11 @@ describe('ListUsersComponent', () => {
     expect(fetchUsers).toHaveBeenCalled();
     expect(component.getAllRows()).toHaveLength(mockUsers.length);
   });
+  it('remove user should bring the confirmation modal', () => {
+    const spy = jest.spyOn(modalAlertService, 'showModalAlert');
+    component.openRemoveUserConfirmation({id:123,firstName:'first', lastName:'last', email:'email'});
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({
+      'heading': `Remove user from this group?`, 
+     }))
 });
+})
