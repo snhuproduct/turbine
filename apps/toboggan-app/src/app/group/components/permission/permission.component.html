@@ -63,7 +63,8 @@
                 styleType="primary" iconId="gp-icon-edit" [isLoading]="false"></button></div>
 
     </form>
-
+    <toboggan-ws-update-permission *ngIf="showPermissionModal" (addPermissionAction)="handleUpdatePermissionAction()">
+    </toboggan-ws-update-permission>
 </div>
 
 <div class="gp-container p-12 no-permission" *ngIf="!permissions">
