@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum,
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
-import { IGroup } from '@toboggan-ws/toboggan-common';
-import { firstValueFrom } from 'rxjs';
+import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { Observable, Subscription } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
+import { ITableDataGeneratorFactoryOutput, ITableRowFilterFunc, TableDataService } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { GroupService } from '../../services/group.service';
 import { userTableHeader } from './data/user-table-header';
@@ -29,54 +29,61 @@ interface IFilterChange {
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss'],
 })
-export class ListUsersComponent {
-  public dynamicRowData: TableRow[] = [];
-  @Input() group: IGroup = {} as IGroup;
+export class ListUsersComponent implements OnInit, OnDestroy  {
+  private currentPage = 1;
+  private resultsPerPage = 10;
+  itemName = 'users';
+  dataGenerator: SingleHeaderRowTableDataGenerator = {} as TableDataGenerator;
+  private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
+    {} as Observable<ITableDataGeneratorFactoryOutput>;
+  private datageneratorSubscription: Subscription = {} as Subscription;
+  private dataGenFactoryOutput: ITableDataGeneratorFactoryOutput = {
+    dataGenerator: this.dataGenerator,
+    tableRows: [],
+    rawData: [],
+  };
   private filters: Map<string, Record<string, boolean>> = new Map();
+  private filterFuncs: { [key: string]: ITableRowFilterFunc } = {
+    status: (tr: TableRow, columnMetadata = userTableHeader) => {
+      const isInvalid = !(
+        columnMetadata[columnMetadata.length - 1].selectedFilters.Active ^
+        columnMetadata[columnMetadata.length - 1].selectedFilters.Inactive
+      );
+      const filterStatusStr = columnMetadata[columnMetadata.length - 1]
+        .selectedFilters.Active
+        ? 'Active'
+        : 'Inactive';
+      const rowUserStatus = tr.cellData['status'] as Array<unknown>;
+      return isInvalid || filterStatusStr === rowUserStatus[1];
+    },
+  };
+
+  @Input() group: IGroup = {} as IGroup;
 
   constructor(
     private userService: UserService,
     private modalAlertService: ModalAlertService,
     private bannerService: BannerService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private tableDataService: TableDataService,
   ) {}
 
-  dataGenerator: SingleHeaderRowTableDataGenerator =
-    new SingleHeaderRowTableDataGenerator(
-      async (
-        dataGenerator: TableDataGenerator,
-        columnDisplayMetadata: TableColumnDisplayMetadatum[],
-        searchString: string,
-        pageSize: number,
-        currentPage: number
-      ) => {
-        dataGenerator.isFiltered = true;
+  ngOnInit(): void {
+    userTableHeader.map((aColMetadatum: TableColumnDisplayMetadatum) => {
+      if (aColMetadatum.filters) {
+        this.filters.set(aColMetadatum.dataKey, aColMetadatum.selectedFilters);
+      }
+    });
+    this.refreshTableData();
+  }
 
-        const { sortColumnDataKey, sortDirectionCoefficient } =
-          this.getSortDirectionCoefficient(columnDisplayMetadata);
+  ngOnDestroy(): void {
+    this.datageneratorSubscription.unsubscribe();
+  }
 
-        await this.generateUserRowData();
-
-        if (this.dynamicRowData.length) {
-          const sortedData = this.getSortedData(
-            sortColumnDataKey,
-            sortDirectionCoefficient
-          );
-          const startRow = (currentPage - 1) * pageSize;
-          const pageData = sortedData.slice(startRow, startRow + pageSize);
-          dataGenerator.retrievalCallback(
-            pageData,
-            sortedData.length,
-            currentPage,
-            Math.ceil(sortedData.length / pageSize)
-          );
-        } else {
-          dataGenerator.update();
-        }
-      },
-      () => {},
-      userTableHeader
-    );
+  getAllRows(): TableRow[] {
+    return this.dataGenFactoryOutput.tableRows as TableRow[];
+  }
 
   getActionMenuItems(rowData: TableRow) {
     const actions = ['remove'];
@@ -101,9 +108,8 @@ export class ListUsersComponent {
     }
   }
 
-  async generateUserRowData(): Promise<void> {
-    const users = await firstValueFrom(this.userService.fetchUsers());
-
+  formatTableRowsWithUserData(fetchedData: unknown): TableRow[] {
+    const users = fetchedData as IUser[];
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
       if (a.lastName && b.lastName) {
@@ -121,6 +127,7 @@ export class ListUsersComponent {
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
+        id: user.id,
         cellData: {
           sequence: String(index + 1),
           first: user.firstName,
@@ -132,8 +139,7 @@ export class ListUsersComponent {
         },
       };
     });
-
-    this.dynamicRowData = data as TableRow[];
+    return data as TableRow[];
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -190,6 +196,7 @@ export class ListUsersComponent {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
+    this.applyActiveFilters();
   }
 
   private showNotification(
@@ -216,45 +223,42 @@ export class ListUsersComponent {
     await this.groupService.removeUserFromGroup(groupId, userId);
   }
 
-  private getSortedData(
-    sortColumnDataKey: string,
-    sortDirectionCoefficient: number
-  ) {
-    return this.dynamicRowData.sort((a, b) => {
-      if (a.cellData[sortColumnDataKey] < b.cellData[sortColumnDataKey]) {
-        return -1 * sortDirectionCoefficient;
-      }
-      if (a.cellData[sortColumnDataKey] > b.cellData[sortColumnDataKey]) {
-        return 1 * sortDirectionCoefficient;
-      }
-      return 0;
-    });
+  private refreshTableData(
+    additionalFilterFuncs: ITableRowFilterFunc[] = []
+  ): void {
+    // unsub if the subscription object is valid/there is an active subscription to prevent memory leak
+    if (this.datageneratorSubscription.unsubscribe) {
+      this.datageneratorSubscription.unsubscribe();
+    }
+    const [prevSearchString, prevCurrentPage] = [
+      this.dataGenerator.searchString || '', //prevSearchString
+      this.dataGenerator.currentPage || this.currentPage, //prevCurrentPage
+    ];
+    this.dataGeneratorFactoryOutputObserver =
+      this.tableDataService.dataGeneratorFactoryObs(
+        this.userService.fetchUsers(),
+        userTableHeader,
+        this.formatTableRowsWithUserData,
+        this.resultsPerPage,
+        prevCurrentPage,
+        () => {},
+        additionalFilterFuncs
+      );
+    this.datageneratorSubscription =
+      this.dataGeneratorFactoryOutputObserver.subscribe(
+        (dataGeneratorFactoryOutput: any) => {
+          this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
+          this.dataGenerator = this.dataGenFactoryOutput.dataGenerator;
+          this.dataGenerator.searchString = prevSearchString;
+        }
+      );
   }
 
-  private getSortDirectionCoefficient(
-    columnDisplayMetadata: TableColumnDisplayMetadatum[]
-  ): { sortColumnDataKey: string; sortDirectionCoefficient: number } {
-    let sortColumnDataKey = '';
-
-    for (let i = 0; i < columnDisplayMetadata.length; i++) {
-      if (
-        columnDisplayMetadata[i].sort &&
-        columnDisplayMetadata[i].sort !== TableColumnSortStateEnum.None
-      ) {
-        sortColumnDataKey = columnDisplayMetadata[i].dataKey;
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Ascending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: 1 };
-        }
-        if (
-          columnDisplayMetadata[i].sort === TableColumnSortStateEnum.Descending
-        ) {
-          return { sortColumnDataKey, sortDirectionCoefficient: -1 };
-        }
-        break;
-      }
-    }
-    return { sortColumnDataKey, sortDirectionCoefficient: 0 };
+  private applyActiveFilters() {
+    const additionalFilterFuncs: ITableRowFilterFunc[] = [];
+    this.filters.forEach((_, key) => {
+      additionalFilterFuncs.push(this.filterFuncs[key]);
+    });
+    this.refreshTableData(additionalFilterFuncs);
   }
 }
