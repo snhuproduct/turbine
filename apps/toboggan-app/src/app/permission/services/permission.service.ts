@@ -7,7 +7,6 @@ import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
 })
 export class PermissionService {
   constructor(private http: HttpClient) { }
-  mockPermission:any = {};
   addPermission(permission: INewPermission) {
     return this.http.post('/api/permissions', permission);
   }
