@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Cache } from 'cache-manager';
+import { JWTToken } from 'libs/jwttoken/jwttoken';
 import { Strategy } from 'passport-http-header-strategy';
 import { catchError, lastValueFrom } from 'rxjs';
-import { JWTToken } from 'libs/jwttoken/jwttoken';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class HTTPHeaderStrategy extends PassportStrategy(
     });
   }
 
-  async validate(request: Request, token: string): Promise<any> {
+  async validate(request: Request, token: string): Promise<unknown> {
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -42,10 +42,6 @@ export class HTTPHeaderStrategy extends PassportStrategy(
     // use cache if enabled
     if (environment.enableCache) {
       // return token from cache if email key exists in cache
-      console.log(
-        'cache enabled, checking token for user: ',
-        jwtToken.getEmailId()
-      );
       const cachedToken: string = await this.cacheManager.get(
         jwtToken.getEmailId()
       );
