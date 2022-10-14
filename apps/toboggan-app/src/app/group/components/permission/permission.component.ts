@@ -45,8 +45,11 @@ export class PermissionComponent implements OnInit, IComponentCanDeactivate {
       this.dismissChanges();
     }
   }
-  handleUpdatePermissionAction(){
-    this.showPermissionModal = false;
+  handleUpdatePermissionAction(evt:any){
+    if(evt){
+      console.log(evt);   
+      this.showPermissionModal = false;
+    }
   }
   dismissChanges(){
    this.modalAlertService.showModalAlert({

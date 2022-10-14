@@ -1,4 +1,8 @@
+import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { UpdatePermissionComponent } from './update-permission.component';
 
@@ -8,6 +12,8 @@ describe('UpdatePermissionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, StoriesModule, HttpClientModule, SharedModule],
+      providers: [HttpClient, HttpHandler],
       declarations: [ UpdatePermissionComponent ]
     })
     .compileComponents();
