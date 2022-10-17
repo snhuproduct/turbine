@@ -9,11 +9,14 @@ import {
   Patch,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { IUser } from '@toboggan-ws/toboggan-common';
+import { HTTPHeaderAuthGuard } from '../../app/modules/auth/http-header-auth-guard.service';
 import { UsersService } from '../../providers/users/users.service';
 
+@UseGuards(HTTPHeaderAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

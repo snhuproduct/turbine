@@ -8,6 +8,11 @@
 # dependencies
 node_modules
 
+#Environment files
+.env
+apps/**/environments/*
+!apps/**/environments/.gitkeep
+
 # IDEs and editors
 /.idea
 .project

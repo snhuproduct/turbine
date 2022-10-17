@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalButtonConfig } from '@snhuproduct/toboggan-ui-components-library';
+import { AuthService } from '../../../shared/auth/auth.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 
@@ -9,7 +10,10 @@ import { CreateUserComponent } from '../../components/create-user/create-user.co
   styleUrls: ['./user-main-page.component.scss'],
 })
 export class UserMainPageComponent {
-  constructor(public userService: UserService) {}
+  constructor(
+    private auth: AuthService,
+    public userService: UserService
+  ) {}
 
   @ViewChild('createUserModal', { static: false })
   createUserModal?: CreateUserComponent;
@@ -37,5 +41,9 @@ export class UserMainPageComponent {
     }
     const result = await this.createUserModal.handleAddNewUserModalButton();
     return result;
+  }
+
+  logout() {
+    this.auth.signOut();
   }
 }

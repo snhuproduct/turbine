@@ -8,10 +8,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import { HTTPHeaderAuthGuard } from '../../app/modules/auth/http-header-auth-guard.service';
 import { GroupsService } from '../../providers/groups/groups.service';
 
+@UseGuards(HTTPHeaderAuthGuard)
 @Controller('groups')
 export class GroupsController {
   constructor(private groupsService: GroupsService) {}

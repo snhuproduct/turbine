@@ -89,12 +89,12 @@ export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
               autoDismiss: true,
             });
           },
-          error: (error) => {
+          error: (error: unknown) => {
             // handle error scenario
             this.adduserModal.modal?.content?.alertBanners.push({
               type: 'error',
               heading: 'Add user to group',
-              message: "couldn't be completed.",
+              message: `couldn't be completed: ${error}`,
             });
           },
         });
