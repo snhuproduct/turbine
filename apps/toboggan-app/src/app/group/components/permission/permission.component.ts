@@ -13,8 +13,9 @@ import { permissionRadio } from './data/permissions';
 })
 export class PermissionComponent implements OnInit, IComponentCanDeactivate {
   groupPermissionForm!: FormGroup;
-  permissions!: any[];
-  permissionsCheck!: any[];
+  permissions: any = [];
+  permissionsCheck = permissionRadio;
+  checkbox1 = true;
   constructor() { }
 
   @HostListener('window:beforeunload')
@@ -23,7 +24,6 @@ export class PermissionComponent implements OnInit, IComponentCanDeactivate {
   }
 
   ngOnInit(): void {
-    this.permissionsCheck = permissionRadio;
     this.groupPermissionForm = new FormGroup({
       contentobject: new FormControl('0'),
       learningexperience: new FormControl('0'),
