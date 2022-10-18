@@ -15,7 +15,6 @@ export class PermissionComponent implements OnInit, IComponentCanDeactivate {
   groupPermissionForm!: FormGroup;
   permissions: any = [];
   permissionsCheck = permissionRadio;
-  checkbox1 = true;
   constructor() { }
 
   @HostListener('window:beforeunload')
