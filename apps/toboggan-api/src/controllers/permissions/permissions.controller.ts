@@ -7,10 +7,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
+import { HTTPHeaderAuthGuard } from '../../app/modules/auth/http-header-auth-guard.service';
 import { PermissionService } from '../../providers/permissions/permissions.service';
 
+@UseGuards(HTTPHeaderAuthGuard)
 @Controller('permissions')
 export class PermissionsController {
   constructor(private permissionService: PermissionService) {}

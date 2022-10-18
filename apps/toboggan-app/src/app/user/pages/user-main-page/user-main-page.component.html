@@ -20,6 +20,9 @@
               Add new user
             </button>
 
+            <!-- TODO: Move to side navigation bar -->
+            <button gp-button (click)="logout()">Log out</button>
+
             <ng-template #createusertemplate>
               <toboggan-ws-create-user
                 #createUserModal

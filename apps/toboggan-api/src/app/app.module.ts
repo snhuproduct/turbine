@@ -5,12 +5,12 @@ import { UsersController } from '../controllers/users/users.controller';
 import { GroupsService } from '../providers/groups/groups.service';
 import { PermissionService } from '../providers/permissions/permissions.service';
 import { UsersService } from '../providers/users/users.service';
-
+import { AuthModule } from './modules/auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [
     AppController,
     UsersController,

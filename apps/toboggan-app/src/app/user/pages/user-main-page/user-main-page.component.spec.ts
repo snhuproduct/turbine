@@ -1,12 +1,15 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { mock, MockProxy } from 'jest-mock-extended';
+import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../shared/services/user/user.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
@@ -35,8 +38,12 @@ describe('UserMainPageComponent', () => {
         SharedModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        RouterTestingModule,
       ],
-      providers: [{ provide: UserService, useValue: mockUserService }],
+      providers: [
+        { provide: UserService, useValue: mockUserService },
+        { provide: FIREBASE_OPTIONS, useValue: environment.firebase }
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserMainPageComponent);

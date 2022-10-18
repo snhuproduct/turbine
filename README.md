@@ -19,6 +19,24 @@ This README file contains instructions regarding our main project dependencies (
 
 - If this is not setup properly, you'll have a 401 error while running npm install, due to our toboggan-ui module.
 
+- This application has active integration with [GlidePath-Core API](https://snhu-glidepath-dev-api.cloudpssolutions.com/docs/data_glossary). This requires the secrets to be stored in an `.env` file. **Ensure that the proper `.env` file is placed at this project's root for it to run properly**.
+  - [`.env_POC_Auth` in SNHU 1password vault](https://sada-systems.1password.com/vaults/n6wqz5ifq5v57w4nrevk6viqka/allitems/sc43rfsiajcj7hggdyorag3xra)
+  - Make sure that the `.env` file above has all the keys in `.env.example` in this project's root
+
+## Running the project
+
+- Run the API (back-end) server:
+
+```
+npm run start:api
+```
+
+- Run the app (front-end) server:
+
+```
+npm run start:app
+```
+
 ## Storybook
 
 #### Importing toboggan-ui from local:
