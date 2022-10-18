@@ -14,6 +14,7 @@ import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.
 import { EditGroupComponent } from './components/edit-group/edit-group.component';
 import { PermissionComponent } from './components/permission/permission.component';
 import { AddPermissionComponent } from './components/add-permission/add-permission.component';
+import { UpdatePermissionComponent } from './components/update-permission/update-permission.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AddPermissionComponent } from './components/add-permission/add-permissi
     EditGroupComponent,
     PermissionComponent,
     AddPermissionComponent,
+    UpdatePermissionComponent,
   ],
   imports: [
     CommonModule,

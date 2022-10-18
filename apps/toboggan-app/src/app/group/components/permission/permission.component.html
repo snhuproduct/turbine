@@ -59,11 +59,12 @@
             </gp-checkbox>
         </gp-checkbox-group>
         <hr class="gp-hr" />
-        <div class="text-right"><button type="submit" gp-button label="Review changes" size="default"
+        <div class="text-right"><button type="submit" class="review-changes-btn" gp-button label="Review changes" size="default"
                 styleType="primary" iconId="gp-icon-edit" [isLoading]="false"></button></div>
 
     </form>
-
+    <toboggan-ws-update-permission *ngIf="showPermissionModal" (addPermissionAction)="handleUpdatePermissionAction($event)">
+    </toboggan-ws-update-permission>
 </div>
 
 <div class="gp-container p-12 no-permission" *ngIf="!permissions">

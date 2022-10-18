@@ -7,7 +7,6 @@ import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
 })
 export class PermissionService {
   constructor(private http: HttpClient) { }
-
   addPermission(permission: INewPermission) {
     return this.http.post('/api/permissions', permission);
   }
@@ -34,5 +33,11 @@ export class PermissionService {
   //Delete permission
   deletePermission(permissionId: string) {
     return this.http.delete(`/api/permissions/:${permissionId}`);
+  }
+
+  //mock update Permission
+  patchPermission(data:any){
+    //mockapi
+    return this.http.get<IPermission[]>('/api/permissions');
   }
 }
