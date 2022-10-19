@@ -6,18 +6,16 @@
         <p><b>Content object</b></p>
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
-        <gp-radio-group size="default" label="Radio Group" orientation="vert">
+        <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
-                <input [value]="data.value" type="radio" name="contentobject" id="radio1"
-                    formControlName="contentobject" [checked]="data.value" />
+                <input [value]="data.value" type="radio" name="contentobject" [id]="'contentobject-'+data.value"
+                    formControlName="contentobject" />
             </gp-radio>
         </gp-radio-group>
         <br />
-        <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            [optional]="true">
+        <gp-checkbox-group label="Additional actions" orientation="vert" [hasSelectAll]="false" [optional]="true">
             <gp-checkbox label="Archive">
-                <input type="checkbox" name="data.name" id="data.id" value="data.id"
-                    (change)="onCheckboxToggle($event)" />
+                <input type="checkbox" name="contentobject" id="contentobject" />
             </gp-checkbox>
         </gp-checkbox-group>
 
@@ -25,18 +23,16 @@
         <p><b>Learning experience</b></p>
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
-        <gp-radio-group size="default" label="Radio Group" orientation="vert">
+        <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
-                <input type="radio" [value]="data.value" name="learningexperience" id="radio2"
-                    formControlName="learningexperience" />
+                <input [value]="data.value" type="radio" name="learningexperience"
+                    [id]="'learningexperience-'+data.value" formControlName="learningexperience" />
             </gp-radio>
         </gp-radio-group>
         <br />
-        <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            [optional]="true">
+        <gp-checkbox-group label="Additional actions" orientation="vert" [hasSelectAll]="false" [optional]="true">
             <gp-checkbox label="Archive">
-                <input type="checkbox" name="data.name" id="data.id" value="data.id"
-                    (change)="onCheckboxToggle($event)" />
+                <input type="checkbox" name="learningexperience" id="learningexperience" />
             </gp-checkbox>
         </gp-checkbox-group>
 
@@ -44,26 +40,26 @@
         <p><b>Learning resources</b></p>
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
-        <gp-radio-group size="default" label="Radio Group" orientation="vert">
+        <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
-                <input [value]="data.value" type="radio" name="learningresources" id="radio3"
+                <input [value]="data.value" type="radio" name="learningresources" [id]="'learningresources-'+data.value"
                     formControlName="learningresources" />
             </gp-radio>
         </gp-radio-group>
         <br />
-        <gp-checkbox-group size="default" label="Additional actions" orientation="vert" [hasSelectAll]="false"
-            [optional]="true">
+
+        <gp-checkbox-group label="Additional actions" orientation="vert" [hasSelectAll]="false" [optional]="true">
             <gp-checkbox label="Archive">
-                <input type="checkbox" name="data.name" id="data.id" value="data.id"
-                    (change)="onCheckboxToggle($event)" />
+                <input type="checkbox" name="learningresources" id="learningresources" />
             </gp-checkbox>
         </gp-checkbox-group>
         <hr class="gp-hr" />
-        <div class="text-right"><button type="submit" class="review-changes-btn" gp-button label="Review changes" size="default"
-                styleType="primary" iconId="gp-icon-edit" [isLoading]="false"></button></div>
+        <div class="text-right"><button type="submit" class="review-changes-btn" gp-button label="Review changes"
+                size="default" styleType="primary" iconId="gp-icon-edit" [isLoading]="false"></button></div>
 
     </form>
-    <toboggan-ws-update-permission *ngIf="showPermissionModal" (addPermissionAction)="handleUpdatePermissionAction($event)">
+    <toboggan-ws-update-permission *ngIf="showPermissionModal"
+        (addPermissionAction)="handleUpdatePermissionAction($event)">
     </toboggan-ws-update-permission>
 </div>
 
