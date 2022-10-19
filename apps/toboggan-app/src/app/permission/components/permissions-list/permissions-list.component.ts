@@ -126,7 +126,9 @@ export class PermissionsListComponent implements OnInit, OnDestroy {
     const permissions = fetchedData as IPermission[];
     // TODO: Ideally it should come sorted from our API!
     let userGroupList: IGroup[] = [];
-    const data = permissions.map((permission, index) => {
+    // initial sorting
+    const permissionsList = this.sortPermissions(permissions);
+    const data = permissionsList.map((permission, index) => {
       userGroupList = R.concat(userGroupList, permission.userGroups);
       const groupLinkList = permission.userGroups.map((group) => {
         return {
@@ -237,5 +239,17 @@ export class PermissionsListComponent implements OnInit, OnDestroy {
       additionalFilterFuncs.push(this.filterFuncs[key]);
     });
     this.refreshTableData(additionalFilterFuncs);
+  }
+
+  private sortPermissions(permissions: IPermission[]) {
+    return permissions
+      .sort((a, b) =>
+        a.application > b.application
+          ? 1
+          : b.application > a.application
+          ? -1
+          : 0
+      )
+      .sort((a, b) => (a.module > b.module ? 1 : b.module > a.module ? -1 : 0));
   }
 }
