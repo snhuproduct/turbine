@@ -1,9 +1,8 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-
 import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
-
-import * as arrayPaginate from 'array-paginate';
-
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class UsersService {
 
   users: IUser[] = [];
 
-  constructor() {
+  constructor(private readonly httpService: HttpService) {
     // generate mocked data for 20 users
     for (let i = 0; i < 20; i++) {
       this.users.push({
@@ -32,19 +31,18 @@ export class UsersService {
       });
     }
   }
+  // dummy implementation  -> until Quantiphi api is verified
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // getUsers(params?: { skip?: number; limit?: number }) {
+  //   return this.users;
+  // }
 
-  getUsers(): IUser[] {
-    return this.users;
-  }
-
-  getPaginatedUsers(currentPage: number, resultsPerPage = 10) {
-    const paginatedUsers = arrayPaginate(
-      this.users,
-      currentPage,
-      resultsPerPage
-    );
-
-    return paginatedUsers;
+  g; //lidepath api itegrated code -- uncomment after verifying url
+  getUsers(params?: {
+    skip?: number;
+    limit?: number;
+  }): Observable<AxiosResponse<IUser[]>> {
+    return this.httpService.get('/users', { params });
   }
 
   createUser(user: INewUser) {

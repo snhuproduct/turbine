@@ -31,6 +31,7 @@ export const environment = {
    production: ${isProduction},
    enableCache: ${isEnableCache},
    baseApiUrl: 'http://localhost:3333/api',
+   GPCoreBaseUrl: "${process.env.GPCORE_BASEURL}",
    provider: {
       apiKey: "${process.env.PROVIDER_API_KEY}",
       authDomain: "${process.env.PROVIDER_AUTH_DOMAIN}",

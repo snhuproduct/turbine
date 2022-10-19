@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import {
   IGroup,
@@ -5,6 +6,8 @@ import {
   IPermission,
 } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
 import { mockPermissions } from './permissions.mock';
 
 @Injectable()
@@ -12,12 +15,20 @@ export class PermissionService {
   private permissions: IPermission[] = [];
   private groups: IGroup[] = [];
 
-  constructor() {
+  constructor(private readonly httpService: HttpService) {
     this.permissions = mockPermissions;
   }
+  // dummy implementation  -> until Quantiphi api is verified
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // getPermissions(params?: { skip?: number; limit?: number }) {
+  //   return this.permissions;
+  // }
 
-  getPermissions() {
-    return this.permissions;
+  getPermissions(params?: {
+    skip?: number;
+    limit?: number;
+  }): Observable<AxiosResponse<IPermission[]>> {
+    return this.httpService.get('/permissions', { params });
   }
 
   getPaginatedPermissions(

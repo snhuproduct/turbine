@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
 import { Test, TestingModule } from '@nestjs/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
+import { v4 as uuidv4 } from 'uuid';
+import { GroupsService } from '../../../providers/groups/groups.service';
 import { GroupsController } from './groups.controller';
-import { GroupsService } from '../../providers/groups/groups.service';
 
 const id = 1;
 
@@ -42,12 +42,16 @@ describe('GroupsController', () => {
 
   describe('getGroups', () => {
     it('should return an array of paginated groups', async () => {
-      jest.spyOn(service, 'getPaginatedGroups').mockImplementation(() => groups);
+      jest
+        .spyOn(service, 'getPaginatedGroups')
+        .mockImplementation(() => groups);
 
-      expect(controller.getGroups({
-        currentPage: 1,
-        resultsPerPage: 10,
-      })).toBe(groups);
+      expect(
+        controller.getGroups({
+          currentPage: 1,
+          resultsPerPage: 10,
+        })
+      ).toBe(groups);
     });
 
     it('should return an array of groups', async () => {
@@ -110,7 +114,7 @@ describe('GroupsController', () => {
       const request = {
         groupId: '1',
         email: 'email@test.com',
-      }
+      };
 
       jest.spyOn(service, 'addUsersToGroup');
 

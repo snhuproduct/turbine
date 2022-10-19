@@ -8,28 +8,25 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { INewPermission, IPermission } from '@toboggan-ws/toboggan-common';
-import { HTTPHeaderAuthGuard } from '../../app/modules/auth/http-header-auth-guard.service';
-import { PermissionService } from '../../providers/permissions/permissions.service';
+import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
+import { TokenInterceptor } from '../auth/token.interceptor';
+import { ResponseInterceptor } from '../common/response.interceptor';
+import { PermissionService } from './permissions.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
+@UseInterceptors(TokenInterceptor, ResponseInterceptor)
 @Controller('permissions')
 export class PermissionsController {
   constructor(private permissionService: PermissionService) {}
 
   @Get('/')
   getPermissions(@Query() query) {
-    const { currentPage, resultsPerPage } = query;
+    const { currentPage: skip, resultsPerPage: limit } = query;
 
-    if (currentPage && resultsPerPage) {
-      return this.permissionService.getPaginatedPermissions(
-        currentPage,
-        resultsPerPage
-      );
-    }
-
-    return this.permissionService.getPermissions();
+    return this.permissionService.getPermissions({ skip, limit });
   }
 
   @Get('/:id')
