@@ -15,10 +15,13 @@ import { permissionRadio } from './data/permissions';
   styleUrls: ['./permission.component.scss'],
 })
 export class PermissionComponent implements OnInit, IComponentCanDeactivate {
-  groupPermissionForm!: FormGroup;
-  // permissions!: any[];
-  permissions: any = [];
   permissionsCheck = permissionRadio;
+  groupPermissionForm: FormGroup = new FormGroup({
+    contentobject: new FormControl('0'),
+    learningexperience: new FormControl('0'),
+    learningresources: new FormControl('0'),
+  });
+  permissions: any = [];
   showPermissionModal = false;
   constructor(private modalAlertService: ModalAlertService, private bannerService: BannerService, private permissionService: PermissionService) { }
   @HostListener('window:beforeunload')
@@ -27,11 +30,7 @@ export class PermissionComponent implements OnInit, IComponentCanDeactivate {
   }
 
   ngOnInit(): void {
-    this.groupPermissionForm = new FormGroup({
-      contentobject: new FormControl('0'),
-      learningexperience: new FormControl('0'),
-      learningresources: new FormControl('0'),
-    });
+
   }
 
   onCheckboxToggle(e: any) { }
