@@ -43,14 +43,23 @@ for (let i = 0, j = 0, k = 0, m = 0; i < 20; i++) {
       description: '',
     },
   ];
-
-  permissions.push({
-    id: `id-${i}`,
-    application: 'Application Admin',
-    module: modules[k],
-    accessLevel: accessLevels[j],
-    userGroups: groups,
-  });
+  if (i < 5) {
+    permissions.push({
+      id: `id-${i}`,
+      application: 'A1',
+      module: modules[k],
+      accessLevel: accessLevels[j],
+      userGroups: groups,
+    });
+  } else {
+    permissions.push({
+      id: `id-${i}`,
+      application: 'BApplication Admin',
+      module: modules[k],
+      accessLevel: accessLevels[j],
+      userGroups: groups,
+    });
+  }
 
   j++;
   k++;
