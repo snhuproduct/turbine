@@ -37,7 +37,7 @@ export class UsersService {
   //   return this.users;
   // }
 
-  g; //lidepath api itegrated code -- uncomment after verifying url
+  //glidepath api itegrated code -- uncomment after verifying url
   getUsers(params?: {
     skip?: number;
     limit?: number;
