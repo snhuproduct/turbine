@@ -9,25 +9,25 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
-import { HTTPHeaderAuthGuard } from '../../app/modules/auth/http-header-auth-guard.service';
-import { GroupsService } from '../../providers/groups/groups.service';
+import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
+import { TokenInterceptor } from '../auth/token.interceptor';
+import { ResponseInterceptor } from '../common/response.interceptor';
+import { GroupsService } from './groups.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
+@UseInterceptors(TokenInterceptor, ResponseInterceptor)
 @Controller('groups')
 export class GroupsController {
   constructor(private groupsService: GroupsService) {}
 
   @Get('/')
   getGroups(@Query() query) {
-    const { currentPage, resultsPerPage } = query;
+    const { currentPage: skip, resultsPerPage: limit } = query;
 
-    if (currentPage && resultsPerPage) {
-      return this.groupsService.getPaginatedGroups(currentPage, resultsPerPage);
-    }
-
-    return this.groupsService.getGroups();
+    return this.groupsService.getGroups({ skip, limit });
   }
 
   @Get('/:id')

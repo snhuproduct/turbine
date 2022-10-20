@@ -1,6 +1,9 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -8,7 +11,7 @@ export class GroupsService {
   groups: IGroup[] = [];
   group: IGroup;
 
-  constructor() {
+  constructor(private readonly httpService: HttpService) {
     for (let i = 0; i < 20; i++) {
       this.groups.push({
         id: uuidv4(),
@@ -18,9 +21,17 @@ export class GroupsService {
     }
     this.group = this.groups[0];
   }
+  // dummy implementation  -> until Quantiphi api is verified
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // getGroups(params?: { skip?: number; limit?: number }) {
+  //   return this.groups;
+  // }
 
-  getGroups(): IGroup[] {
-    return this.groups;
+  getGroups(params?: {
+    skip?: number;
+    limit?: number;
+  }): Observable<AxiosResponse<IGroup[]>> {
+    return this.httpService.get('/groups', { params });
   }
 
   getGroup(): IGroup {

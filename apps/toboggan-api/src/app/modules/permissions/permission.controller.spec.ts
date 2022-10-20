@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { mockPermissions } from '../../providers/permissions/permissions.mock';
-import { PermissionService } from '../../providers/permissions/permissions.service';
+import { PermissionService } from '../../../providers/permissions/permissions.service';
 import { PermissionsController } from './permissions.controller';
+import { mockPermissions } from './permissions.mock';
 
 describe('PermissionsController', () => {
   let controller: PermissionsController;
