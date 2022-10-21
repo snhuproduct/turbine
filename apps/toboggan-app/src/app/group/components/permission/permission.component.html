@@ -7,7 +7,8 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
+                [default]="groupPermissionForm.value['contentobject'] === data.value">
                 <input [value]="data.value" type="radio" name="contentobject" [id]="'contentobject-'+data.value"
                     formControlName="contentobject" />
             </gp-radio>
@@ -24,7 +25,8 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
+                [default]="groupPermissionForm.value['contentobject'] === data.value">
                 <input [value]="data.value" type="radio" name="learningexperience"
                     [id]="'learningexperience-'+data.value" formControlName="learningexperience" />
             </gp-radio>
@@ -41,7 +43,8 @@
         <p>[Permission allows control of user accounts in the turbine ecosystem.]</p>
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
-            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name">
+            <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
+                [default]="groupPermissionForm.value['contentobject'] === data.value">
                 <input [value]="data.value" type="radio" name="learningresources" [id]="'learningresources-'+data.value"
                     formControlName="learningresources" />
             </gp-radio>
@@ -59,7 +62,7 @@
 
     </form>
     <toboggan-ws-update-permission *ngIf="showPermissionModal"
-        (addPermissionAction)="handleUpdatePermissionAction($event)">
+        (updatePermissionAction)="handleUpdatePermissionAction($event)">
     </toboggan-ws-update-permission>
 </div>
 
