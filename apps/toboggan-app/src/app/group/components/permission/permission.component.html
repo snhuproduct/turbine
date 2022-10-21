@@ -8,11 +8,12 @@
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
-                [default]="groupPermissionForm.value['contentobject'] === data.value">
+                [default]="groupPermissionForm.get('contentobject')?.value === data.value">
                 <input [value]="data.value" type="radio" name="contentobject" [id]="'contentobject-'+data.value"
                     formControlName="contentobject" />
             </gp-radio>
         </gp-radio-group>
+
         <br />
         <gp-checkbox-group label="Additional actions" orientation="vert" [hasSelectAll]="false" [optional]="true">
             <gp-checkbox label="Archive">
@@ -26,7 +27,7 @@
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
-                [default]="groupPermissionForm.value['contentobject'] === data.value">
+                [default]="groupPermissionForm.get('learningexperience')?.value === data.value">
                 <input [value]="data.value" type="radio" name="learningexperience"
                     [id]="'learningexperience-'+data.value" formControlName="learningexperience" />
             </gp-radio>
@@ -44,7 +45,7 @@
         <hr class="gp-hr" />
         <gp-radio-group label="Radio Group" orientation="vert">
             <gp-radio *ngFor="let data of permissionsCheck" [label]="data.name"
-                [default]="groupPermissionForm.value['contentobject'] === data.value">
+                [default]="groupPermissionForm.get('learningresources')?.value === data.value">
                 <input [value]="data.value" type="radio" name="learningresources" [id]="'learningresources-'+data.value"
                     formControlName="learningresources" />
             </gp-radio>
