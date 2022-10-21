@@ -13,3 +13,20 @@ gp-input:last-child{
 .error-message {
     color: red
   }
+  .user-groups-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    span {
+        font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 28px;
+    color: #08295A;
+    }
+   
+    button, button:hover, button:focus:not(:focus-visible) {
+        border:none;
+        padding: 0px 22px !important;
+    }
+
+  }
