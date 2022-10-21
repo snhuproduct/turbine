@@ -43,25 +43,19 @@ export class PermissionComponent implements OnInit, IComponentCanDeactivate {
       this.dismissChanges();
     }
   }
+
   handleUpdatePermissionAction(evt: any) {
     if (evt) {
-      console.log(evt);
       this.showPermissionModal = false;
     }
   }
+
   dismissChanges() {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: `You didn't make any changes`,
       message: `If you meant to edit these permissions, go back and try again.`,
       buttons: [
-        {
-          title: 'Dismiss',
-          onClick: () => {
-            this.modalAlertService.hideModalAlert();
-          },
-          style: 'secondary',
-        },
         {
           title: 'Dismiss',
           onClick: () => {
