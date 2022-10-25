@@ -71,7 +71,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     private modalAlertService: ModalAlertService,
     private bannerService: BannerService,
     private tableDataService: TableDataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     //the table should load with only active users visible (check userTableHeader). Filter is set to "Active" by default
@@ -83,15 +83,15 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
     this.applyActiveFilters();
     // cypress complains without the guard clause
-    if(this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
-      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(()=>{
+    if (this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
+      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(() => {
         this.applyActiveFilters();
       })
   }
 
   ngOnDestroy(): void {
-    [this.datageneratorSubscription, this.editUserModalSubscription].map(s=>{
-      if(s.unsubscribe) s.unsubscribe();
+    [this.datageneratorSubscription, this.editUserModalSubscription].map(s => {
+      if (s.unsubscribe) s.unsubscribe();
     });
   }
 
@@ -156,7 +156,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
+
   activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
@@ -293,11 +293,11 @@ export class UserTableComponent implements OnInit, OnDestroy {
     const users = fetchedData as IUser[];
     // TODO: Ideally it should come sorted from our API!
     const usersSortedByLastName = users.sort((a, b) => {
-      if (a.lastName && b.lastName) {
-        if (a.lastName < b.lastName) {
+      if (a.last_name && b.last_name) {
+        if (a.last_name < b.last_name) {
           return -1;
         }
-        if (a.lastName > b.lastName) {
+        if (a.last_name > b.last_name) {
           return 1;
         }
       }
@@ -306,13 +306,13 @@ export class UserTableComponent implements OnInit, OnDestroy {
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
-        id: user.id,
+        id: user.user_id,
         cellData: {
           sequence: String(index + 1),
-          first: user.firstName,
-          last: user.lastName,
+          first: user.first_name,
+          last: user.last_name,
           mail: ['gp-icon-mail', user.email],
-          status: user.enabled
+          status: user.status == 'active'
             ? ['is-category', 'Active', 50] // this will generate the custom tag
             : ['is-category', 'Inactive', 50],
         },
@@ -348,7 +348,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.formatTableRowsWithUserData,
         this.resultsPerPage,
         prevCurrentPage,
-        () => {},
+        () => { },
         additionalFilterFuncs
       );
     this.datageneratorSubscription =

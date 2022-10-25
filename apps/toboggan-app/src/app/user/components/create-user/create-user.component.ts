@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
-import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser, IUserType } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../../group/services/group.service';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -22,12 +22,12 @@ export class CreateUserComponent {
   loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required,
+    first_name: new FormControl('', [Validators.required,
     Validators.pattern(ValidatorPattern.nameValidation)]),
-    lastName: new FormControl('', [Validators.required,
+    last_name: new FormControl('', [Validators.required,
     Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    groups: new FormArray([]),
+    user_groups: new FormArray([])
   });
   userGroups!: IGroup[];
   constructor(
@@ -41,9 +41,9 @@ export class CreateUserComponent {
   }
 
   onCheckboxToggle(e: any) {
-    const groups: FormArray = this.userForm.get('groups') as FormArray;
+    const groups: FormArray = this.userForm.get('user_groups') as FormArray;
     if (e.target.checked) {
-      const userGroup = this.userGroups.find(group => group.id == e.target.value)
+      const userGroup = this.userGroups.find(group => group.uuid == e.target.value)
       groups.push(new FormControl(userGroup));
     } else {
       let i = 0;
@@ -70,12 +70,13 @@ export class CreateUserComponent {
         }
         const userObj = this.userForm.getRawValue() as unknown as IUser;
         userObj.enabled = true;
+        userObj.user_type = IUserType.faculty;
         this.isLoading = true;
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
         this.bannerService.showBanner({
           type: 'success',
-          heading: `${userObj.firstName} ${userObj.lastName}`,
+          heading: `${userObj.first_name} ${userObj.last_name}`,
           message: 'has been added as a user.',
           button: {
             label: 'Dismiss',

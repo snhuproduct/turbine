@@ -45,11 +45,9 @@ export class UsersService {
     return this.httpService.get('/users', { params });
   }
 
-  createUser(user: INewUser) {
-    this.users.push({
-      id: uuidv4(),
-      ...user,
-    });
+  createUser(user: INewUser)
+    : Observable<AxiosResponse<IUser[]>> {
+    return this.httpService.post('/user', user);
   }
 
   updateUser(id: string, updatedUser: IUser) {

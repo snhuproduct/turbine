@@ -1,77 +1,37 @@
 <div *ngIf="isLoading">
-  <gp-interstitial-loader
-    [isOverlayVisible]="true"
-    [type]="loaderType"
-  ></gp-interstitial-loader>
+  <gp-interstitial-loader [isOverlayVisible]="true" [type]="loaderType"></gp-interstitial-loader>
 </div>
 <form [formGroup]="userForm">
   <p class="gp-paragraph">
     Share some information about the new user. You can always edit these details
     later.
   </p>
-  <gp-input
-    label="First name"
-    toboggan-ws-error-message
-    #firstNameErrMsg="tbWsErrMsg"
-    [form]="userForm"
-    controlName="firstName"
-    [error]="firstNameErrMsg.hasError"
-    [errorMessage]="firstNameErrMsg.errorMessage"
-  >
-    <input type="text" formControlName="firstName" />
+  <gp-input label="First name" toboggan-ws-error-message #firstNameErrMsg="tbWsErrMsg" [form]="userForm"
+    controlName="first_name" [error]="firstNameErrMsg.hasError" [errorMessage]="firstNameErrMsg.errorMessage">
+    <input type="text" formControlName="first_name" />
   </gp-input>
-  <gp-input
-    label="Last name"
-    toboggan-ws-error-message
-    #lastNameErrMsg="tbWsErrMsg"
-    [form]="userForm"
-    controlName="lastName"
-    [error]="lastNameErrMsg.hasError"
-    [errorMessage]="lastNameErrMsg.errorMessage"
-  >
-    <input type="text" formControlName="lastName" />
+  <gp-input label="Last name" toboggan-ws-error-message #lastNameErrMsg="tbWsErrMsg" [form]="userForm"
+    controlName="last_name" [error]="lastNameErrMsg.hasError" [errorMessage]="lastNameErrMsg.errorMessage">
+    <input type="text" formControlName="last_name" />
   </gp-input>
-  <gp-input
-    label="Email address"
-    toboggan-ws-error-message
-    #emailErrMsg="tbWsErrMsg"
-    [form]="userForm"
-    controlName="email"
-    [error]="emailErrMsg.hasError"
-    [errorMessage]="emailErrMsg.errorMessage"
-  >
+  <gp-input label="Email address" toboggan-ws-error-message #emailErrMsg="tbWsErrMsg" [form]="userForm"
+    controlName="email" [error]="emailErrMsg.hasError" [errorMessage]="emailErrMsg.errorMessage">
     <input type="email" formControlName="email" />
   </gp-input>
   <div class="mt-3"></div>
 
   <div class="user-groups-heading">
     <span>User Group(s)</span>
-    <button
-      gp-button
+    <button gp-button
       gp-tooltip="This gives the user access to all permissions assigned to the selected user group(s). "
-      gp-tooltip-placement="bottom"
-      iconId="gp-icon-info"
-      styleType="tertiary"
-      iconVariations="iconleft"
-    ></button>
+      gp-tooltip-placement="bottom" iconId="gp-icon-info" styleType="tertiary" iconVariations="iconleft"></button>
   </div>
-  <gp-checkbox-group
-    size="default"
-    label=""
-    orientation="vert"
-    [hasSelectAll]="false"
-    [required]="false"
-  >
+  <gp-checkbox-group size="default" label="" orientation="vert" [hasSelectAll]="false" [required]="false">
     <div class="row">
       <div class="col-md-6" *ngFor="let data of userGroups">
         <gp-checkbox [label]="data.name">
-          <input
-            type="checkbox"
-            [name]="data.name"
-            [id]="data.id"
-            [value]="data.id"
-            (change)="onCheckboxToggle($event)"
-          />
+          <input type="checkbox" [name]="data.name" [id]="data.uuid" [value]="data.uuid"
+            (change)="onCheckboxToggle($event)" />
         </gp-checkbox>
       </div>
     </div>
