@@ -48,11 +48,8 @@ export class GroupsService {
     return paginatedGroups;
   }
 
-  createGroup(newGroup: IGroup) {
-    const newId = this.groups.length + 1;
-    newGroup.id = newId as unknown as string;
-    this.groups.push(newGroup);
-    return newGroup;
+  createGroup(newGroup: IGroup) : Observable<AxiosResponse <IGroup>> {
+    return this.httpService.post('/group', newGroup);
   }
 
   updateGroup(id: string, updatedGroup: IGroup) {
