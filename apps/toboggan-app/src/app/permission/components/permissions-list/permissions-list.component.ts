@@ -118,6 +118,16 @@ export class PermissionsListComponent implements OnInit, OnDestroy {
     if (Object.values(event.filters).every((value) => !value)) {
       this.filters.delete(event.columnMetadatum.dataKey);
     }
+    // for MVP , always one filter can be activated at a time
+    const currentFilterKeys = [...this.filters.keys()];
+    if (!currentFilterKeys.includes(event.columnMetadatum.dataKey)) {
+      this.filters.clear();
+      permissionTableHeader.forEach((column) => {
+        if (column.dataKey != event.columnMetadatum.dataKey) {
+          column.selectedFilters = {};
+        }
+      });
+    }
     this.filters.set(event.columnMetadatum.dataKey, event.filters);
     this.applyActiveFilters();
   }
