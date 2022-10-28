@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
-import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
+import { IGroup, IUser, UserType } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../../group/services/group.service';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -28,6 +28,7 @@ export class CreateUserComponent {
     Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     groups: new FormArray([]),
+    userType: new FormControl(UserType.learner),
   });
   userGroups!: IGroup[];
   constructor(
