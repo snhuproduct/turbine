@@ -12,6 +12,7 @@ export interface IGroup {
 export type INewGroup = Omit<IGroup, 'id'>;
 
 export interface IUser {
+  userType?: string;
   status?: string;
   id: string;
   userName: string;
