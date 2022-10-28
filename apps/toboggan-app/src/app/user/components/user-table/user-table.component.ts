@@ -71,7 +71,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     private modalAlertService: ModalAlertService,
     private bannerService: BannerService,
     private tableDataService: TableDataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     //the table should load with only active users visible (check userTableHeader). Filter is set to "Active" by default
@@ -83,15 +83,15 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
     this.applyActiveFilters();
     // cypress complains without the guard clause
-    if(this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
-      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(()=>{
+    if (this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
+      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(() => {
         this.applyActiveFilters();
       })
   }
 
   ngOnDestroy(): void {
-    [this.datageneratorSubscription, this.editUserModalSubscription].map(s=>{
-      if(s.unsubscribe) s.unsubscribe();
+    [this.datageneratorSubscription, this.editUserModalSubscription].map(s => {
+      if (s.unsubscribe) s.unsubscribe();
     });
   }
 
@@ -156,7 +156,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
+
   activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
@@ -312,7 +312,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
           first: user.firstName,
           last: user.lastName,
           mail: ['gp-icon-mail', user.email],
-          status: user.enabled
+          status: user.status == "active"
             ? ['is-category', 'Active', 50] // this will generate the custom tag
             : ['is-category', 'Inactive', 50],
         },
@@ -348,7 +348,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.formatTableRowsWithUserData,
         this.resultsPerPage,
         prevCurrentPage,
-        () => {},
+        () => { },
         additionalFilterFuncs
       );
     this.datageneratorSubscription =

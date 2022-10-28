@@ -7,17 +7,21 @@ export interface IGroup {
   name: string;
   type?: number;
   description: string | null;
+  uuid?: string;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;
 
 export interface IUser {
+  userType?: string | null;
+  status?: string;
   id: string;
   userName: string;
   firstName: string | null;
   lastName: string | null;
   email: string | null;
   groups?: IGroup[];
+  userGroups?: IGroup[];
   enabled: boolean;
 }
 
@@ -39,3 +43,8 @@ export interface IPermission {
 }
 
 export type INewPermission = Omit<IPermission, 'id'>;
+
+export enum UserType {
+  learner = "learner",
+  faculty = "faculty"
+}

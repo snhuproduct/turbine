@@ -11,19 +11,20 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
+import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
 import { UsersService } from './users.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
-@UseInterceptors(TokenInterceptor, ResponseInterceptor)
+@UseInterceptors(TokenInterceptor, ResponseInterceptor, RequestInterceptor)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get('/')
   getUsers(@Query() query) {

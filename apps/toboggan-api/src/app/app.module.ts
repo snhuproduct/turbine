@@ -8,8 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [AuthModule, UsersModule, GroupsModule, PermissionsModule],
-
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
