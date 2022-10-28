@@ -22,8 +22,7 @@ describe('CreateUserComponent', () => {
     "firstName": "Bob",
     "lastName": "Jackson",
     "email": "BobJackson@test.com",
-    "groups": [],
-    "userType": "learner"
+    "userGroups": []
   }
 
   beforeEach(async () => {

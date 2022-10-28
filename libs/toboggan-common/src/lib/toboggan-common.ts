@@ -7,12 +7,13 @@ export interface IGroup {
   name: string;
   type?: number;
   description: string | null;
+  uuid?: string;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;
 
 export interface IUser {
-  userType?: string;
+  userType?: string | null;
   status?: string;
   id: string;
   userName: string;
@@ -20,6 +21,7 @@ export interface IUser {
   lastName: string | null;
   email: string | null;
   groups?: IGroup[];
+  userGroups?: IGroup[];
   enabled: boolean;
 }
 

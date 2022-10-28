@@ -27,8 +27,7 @@ export class CreateUserComponent {
     lastName: new FormControl('', [Validators.required,
     Validators.pattern(ValidatorPattern.nameValidation)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    groups: new FormArray([]),
-    userType: new FormControl(UserType.learner),
+    userGroups: new FormArray([])
   });
   userGroups!: IGroup[];
   constructor(
@@ -42,14 +41,14 @@ export class CreateUserComponent {
   }
 
   onCheckboxToggle(e: any) {
-    const groups: FormArray = this.userForm.get('groups') as FormArray;
+    const groups: FormArray = this.userForm.get('userGroups') as FormArray;
     if (e.target.checked) {
-      const userGroup = this.userGroups.find(group => group.id == e.target.value)
+      const userGroup = this.userGroups.find(group => group.uuid == e.target.value)
       groups.push(new FormControl(userGroup));
     } else {
       let i = 0;
       groups.controls.forEach((item: any) => {
-        if (item.value.id == e.target.value) {
+        if (item.value.uuid == e.target.value) {
           groups.removeAt(i);
           return;
         }
@@ -71,6 +70,7 @@ export class CreateUserComponent {
         }
         const userObj = this.userForm.getRawValue() as unknown as IUser;
         userObj.enabled = true;
+        userObj.userType = UserType.faculty;
         this.isLoading = true;
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
