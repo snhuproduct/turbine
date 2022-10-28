@@ -16,7 +16,7 @@ import {
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
-import { RequestInterceptor } from '../common/reguest.interceptor';
+import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
 import { UsersService } from './users.service';
 
