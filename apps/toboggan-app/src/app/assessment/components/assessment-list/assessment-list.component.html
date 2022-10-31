@@ -1,0 +1,13 @@
+<div class="table-container">
+  <gp-table
+    [dataGenerator]="dataGenerator"
+    [dynamic]="true"
+    tableStyle="borders"
+    [getActionMenuItems]="getActionMenuItems"
+    noResultsHeading="No assessments yet"
+    noResultsText="Once you create one, it’ll show up here."
+    itemName="user assessments"
+  >
+    <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+  </gp-table>
+</div>

@@ -10,6 +10,17 @@ export interface IGroup {
   uuid?: string;
 }
 
+export interface IAssessment {
+  id: string;
+  time_left: string;
+  learner: string;
+  competency: string;
+  type: string;
+  attempt: string;
+  instructor: string;
+  similarity: string;
+}
+
 export type INewGroup = Omit<IGroup, 'id'>;
 
 export interface IUser {
@@ -48,3 +59,4 @@ export enum UserType {
   learner = 'learner',
   faculty = 'faculty',
 }
+
