@@ -4,8 +4,10 @@
     [dynamic]="true"
     tableStyle="borders"
     [getActionMenuItems]="getActionMenuItems"
-    noResultsHeading="No assessments yet"
-    noResultsText="Once you create one, it’ll show up here."
+    [isEmptyHead]="assessmentList.length === 0"
+    noResultsLogo="gp-icon-moth"
+    noResultsHeading="...Now what?"
+    noResultsText="Thanks to your awesome evaluating skills, there’s nothing here to evaluate (for now). "
     itemName="user assessments"
   >
     <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>

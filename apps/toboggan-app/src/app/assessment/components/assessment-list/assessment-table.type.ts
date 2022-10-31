@@ -12,6 +12,7 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     parents: '',
     defaultSort: true,
     searchableField: true,
+    sort: TableColumnSortStateEnum.Descending,
     alignment: TableColumnAlignmentEnum.Left,
     dataType: TableColumnDataTypeEnum.TextNowrap,
   },
@@ -48,7 +49,7 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     defaultSort: true,
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Left,
-    dataType: TableColumnDataTypeEnum.TextNowrap,
+    dataType: TableColumnDataTypeEnum.Attempts,
   },
   {
     title: 'Instructor',
@@ -66,6 +67,6 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     defaultSort: true,
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Center,
-    dataType: TableColumnDataTypeEnum.Link,
+    dataType: TableColumnDataTypeEnum.PercentLink,
   },
 ];
