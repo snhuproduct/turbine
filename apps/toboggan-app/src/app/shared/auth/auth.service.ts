@@ -6,95 +6,137 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { getAuth, OAuthProvider, signInWithPopup } from 'firebase/auth';
 import { JWTToken } from 'libs/jwttoken/jwttoken';
+
 import { environment } from '../../../environments/environment';
+import { ModalAlertService } from '../services/modal-alert/modal-alert.service';
+import { ActivityMonitorService } from './activity-monitor.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  get AuthBearerToken(): string | undefined {
-    if (!this.isSignedIn()) {
-      return '';
-    }
-    return this.jwtSso?.jwtToken;
-  }
+  private readonly app;
+  private readonly auth;
 
-  app = firebase.initializeApp(environment.firebase);
-  auth = getAuth(this.app);
-  userData: unknown;
-  private ssoIdToken = localStorage.getItem('ssoIdToken') ?? '';
-  private jwtSso = this.ssoIdToken ? new JWTToken(this.ssoIdToken) : null;
-  private gpIdToken = localStorage.getItem('gpIdToken') ?? '';
-  private jwtGp = this.gpIdToken ? new JWTToken(this.gpIdToken) : null;
-  constructor(public afAuth: AngularFireAuth, private router: Router) {
+  private ssoIdToken = '';
+  private jwtSso: JWTToken | null | undefined;
+
+  constructor(
+    private activityMonitor: ActivityMonitorService,
+    public afAuth: AngularFireAuth,
+    public modalAlertService: ModalAlertService,
+    private router: Router
+  ) {
+    this.app = firebase.initializeApp(environment.firebase);
+    this.auth = getAuth(this.app);
+    const ssoIdToken = localStorage.getItem('ssoIdToken');
+    const lastActivity = localStorage.getItem('lastActivity');
+
+    if (ssoIdToken) {
+      this.setSsoTokenJwt(ssoIdToken);
+    }
+
     this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
+      if (!user) {
+        return;
       }
-      if (!this.isSignedIn()) {
-        this.signOut();
-      }
-      [this.jwtSso, this.jwtGp].map((jwt) => {
-        if (jwt) jwt?.decodeToken();
-      });
-      this.refreshTokensJwts();
+
+      this.activityMonitor.user.action = lastActivity
+        ? Number(lastActivity)
+        : Date.now();
+
+      this.activityMonitor.subscribe('inactive', this.signOut.bind(this));
+      this.activityMonitor.subscribe(
+        'keepAlive',
+        this.refreshTokensJwts.bind(this)
+      );
+      this.activityMonitor.subscribe(
+        'warning',
+        this.showNoActivityWarning.bind(this)
+      );
+      this.activityMonitor.subscribe(
+        'activity',
+        this.onActivityMonitor.bind(this)
+      );
     });
   }
 
-  // TODO
-  // We'll need more work here in the future to refresh the user token if there's been activity in the session recently
+  showNoActivityWarning = () => {
+    const timeout = this.activityMonitor.options.warning / 60;
+
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: 'Warning',
+      message: `If there is no activity for the next ${timeout} minutes, you will be logged out!`,
+      buttons: [
+        {
+          title: 'Close',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'primary',
+        },
+      ],
+    });
+  };
+
+  onActivityMonitor = () => {
+    localStorage.setItem(
+      'lastActivity',
+      String(this.activityMonitor.user.action)
+    );
+  };
+
   ssoAuth = async () => {
     const provider = new OAuthProvider(environment.providerID);
-    return await signInWithPopup(this.auth, provider)
-      .then(async (result) => {
-        const credential = OAuthProvider.credentialFromResult(result);
-        if (credential !== null) {
-          const idToken = credential.idToken ?? '';
-          this.setSsoTokenJwt(idToken);
-          if (!environment.production) {
-            console.log(
-              `idTokenSSO-poc\n%c${localStorage.getItem('jwtSso')}`,
-              'color:pink'
-            );
-            const jwtSsoObj = JSON.parse(
-              localStorage.getItem('jwtSso') ?? `{'jwtToken':''}`
-            );
-            this.setCookie('firebaseIdToken', jwtSsoObj['jwtToken']);
 
-            this.router.navigate(['']);
-          }
-        }
-      })
-      .catch((error: Error) => {
-        console.log(error);
-      });
+    try {
+      const result = await signInWithPopup(this.auth, provider);
+
+      const credential = OAuthProvider.credentialFromResult(result);
+
+      if (credential !== null) {
+        const idToken = credential.idToken ?? '';
+        this.setSsoTokenJwt(idToken);
+      }
+
+      await this.router.navigate(['']);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   removeTokenJwts() {
-    [this.ssoIdToken, this.gpIdToken, this.jwtSso, this.jwtGp] = [
-      '',
-      '',
-      null,
-      null,
-    ];
-    ['jwtSso', 'jwtGp', 'gpIdToken', 'ssoIdToken'].map((key) =>
-      localStorage.removeItem(key)
-    );
+    [this.ssoIdToken, this.jwtSso] = ['', null];
+    ['jwtSso', 'ssoIdToken'].map((key) => localStorage.removeItem(key));
   }
 
   refreshTokensJwts() {
-    this.ssoIdToken = localStorage.getItem('ssoIdToken') ?? '';
-    this.jwtSso = this.ssoIdToken ? new JWTToken(this.ssoIdToken) : null;
-    this.jwtSso?.decodeToken();
-    if (this.jwtSso)
-      localStorage.setItem('jwtSso', JSON.stringify(this.jwtSso));
+    this.auth.currentUser
+      ?.getIdToken(true)
+      .then((idToken) => {
+        this.setSsoTokenJwt(idToken);
+      })
+      .catch((error) => {
+        console.error('error', error);
+      });
   }
 
   setSsoTokenJwt(ssoIdToken: string) {
-    localStorage.setItem('ssoIdToken', ssoIdToken);
-    const jwtSsoObj = new JWTToken(ssoIdToken);
-    jwtSsoObj.decodeToken();
-    localStorage.setItem('jwtSso', JSON.stringify(jwtSsoObj, null, 2));
+    this.ssoIdToken = ssoIdToken;
+    this.jwtSso = new JWTToken(ssoIdToken);
+    this.jwtSso.decodeToken();
+
+    localStorage.setItem('ssoIdToken', this.ssoIdToken);
+    localStorage.setItem('jwtSso', JSON.stringify(this.jwtSso, null, 2));
+
+    if (!environment.production) {
+      console.log(
+        `idTokenSSO-poc\n%c${JSON.stringify(this.jwtSso)}`,
+        'color:pink'
+      );
+      this.setCookie('firebaseIdToken', this.jwtSso?.jwtToken);
+    }
   }
 
   // should only be used in dev mode to work with postman interceptor
@@ -109,15 +151,35 @@ export class AuthService {
   signOut() {
     this.auth.signOut().then(() => {
       this.removeTokenJwts();
+      localStorage.removeItem('lastActivity');
+
+      this.activityMonitor.unsubscribe('inactive', this.signOut.bind(this));
+      this.activityMonitor.unsubscribe(
+        'keepAlive',
+        this.refreshTokensJwts.bind(this)
+      );
+      this.activityMonitor.unsubscribe(
+        'warning',
+        this.showNoActivityWarning.bind(this)
+      );
+      this.activityMonitor.unsubscribe(
+        'activity',
+        this.onActivityMonitor.bind(this)
+      );
+
+      this.modalAlertService.hideModalAlert();
       this.router.navigate(['login']);
     });
+  }
+
+  get authBearerToken(): string | undefined {
+    return this.jwtSso?.jwtToken;
   }
 
   // TODO
   // can probably be done better using the observable provided in firebase
   // will revisit
-  isSignedIn(): boolean {
-    if (!this.jwtSso) this.refreshTokensJwts();
-    return this.jwtSso !== null && !this.jwtSso.isTokenExpired();
+  get isSignedIn(): boolean {
+    return Boolean(this.jwtSso && !this.jwtSso.isTokenExpired());
   }
 }
