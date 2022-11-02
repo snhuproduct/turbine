@@ -5,9 +5,11 @@ import { firstValueFrom } from 'rxjs';
 import {
   AssessmentStatus,
   IAssessment,
+  IAssessmentFlag,
   IAssessmentReference,
 } from './assessments.types';
-
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
 import random from 'lodash/random';
 
 @Injectable()
@@ -30,6 +32,13 @@ export class AssessmentsService {
     return this.executeAssessmentCall<IAssessment>(
       `/assessment-item/${uuid}?fetchTree=${fetchTree}`
     );
+  }
+
+  public async updateFlagAssessment(
+     uuid: string,
+     body:IAssessmentFlag
+    ): Promise<Observable<AxiosResponse<IAssessment>>> {
+    return this.httpService.put(`/assessment-item?uuid=${uuid}`,body)
   }
 
   public async searchAssessments(name: string): Promise<IAssessment[]> {

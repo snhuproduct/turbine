@@ -45,3 +45,8 @@ export interface IAssessmentReferences {
   competencies: any[];
   skills: any[];
 }
+
+export interface IAssessmentFlag {
+  flag_status : boolean;
+  comments : string;
+}

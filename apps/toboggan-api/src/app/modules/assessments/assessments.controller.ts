@@ -1,8 +1,10 @@
 /* eslint-disable no-return-await */
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Put,
   Query,
   Res,
   UseGuards,
@@ -10,10 +12,13 @@ import {
 } from '@nestjs/common';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
+import { RequestInterceptor } from '../common/request.interceptor';
+import { ResponseInterceptor } from '../common/response.interceptor';
 import { AssessmentsService } from './assessments.service';
+import { IAssessmentFlag } from './assessments.types';
 
 @UseGuards(HTTPHeaderAuthGuard)
-@UseInterceptors(TokenInterceptor)
+@UseInterceptors(TokenInterceptor,ResponseInterceptor, RequestInterceptor)
 @Controller('assessments')
 export class AssessmentsController {
   constructor(private assessmentsService: AssessmentsService) {}
@@ -46,4 +51,11 @@ export class AssessmentsController {
 
     return res.send(response);
   }
+
+  //Update Flag assessment
+  @Put('/:uuid')
+  async updateFlagAssessment(@Param('uuid') uuid :string, @Body() body :IAssessmentFlag ){
+    return this.assessmentsService.updateFlagAssessment(uuid,body)
+  }
+
 }
