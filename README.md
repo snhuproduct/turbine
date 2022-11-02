@@ -18,6 +18,9 @@ This README file contains instructions regarding our main project dependencies (
 //npm.pkg.github.com/:_authToken=GITHUB_PERSONAL_ACCESS_TOKEN_HERE
 ```
 
+- The `@snhuproduct` key can also be found on 1password vault as secret: [TobogganWs @snhuproduct NPM package key
+  ](https://sada-systems.1password.com/vaults/n6wqz5ifq5v57w4nrevk6viqka/allitems/tbvuohgdqy3aygl36q5opro4ji)
+
 - If this is not setup properly, you'll have a 401 error while running npm install, due to our toboggan-ui module.
 
 - This application has active integration with [GlidePath-Core API](https://snhu-glidepath-dev-api.cloudpssolutions.com/docs/data_glossary). This requires the secrets to be stored in an `.env` file. **Ensure that the proper `.env` file is placed at this project's root for it to run properly**.
