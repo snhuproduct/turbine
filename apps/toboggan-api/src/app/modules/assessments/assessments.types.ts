@@ -47,6 +47,6 @@ export interface IAssessmentReferences {
 }
 
 export interface IAssessmentFlag {
-  flag_status : boolean;
+  is_flagged : boolean;
   comments : string;
 }

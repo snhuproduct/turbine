@@ -29,8 +29,8 @@ describe('AssessmentsController', () => {
       
       const uuid = uuidv4();
       const body: IAssessmentFlag ={
-          flag_status:true,
-          comments:"mock updated"
+        is_flagged:true,
+        comments:"mock updated"
       }
       jest.spyOn(service, 'updateFlagStatus');
 
