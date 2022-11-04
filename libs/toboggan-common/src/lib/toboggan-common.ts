@@ -15,7 +15,7 @@ export type INewGroup = Omit<IGroup, 'id'>;
 export interface IUser {
   userType?: string | null;
   status?: string;
-  id: string;
+  userId: string;
   userName: string;
   firstName: string | null;
   lastName: string | null;
@@ -25,9 +25,9 @@ export interface IUser {
   enabled: boolean;
 }
 
-export type INewUser = Omit<IUser, 'id'>;
+export type INewUser = Omit<IUser, 'userId'>;
 
-export type IUpdatedUser = Omit<IUser, 'id' | 'userName'>;
+export type IUpdatedUser = Omit<IUser, 'userId' | 'userName'>;
 
 export interface IAddUserToGroup {
   groupId: string;
@@ -45,6 +45,6 @@ export interface IPermission {
 export type INewPermission = Omit<IPermission, 'id'>;
 
 export enum UserType {
-  learner = "learner",
-  faculty = "faculty"
+  learner = 'learner',
+  faculty = 'faculty',
 }
