@@ -21,15 +21,20 @@
         </toboggan-ws-assessment-list>
       </gp-tab>
       <gp-tab label="Evaluated">
-        <toboggan-ws-assessment-list [selectedTab]="'evaluated'">
+        <toboggan-ws-assessment-evaluated-list>
           <div table-cta-right>
             <button
               gp-button
-              class="create-group-btn">
-              Create user assessment
-            </button>
+              label="Filter"
+              size="default"
+              styleType="secondary"
+              iconVariations="iconleft"
+              iconId="gp-icon-filter-alt"
+              [isLoading]="false"
+              ariaLabel="Filter"
+            ></button>
           </div>
-        </toboggan-ws-assessment-list>
+        </toboggan-ws-assessment-evaluated-list>
       </gp-tab>
     </gp-tabs>
   </div>
