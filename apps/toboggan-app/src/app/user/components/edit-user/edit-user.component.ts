@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -35,10 +35,14 @@ export class EditUserComponent implements OnChanges {
   @Output() userChange = new EventEmitter<IUser | undefined>();
 
   userForm = new FormGroup({
-    firstName: new FormControl('', [ Validators.required, 
-      Validators.pattern(ValidatorPattern.nameValidation)]),
-    lastName: new FormControl('', [ Validators.required, 
-      Validators.pattern(ValidatorPattern.nameValidation)]),
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(ValidatorPattern.nameValidation),
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(ValidatorPattern.nameValidation),
+    ]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
@@ -87,18 +91,18 @@ export class EditUserComponent implements OnChanges {
         this.user && [
           {
             label: 'Last Name',
-            oldValue: this.reviewing.lastName,
-            newValue: this.user.lastName,
+            newValue: this.reviewing.lastName,
+            oldValue: this.user.lastName,
           },
           {
             label: 'First Name',
-            oldValue: this.reviewing.firstName,
-            newValue: this.user.firstName,
+            newValue: this.reviewing.firstName,
+            oldValue: this.user.firstName,
           },
           {
             label: 'Email',
-            oldValue: this.reviewing.email,
-            newValue: this.user.email,
+            newValue: this.reviewing.email,
+            oldValue: this.user.email,
           },
         ]) ||
       []
@@ -111,7 +115,7 @@ export class EditUserComponent implements OnChanges {
         const userObj = this.userForm.getRawValue() as IUser;
         this.isLoading = true;
 
-        await this.userService.patchUser(userObj, this.user?.id);
+        await this.userService.patchUser(userObj, this.user?.userId);
 
         this.bannerService.showBanner({
           type: 'success',

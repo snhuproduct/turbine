@@ -22,7 +22,7 @@ export class UsersService {
     // generate mocked data for 20 users
     for (let i = 0; i < 20; i++) {
       this.users.push({
-        id: `id-${i}`,
+        userId: `id-${i}`,
         userName: `user${i}`,
         firstName: `name${i}`,
         lastName: `last${i}`,
@@ -51,9 +51,9 @@ export class UsersService {
 
   updateUser(id: string, updatedUser: IUser) {
     this.users = this.users.map((user) => {
-      if (user.id === id) {
+      if (user.userId === id) {
         return {
-          id: user.id,
+          userId: user.userId,
           ...updatedUser,
         };
       }
@@ -63,7 +63,7 @@ export class UsersService {
 
   patchUser(id: string, updatedUser: IUser) {
     this.users = this.users.map((user) => {
-      if (user.id === id) {
+      if (user.userId === id) {
         return {
           ...user,
           ...updatedUser,
@@ -77,7 +77,7 @@ export class UsersService {
     // forward the pwd-reset request to the back-end
     // this does not do anything at the moment
     this.users = this.users.map((user) => {
-      if (user.id === id) {
+      if (user.userId === id) {
         return {
           ...user,
         };
@@ -88,7 +88,7 @@ export class UsersService {
 
   deleteUser(id: string) {
     this.users = this.users.filter((user) => {
-      return user.id !== id;
+      return user.userId !== id;
     });
   }
 }
