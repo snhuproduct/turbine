@@ -11,7 +11,7 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
@@ -24,7 +24,7 @@ import { UsersService } from './users.service';
 @UseInterceptors(TokenInterceptor, ResponseInterceptor, RequestInterceptor)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Get('/')
   getUsers(@Query() query) {
@@ -71,5 +71,12 @@ export class UsersController {
   @Delete('/:id')
   deleteUser(@Param('id') id) {
     return this.usersService.deleteUser(id);
+  }
+
+  @Patch('/:id/status')
+  changeStatusOfUser(@Param('id') id, @Body() body) {
+    const { status } = body;
+
+    return this.usersService.changeStatusOfUser(id, status);
   }
 }

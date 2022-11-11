@@ -4,6 +4,7 @@ import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { UserStatus } from './users.types';
 
 @Injectable()
 export class UsersService {
@@ -90,5 +91,9 @@ export class UsersService {
     this.users = this.users.filter((user) => {
       return user.userId !== id;
     });
+  }
+
+  changeStatusOfUser(id: string, newStatus: UserStatus) {
+    console.log('changing status of user', id, 'to ', newStatus);
   }
 }
