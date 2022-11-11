@@ -1,0 +1,36 @@
+<gp-page [loggedin]="true">
+  <toboggan-ws-banner></toboggan-ws-banner>
+  <div class="gp-level-4 page-heading mb-5">Assessments</div>
+  <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
+  <div class="assessment-list-container p-5">
+    <gp-tabs orientation="horz">
+      <gp-tab label="To evaluate (30)">
+        <toboggan-ws-assessment-list>
+          <div table-cta-right>
+            <button
+              gp-button
+              label="Filter"
+              size="default"
+              styleType="secondary"
+              iconVariations="iconleft"
+              iconId="gp-icon-filter-alt"
+              [isLoading]="false"
+              ariaLabel="Filter"
+            ></button>
+          </div>
+        </toboggan-ws-assessment-list>
+      </gp-tab>
+      <gp-tab label="Evaluated">
+        <toboggan-ws-assessment-list>
+          <div table-cta-right>
+            <button
+              gp-button
+              class="create-group-btn">
+              Create user assessment
+            </button>
+          </div>
+        </toboggan-ws-assessment-list>
+      </gp-tab>
+    </gp-tabs>
+  </div>
+</gp-page>

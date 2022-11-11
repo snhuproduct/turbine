@@ -2837,10 +2837,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@snhuproduct/toboggan-ui-components-library@^1.4.22":
-  "integrity" "sha512-DGrGSpbglL6LXV/j33ea+RzxCM28q1QRQbvzC678xZyeDNbcbr/LOkQKpybxDx8vu+bquZ6Wz2q2XdP+4TOwig=="
-  "resolved" "https://npm.pkg.github.com/download/@snhuproduct/toboggan-ui-components-library/1.4.23/ce051a1c70dbaa58fec8d8eaa7d619ccc1746ec9"
-  "version" "1.4.23"
+"@snhuproduct/toboggan-ui-components-library@^1.4.42":
+  "integrity" "sha512-rJk/EjQRsb8nsJeqTs54YgxflTczspxj4VMAJ50gjsN9O1qcZSKmRtb2PJXlMjoyAc+HmczAT41DUByyw+Prdg=="
+  "resolved" "https://npm.pkg.github.com/download/@snhuproduct/toboggan-ui-components-library/1.4.42/22c649145c9426614a0a3a4dbd0a91e2f733c563"
+  "version" "1.4.42"
   dependencies:
     "tslib" "^2.3.0"
 
@@ -5382,16 +5382,6 @@
 "esbuild-darwin-arm64@0.15.5":
   "integrity" "sha512-WIfQkocGtFrz7vCu44ypY5YmiFXpsxvz2xqwe688jFfSVCnUsCn2qkEVDo7gT8EpsLOz1J/OmqjExePL1dr1Kg=="
   "resolved" "https://registry.npmjs.org/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.15.5.tgz"
-  "version" "0.15.5"
-
-"esbuild-linux-arm64@0.14.11":
-  "integrity" "sha512-+e6ZCgTFQYZlmg2OqLkg1jHLYtkNDksxWDBWNtI4XG4WxuOCUErLqfEt9qWjvzK3XBcCzHImrajkUjO+rRkbMg=="
-  "resolved" "https://registry.npmjs.org/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.11.tgz"
-  "version" "0.14.11"
-
-"esbuild-linux-arm64@0.15.5":
-  "integrity" "sha512-7EgFyP2zjO065XTfdCxiXVEk+f83RQ1JsryN1X/VSX2li9rnHAt2swRbpoz5Vlrl6qjHrCmq5b6yxD13z6RheA=="
-  "resolved" "https://registry.npmjs.org/esbuild-linux-arm64/-/esbuild-linux-arm64-0.15.5.tgz"
   "version" "0.15.5"
 
 "esbuild-wasm@0.14.11":
