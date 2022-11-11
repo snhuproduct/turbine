@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   TableDataGenerator,
   TableRow,
@@ -32,7 +28,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assessmentService: AssessmentService,
-    private tableDataService: TableDataService,
+    private tableDataService: TableDataService
   ) {}
 
   ngOnInit(): void {
@@ -40,9 +36,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    [this.datageneratorSubscription, this.updateAssessmentSubscription].map((s) => {
-      if (s.unsubscribe) s.unsubscribe();
-    });
+    [this.datageneratorSubscription, this.updateAssessmentSubscription].map(
+      (s) => {
+        if (s.unsubscribe) s.unsubscribe();
+      }
+    );
   }
 
   getActionMenuItems = () => {
@@ -54,7 +52,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     const assessments = fetchedData as IAssessment[];
 
     // TODO: Ideally it should come sorted from our API!
-    const groupsSortedByName = assessments.sort((a, b) => {
+    const assessmentsSortedByTimeleft = assessments.sort((a, b) => {
       if (a.time_left && b.time_left) {
         if (a.time_left < b.time_left) {
           return -1;
@@ -67,11 +65,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       return 0;
     });
 
-    const data = groupsSortedByName.map((cellData, index) => {
+    const data = assessmentsSortedByTimeleft.map((cellData, index) => {
       return {
         rowId: String(index + 1),
         cellData: {
-          ...cellData
+          ...cellData,
         },
       };
     });
@@ -105,7 +103,8 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       this.dataGeneratorFactoryOutputObserver.subscribe(
         (dataGeneratorFactoryOutput) => {
           this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
-          this.assessmentList = dataGeneratorFactoryOutput.tableRows as TableRow[];
+          this.assessmentList =
+            dataGeneratorFactoryOutput.tableRows as TableRow[];
           this.dataGenerator.searchString = prevSearchString;
         }
       );

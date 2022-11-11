@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { of } from 'rxjs';
 import { AssessmentService } from '../../services/assessment.service';
 
 import { AssessmentListComponent } from './assessment-list.component';
@@ -31,13 +31,16 @@ describe('AssessmentListComponent with empty results ', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call service for fetching users', () => {
-    const fetchAssessments = jest.spyOn(mockAssessmentService, 'fetchAssessments');
+  it('should call service for fetching assessments', () => {
+    const fetchAssessments = jest.spyOn(
+      mockAssessmentService,
+      'fetchAssessments'
+    );
     fixture.detectChanges();
     expect(fetchAssessments).toHaveBeenCalled();
   });
 
-  it('table should show "No Results Found" when no groups are available', () => {
+  it('table should show "Thanks to your awesome evaluating skills, there’s nothing here to evaluate (for now)." when no assessments are available', () => {
     const noResultsContainer = fixture.debugElement.query(
       By.css('.gp-table-x-noresults')
     );
