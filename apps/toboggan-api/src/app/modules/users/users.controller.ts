@@ -25,7 +25,11 @@ export class UsersController {
 
   @Get('/')
   getUsers(@Query() query) {
-    const { skip, limit, user_type } = omitBy(query, isUndefined);
+    const { skip, limit, user_type, email } = omitBy(query, isUndefined);
+
+    if (email) {
+      return this.usersService.searchUser(email);
+    }
 
     return this.usersService.getUsers(skip, limit, user_type);
   }

@@ -28,6 +28,15 @@ export class UsersService {
     return this.httpService.get(`/user/${id}`);
   }
 
+  searchUser(email: string) {
+    console.log('searching user with email', email);
+    return this.httpService.get(`/user/search`, {
+      params: {
+        email,
+      },
+    });
+  }
+
   createUser(user: ICreateUser): Observable<AxiosResponse<IUser[]>> {
     return this.httpService.post('/user', user);
   }

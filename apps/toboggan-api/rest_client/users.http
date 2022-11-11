@@ -20,6 +20,13 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+## Users :: Search users by email
+
+GET {{baseUrl}}/users?email=johndoe@sada.com HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+###
+
 ## Users :: Get one user
 
 GET {{baseUrl}}/users/gpzG5fOFKgXhCPE1PseE HTTP/1.1
