@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -27,6 +28,11 @@ export class UsersController {
     const { skip, limit, user_type } = omitBy(query, isUndefined);
 
     return this.usersService.getUsers(skip, limit, user_type);
+  }
+
+  @Get('/:id')
+  getUser(@Param('id') id: string) {
+    return this.usersService.getUser(id);
   }
 
   @Post('/')

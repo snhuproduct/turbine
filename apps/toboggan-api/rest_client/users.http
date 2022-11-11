@@ -20,6 +20,14 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+## Users :: Get one user
+
+GET {{baseUrl}}/users/gpzG5fOFKgXhCPE1PseE HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+
+###
+
 # Users :: Create a user
 POST {{baseUrl}}/users HTTP/1.1
 Authorization: Bearer {{authToken}}

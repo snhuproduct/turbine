@@ -24,6 +24,10 @@ export class UsersService {
     });
   }
 
+  getUser(id: string) {
+    return this.httpService.get(`/user/${id}`);
+  }
+
   createUser(user: ICreateUser): Observable<AxiosResponse<IUser[]>> {
     return this.httpService.post('/user', user);
   }
