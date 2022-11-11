@@ -12,11 +12,13 @@ import isUndefined from 'lodash/isUndefined';
 import omitBy from 'lodash/omitBy';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
+import { RequestInterceptor } from '../common/request.interceptor';
+import { ResponseInterceptor } from '../common/response.interceptor';
 import { CreateUserDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
-@UseInterceptors(TokenInterceptor)
+@UseInterceptors(TokenInterceptor, ResponseInterceptor, RequestInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

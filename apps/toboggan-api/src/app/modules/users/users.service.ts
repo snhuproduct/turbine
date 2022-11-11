@@ -1,20 +1,14 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
-import { IUser, UserType } from '@toboggan-ws/toboggan-common';
-import { AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
+import { UserType } from '@toboggan-ws/toboggan-common';
 import { ICreateUser, UserStatus } from './users.types';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly httpService: HttpService) {}
 
-  getUsers(
-    skip: number,
-    limit: number,
-    userType?: UserType
-  ): Observable<AxiosResponse<IUser[]>> {
+  getUsers(skip: number, limit: number, userType?: UserType) {
     return this.httpService.get('/users', {
       params: {
         skip,
@@ -37,7 +31,7 @@ export class UsersService {
     });
   }
 
-  createUser(user: ICreateUser): Observable<AxiosResponse<IUser[]>> {
+  createUser(user: ICreateUser) {
     return this.httpService.post('/user', user);
   }
 
