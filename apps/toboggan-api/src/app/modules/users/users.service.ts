@@ -50,15 +50,7 @@ export class UsersService {
   }
 
   updateUser(id: string, updatedUser: IUser) {
-    this.users = this.users.map((user) => {
-      if (user.userId === id) {
-        return {
-          userId: user.userId,
-          ...updatedUser,
-        };
-      }
-      return user;
-    });
+    return this.httpService.put(`/user/${id}`, updatedUser);
   }
 
   patchUser(id: string, updatedUser: IUser) {
