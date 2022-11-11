@@ -12,6 +12,9 @@ import { groupRouting } from './group.routing';
 import { GroupDetailsPageComponent } from './pages/group-details-page/group-details-page.component';
 import { GroupMainPageComponent } from './pages/group-main-page/group-main-page.component';
 import { EditGroupComponent } from './components/edit-group/edit-group.component';
+import { PermissionComponent } from './components/permission/permission.component';
+import { AddPermissionComponent } from './components/add-permission/add-permission.component';
+import { UpdatePermissionComponent } from './components/update-permission/update-permission.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { EditGroupComponent } from './components/edit-group/edit-group.component
     GroupDetailsPageComponent,
     ListUsersComponent,
     EditGroupComponent,
+    PermissionComponent,
+    AddPermissionComponent,
+    UpdatePermissionComponent,
   ],
   imports: [
     CommonModule,

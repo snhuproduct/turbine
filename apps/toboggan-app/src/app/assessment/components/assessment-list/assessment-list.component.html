@@ -1,0 +1,15 @@
+<div class="table-container">
+  <gp-table
+    [dataGenerator]="dataGenerator"
+    [dynamic]="true"
+    tableStyle="borders"
+    [getActionMenuItems]="getActionMenuItems"
+    [isEmptyHead]="assessmentList.length === 0"
+    noResultsLogo="gp-icon-moth"
+    noResultsHeading="...Now what?"
+    noResultsText="Thanks to your awesome evaluating skills, there’s nothing here to evaluate (for now). "
+    itemName="user assessments"
+  >
+    <ng-content select="[table-cta-right]" gp-table-cta-right></ng-content>
+  </gp-table>
+</div>

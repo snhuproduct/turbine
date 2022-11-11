@@ -22,6 +22,12 @@ describe('GroupService', () => {
   });
 
   describe('Group Service', () => {
+    it('should have called api for fetching groups', () => {
+      service.fetchGroups().subscribe();
+      const req = httpMock.expectOne(`/api/groups`);
+      expect(req.request.method).toBe('GET');
+      req.flush([]);
+    });
     it('should have called api for create group', () => {
       const group: IGroup = {
         id: '2AE9GWE5E1A9',
@@ -35,18 +41,21 @@ describe('GroupService', () => {
       req.flush(group);
     });
 
-    it('should have called api for update group', () => {
+    it('should have called api for update group', async () => {
       const group: IGroup = {
         id: '2AE9GWE5E1A9',
         name: 'Admin',
         type: 0,
         description: '',
       };
-      service.updateGroup(group).subscribe();
-      const req = httpMock.expectOne('/api/groups/:' + group.id);
-      expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toBe(group);
-      req.flush(group);
+      setTimeout(() => {
+        const req = httpMock.expectOne('/api/groups/:' + group.id);
+        req.flush(group);
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toBe(group);
+        httpMock.verify();
+      });
+      await service.updateGroup(group);
     });
 
     it('should have called api for add user to group', () => {

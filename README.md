@@ -5,6 +5,8 @@ This README file contains instructions regarding our main project dependencies (
 ## Overview
 
 - [Environment Setup Review](https://drive.google.com/file/d/1gbKBwPrOcju0hHzaR9aFWiOdxlxPf0ie/view)
+- [Team Coding Standards](./project_documents/Coding_Standards.md)
+- [Unit Testing Plan](./project_documents/Unit_Testing_Plan.md)
 
 ## Requirements
 
@@ -17,11 +19,32 @@ This README file contains instructions regarding our main project dependencies (
 //npm.pkg.github.com/:_authToken=GITHUB_PERSONAL_ACCESS_TOKEN_HERE
 ```
 
+- The `@snhuproduct` key can also be found on 1password vault as secret: [TobogganWs @snhuproduct NPM package key
+  ](https://sada-systems.1password.com/vaults/n6wqz5ifq5v57w4nrevk6viqka/allitems/tbvuohgdqy3aygl36q5opro4ji)
+
 - If this is not setup properly, you'll have a 401 error while running npm install, due to our toboggan-ui module.
+
+- This application has active integration with [GlidePath-Core API](https://snhu-glidepath-dev-api.cloudpssolutions.com/docs/data_glossary). This requires the secrets to be stored in an `.env` file. **Ensure that the proper `.env` file is placed at this project's root for it to run properly**.
+  - [`.env_POC_Auth` in SNHU 1password vault](https://sada-systems.1password.com/vaults/n6wqz5ifq5v57w4nrevk6viqka/allitems/sc43rfsiajcj7hggdyorag3xra)
+  - Make sure that the `.env` file above has all the keys in `.env.example` in this project's root
+
+## Running the project
+
+- Run the API (back-end) server:
+
+```
+npm run start:api
+```
+
+- Run the app (front-end) server:
+
+```
+npm run start:app
+```
 
 ## Storybook
 
-#### Importing toboggan-ui from local:
+#### Importing toboggan-ui from local
 
 The following should be run in your toboggan-ui project:
 
@@ -39,7 +62,7 @@ The following should be run in your toboggan-ui project:
 
 [Interactive Tutorial](https://nx.dev/react-tutorial/01-create-application)
 
-#### Useful extensions for VSCode:
+#### Useful extensions for VSCode
 
 - [NX Console](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
   - Easily generate NX Commands
@@ -62,7 +85,7 @@ Libraries are shareable across libraries and applications. They can be imported 
 
 #### Development server
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Run `ng serve my-app` for a dev server. Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
 
 #### Generate a component
 

@@ -68,3 +68,14 @@ Content-Type: application/json
 DELETE {{baseUrl}}/users/16b1c5de-901a-4e30-ab40-1a83c551d945 HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
+
+### 
+
+# Users :: Change user status
+PATCH {{baseUrl}}/users/16b1c5de-901a-4e30-ab40-1a83c551d945/status HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "status": "disabled"
+}

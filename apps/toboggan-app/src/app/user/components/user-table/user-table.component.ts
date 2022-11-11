@@ -7,7 +7,7 @@ import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
@@ -18,7 +18,7 @@ import { ModalAlertService } from '../../../shared/services/modal-alert/modal-al
 import {
   ITableDataGeneratorFactoryOutput,
   ITableRowFilterFunc,
-  TableDataService
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -26,7 +26,7 @@ import {
   ICellRowData,
   IFilterChange,
   ITableRow,
-  RowActions
+  RowActions,
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
@@ -83,16 +83,23 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
     this.applyActiveFilters();
     // cypress complains without the guard clause
-    if(this.userService.userUpdated$ && this.userService.userUpdated$.subscribe)
-      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(()=>{
-        this.applyActiveFilters();
-      })
+    if (
+      this.userService.userUpdated$ &&
+      this.userService.userUpdated$.subscribe
+    )
+      this.editUserModalSubscription = this.userService.userUpdated$.subscribe(
+        () => {
+          this.applyActiveFilters();
+        }
+      );
   }
 
   ngOnDestroy(): void {
-    [this.datageneratorSubscription, this.editUserModalSubscription].map(s=>{
-      if(s.unsubscribe) s.unsubscribe();
-    });
+    [this.datageneratorSubscription, this.editUserModalSubscription].map(
+      (s) => {
+        if (s.unsubscribe) s.unsubscribe();
+      }
+    );
   }
 
   getAllRows(): TableRow[] {
@@ -127,7 +134,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
     const { first, last, mail } = rowData.cellData as unknown as ICellRowData;
-    const userId = rowData.id;
+    const userId = rowData.userId;
     const userPayload: UserStatusPayload = {
       firstName: first,
       lastName: last,
@@ -145,7 +152,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
       case RowActions.Edit:
         const users = this.getAllUsers();
-        const user = users.find((user) => user.id === userId);
+        const user = users.find((user) => user.userId === userId);
         if (!user) {
           throw new Error('Could not find user with id: ' + userId);
         }
@@ -156,7 +163,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
+
   activateUser(id: string, userPayload: UserStatusPayload) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
@@ -306,15 +313,16 @@ export class UserTableComponent implements OnInit, OnDestroy {
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
-        id: user.id,
+        userId: user.userId,
         cellData: {
           sequence: String(index + 1),
           first: user.firstName,
           last: user.lastName,
           mail: ['gp-icon-mail', user.email],
-          status: user.enabled
-            ? ['is-category', 'Active', 50] // this will generate the custom tag
-            : ['is-category', 'Inactive', 50],
+          status:
+            user.status == 'active'
+              ? ['is-category', 'Active', 50] // this will generate the custom tag
+              : ['is-category', 'Inactive', 50],
         },
       };
     });

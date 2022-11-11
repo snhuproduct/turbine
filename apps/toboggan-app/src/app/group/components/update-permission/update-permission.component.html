@@ -1,0 +1,9 @@
+<toboggan-ws-modal #updatePermissionModal
+    title="Approve changes?"
+    acceptButton="Yes, approve"
+    cancelButton="No, keep editing"
+    id="update-permission"
+    (hidden)="hideModal()"
+    (accept)="approveChanges()">
+    <toboggan-ws-form-changes-table [rows]="rows"></toboggan-ws-form-changes-table>
+</toboggan-ws-modal>

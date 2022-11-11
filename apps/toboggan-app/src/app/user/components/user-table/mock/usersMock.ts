@@ -5,7 +5,7 @@ export const mockUsers = () => {
 
   for (let i = 0; i < 20; i++) {
     users.push({
-      id: uuidv4(),
+      userId: uuidv4(),
       userName: `user${i}`,
       firstName: `name${i}`,
       lastName: `last${i}`,

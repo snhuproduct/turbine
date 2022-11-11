@@ -1,12 +1,8 @@
 <div class="table-container">
-  <ng-template #editGroup>
-    <toboggan-ws-edit-group
-      [mode]="editGroupMode"
-      [group]="editGroupData"
-      [oldGroup]="editOldGroupData"
-    >
-    </toboggan-ws-edit-group>
-  </ng-template>
+  <toboggan-ws-edit-group
+    [group]="editGroupData"
+    *ngIf="showEditGroupModal"
+  ></toboggan-ws-edit-group>
   <gp-table
     [dataGenerator]="dataGenerator"
     [dynamic]="true"
