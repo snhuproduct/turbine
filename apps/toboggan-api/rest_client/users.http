@@ -41,16 +41,10 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "userName": "John Doe",
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "jonh.doe@sada.com",
-  "groups": [
-    {
-      "groupName": "group1",
-      "type": 0
-    }
-  ]
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "johndoe@sada.com",
+  "user_type": "learner"
 }
 
 ###
