@@ -50,21 +50,15 @@ Content-Type: application/json
 ###
 
 # Users :: Update an user (whole resource)
-PUT {{baseUrl}}/users/IHABgCy6jvFegIKPCa5Y HTTP/1.1
+PUT {{baseUrl}}/users/sVcLggdSTs2IUFlbGo5a HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "userName": "Updated John Doe",
-  "firstName": "Updated John",
-  "lastName": "Updated Doe",
-  "email": "Updated jonh.doe@sada.com",
-  "groups": [
-    {
-      "groupName": "Updated group1",
-      "type": 0
-    }
-  ]
+  "first_name": "John_UPDATED",
+  "last_name": "Doe_UPDATED",
+  "email": "johndoe_UPDATED@sada.com",
+  "user_type": "learner" 
 }
 
 ###

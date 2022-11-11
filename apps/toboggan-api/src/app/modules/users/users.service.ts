@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { UserType } from '@toboggan-ws/toboggan-common';
+import { UpdateUserDTO } from './users.dto';
 import { ICreateUser, UserStatus } from './users.types';
 
 @Injectable()
@@ -35,17 +36,9 @@ export class UsersService {
     return this.httpService.post('/user', user);
   }
 
-  // updateUser(id: string, updatedUser: CreateUserDto) {
-  //   this.users = this.users.map((user) => {
-  //     if (user.userId === id) {
-  //       return {
-  //         userId: user.userId,
-  //         ...updatedUser,
-  //       };
-  //     }
-  //     return user;
-  //   });
-  // }
+  updateUser(id: string, user: UpdateUserDTO) {
+    return this.httpService.put(`/user/${id}`, user);
+  }
 
   // patchUser(id: string, updatedUser: PatchUserDto) {
   //   this.users = this.users.map((user) => {

@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
   UseInterceptors,
@@ -14,7 +15,7 @@ import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
 import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
-import { CreateUserDto } from './users.dto';
+import { CreateUserDTO, UpdateUserDTO } from './users.dto';
 import { UsersService } from './users.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
@@ -40,14 +41,14 @@ export class UsersController {
   }
 
   @Post('/')
-  createUser(@Body() user: CreateUserDto) {
+  createUser(@Body() user: CreateUserDTO) {
     return this.usersService.createUser(user);
   }
 
-  // @Put('/:id')
-  // updateUser(@Param('id') id, @Body() user: CreateUserDto) {
-  //   return this.usersService.updateUser(id, user);
-  // }
+  @Put('/:id')
+  updateUser(@Param('id') id, @Body() user: UpdateUserDTO) {
+    return this.usersService.updateUser(id, user);
+  }
 
   // @Put('/:id/password')
   // resetPasswordOfUser(

@@ -9,7 +9,7 @@ import {
 import { enumValidationOptions } from '../common/enumHelpers';
 import { ICreateUser, UserStatus, UserType } from './users.types';
 
-export class CreateUserDto implements ICreateUser {
+export class CreateUserDTO implements ICreateUser {
   @IsString()
   @IsNotEmpty()
   first_name: string;
@@ -51,3 +51,5 @@ export class CreateUserDto implements ICreateUser {
   @IsOptional()
   access_api_docs?: boolean;
 }
+
+export type UpdateUserDTO = Partial<CreateUserDTO>;
