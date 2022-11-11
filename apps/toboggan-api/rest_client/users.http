@@ -63,19 +63,8 @@ Content-Type: application/json
 
 ###
 
-# Users :: Path an user (part of resource)
-PATCH {{baseUrl}}/users/4f2cc71d-ccad-41e0-8f1d-b432bdfb96de HTTP/1.1
-Authorization: Bearer {{authToken}}
-Content-Type: application/json
-
-{
-  "enabled": false
-}
-
-###
-
 # Users :: Delete an user
-DELETE {{baseUrl}}/users/16b1c5de-901a-4e30-ab40-1a83c551d945 HTTP/1.1
+DELETE {{baseUrl}}/users/9ZzejgqETpX12L0w4T7G HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 

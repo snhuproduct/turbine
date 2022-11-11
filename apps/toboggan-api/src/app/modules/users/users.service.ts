@@ -40,6 +40,10 @@ export class UsersService {
     return this.httpService.put(`/user/${id}`, user);
   }
 
+  deleteUser(id: string) {
+    return this.httpService.delete(`/user/${id}`);
+  }
+
   // patchUser(id: string, updatedUser: PatchUserDto) {
   //   this.users = this.users.map((user) => {
   //     if (user.userId === id) {

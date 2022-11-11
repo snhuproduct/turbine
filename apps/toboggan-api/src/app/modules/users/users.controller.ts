@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -50,6 +51,11 @@ export class UsersController {
     return this.usersService.updateUser(id, user);
   }
 
+  @Delete('/:id')
+  deleteUser(@Param('id') id) {
+    return this.usersService.deleteUser(id);
+  }
+
   // @Put('/:id/password')
   // resetPasswordOfUser(
   //   @Param('id') id,
@@ -68,22 +74,5 @@ export class UsersController {
   //         HttpStatus.BAD_REQUEST
   //       );
   //   }
-  // }
-
-  // @Patch('/:id')
-  // patchUser(@Param('id') id, @Body() user: IUser) {
-  //   return this.usersService.patchUser(id, user);
-  // }
-
-  // @Delete('/:id')
-  // deleteUser(@Param('id') id) {
-  //   return this.usersService.deleteUser(id);
-  // }
-
-  // @Patch('/:id/status')
-  // changeStatusOfUser(@Param('id') id, @Body() body) {
-  //   const { status } = body;
-
-  //   return this.usersService.changeStatusOfUser(id, status);
   // }
 }
