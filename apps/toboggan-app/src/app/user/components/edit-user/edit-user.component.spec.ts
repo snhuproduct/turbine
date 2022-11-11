@@ -90,16 +90,6 @@ describe('EditUserComponent', () => {
     expect(component.userForm.controls.email.value).toBeTruthy();
    })
 
-   it('should not close the edit modal and should not reset the userForm', () => {
-    const spy = jest.spyOn(component.userChange, 'emit');
-    component.reviewing = completedInputs;
-    component.userForm.setValue(completedInputs);
-    component.editModalHidden();
-    expect(spy).not.toBeCalled()
-    expect(component.userForm.controls.firstName.value).toBeTruthy();
-    expect(component.userForm.controls.lastName.value).toBeTruthy();
-    expect(component.userForm.controls.email.value).toBeTruthy();
-   })
 
    describe('editModalAccept()', () => {
     it('should open review modal if form is valid and any values changed', () => {
