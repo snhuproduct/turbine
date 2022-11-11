@@ -69,7 +69,7 @@ describe('UsersController', () => {
     it('should create user', async () => {
       jest.spyOn(service, 'createUser');
 
-      await controller.createUser(user as CreateUserDto);
+      await controller.createUser(user);
 
       expect(service.createUser).toBeCalledWith(user);
     });

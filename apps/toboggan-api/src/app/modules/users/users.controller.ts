@@ -1,19 +1,14 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  Patch,
   Post,
-  Put,
   Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { IUser } from '@toboggan-ws/toboggan-common';
+import isUndefined from 'lodash/isUndefined';
+import omitBy from 'lodash/omitBy';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
 import { RequestInterceptor } from '../common/request.interceptor';
@@ -29,9 +24,9 @@ export class UsersController {
 
   @Get('/')
   getUsers(@Query() query) {
-    const { currentPage: skip, resultsPerPage: limit } = query;
+    const { skip, limit, user_type } = omitBy(query, isUndefined);
 
-    return this.usersService.getUsers({ skip, limit });
+    return this.usersService.getUsers(skip, limit, user_type);
   }
 
   @Post('/')
@@ -39,45 +34,45 @@ export class UsersController {
     return this.usersService.createUser(user);
   }
 
-  @Put('/:id')
-  updateUser(@Param('id') id, @Body() user: CreateUserDto) {
-    return this.usersService.updateUser(id, user);
-  }
+  // @Put('/:id')
+  // updateUser(@Param('id') id, @Body() user: CreateUserDto) {
+  //   return this.usersService.updateUser(id, user);
+  // }
 
-  @Put('/:id/password')
-  resetPasswordOfUser(
-    @Param('id') id,
-    @Body()
-    operationBody: {
-      type: string;
-    }
-  ) {
-    switch (operationBody.type) {
-      case 'reset':
-        this.usersService.resetPasswordOfUser(id);
-        break;
-      default:
-        throw new HttpException(
-          { status: HttpStatus.BAD_REQUEST, error: `Invalid request-body!` },
-          HttpStatus.BAD_REQUEST
-        );
-    }
-  }
+  // @Put('/:id/password')
+  // resetPasswordOfUser(
+  //   @Param('id') id,
+  //   @Body()
+  //   operationBody: {
+  //     type: string;
+  //   }
+  // ) {
+  //   switch (operationBody.type) {
+  //     case 'reset':
+  //       this.usersService.resetPasswordOfUser(id);
+  //       break;
+  //     default:
+  //       throw new HttpException(
+  //         { status: HttpStatus.BAD_REQUEST, error: `Invalid request-body!` },
+  //         HttpStatus.BAD_REQUEST
+  //       );
+  //   }
+  // }
 
-  @Patch('/:id')
-  patchUser(@Param('id') id, @Body() user: IUser) {
-    return this.usersService.patchUser(id, user);
-  }
+  // @Patch('/:id')
+  // patchUser(@Param('id') id, @Body() user: IUser) {
+  //   return this.usersService.patchUser(id, user);
+  // }
 
-  @Delete('/:id')
-  deleteUser(@Param('id') id) {
-    return this.usersService.deleteUser(id);
-  }
+  // @Delete('/:id')
+  // deleteUser(@Param('id') id) {
+  //   return this.usersService.deleteUser(id);
+  // }
 
-  @Patch('/:id/status')
-  changeStatusOfUser(@Param('id') id, @Body() body) {
-    const { status } = body;
+  // @Patch('/:id/status')
+  // changeStatusOfUser(@Param('id') id, @Body() body) {
+  //   const { status } = body;
 
-    return this.usersService.changeStatusOfUser(id, status);
-  }
+  //   return this.usersService.changeStatusOfUser(id, status);
+  // }
 }

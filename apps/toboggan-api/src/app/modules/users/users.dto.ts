@@ -1,39 +1,53 @@
 import {
-  IsArray,
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { PartialType } from "@nestjs/mapped-types";
-import { IGroup } from "@toboggan-ws/toboggan-common";
+import { enumValidationOptions } from '../common/enumHelpers';
+import { ICreateUser, UserStatus, UserType } from './users.types';
 
-export class CreateUserDto {
+export class CreateUserDto implements ICreateUser {
   @IsString()
   @IsNotEmpty()
-  userName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  firstName: string | null;
+  first_name: string;
 
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
-  lastName: string | null;
+  last_name: string;
 
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
-  email: string | null;
+  email: string;
 
-  @IsArray()
+  @IsNotEmpty()
+  @IsEnum(UserType, enumValidationOptions('user_type', UserType))
+  user_type: UserType;
+
+  @IsString()
   @IsOptional()
-  groups?: IGroup[];
+  user_type_ref?: string;
+
+  @IsString({ each: true })
+  @IsOptional()
+  user_groups?: string[];
+
+  @IsString()
+  @IsOptional()
+  @IsEnum(UserStatus, enumValidationOptions('user_status', UserStatus))
+  status?: UserStatus;
 
   @IsBoolean()
-  enabled: boolean;
-}
+  @IsOptional()
+  is_registered?: boolean;
 
-export class PatchUserDto extends PartialType(CreateUserDto) {}
+  @IsNumber()
+  @IsOptional()
+  failed_login_attempts_count?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  access_api_docs?: boolean;
+}

@@ -8,7 +8,14 @@ Authorization: Bearer {{authToken}}
 
 ## Users :: Read all users (Paginated)
 
-GET {{baseUrl}}/users?currentPage=1&resultsPerPage=10 HTTP/1.1
+GET {{baseUrl}}/users?skip=1&limit=10 HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+###
+
+## Users :: Read users by user_type
+
+GET {{baseUrl}}/users?user_type=learner HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
@@ -34,7 +41,7 @@ Content-Type: application/json
 ###
 
 # Users :: Update an user (whole resource)
-PUT {{baseUrl}}/users/0f13345d-e8dd-441d-bb14-2e235d1b19f5 HTTP/1.1
+PUT {{baseUrl}}/users/IHABgCy6jvFegIKPCa5Y HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
