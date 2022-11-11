@@ -4,12 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { UserType } from '@toboggan-ws/toboggan-common';
 import isUndefined from 'lodash/isUndefined';
 import omitBy from 'lodash/omitBy';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
@@ -44,6 +46,14 @@ export class UsersController {
   @Post('/')
   createUser(@Body() user: CreateUserDTO) {
     return this.usersService.createUser(user);
+  }
+
+  @Patch('/:id')
+  patchUser(@Param('id') id, @Body() user: UpdateUserDTO) {
+    return this.usersService.updateUser(id, {
+      ...user,
+      user_type: user.user_type || UserType.learner,
+    });
   }
 
   @Put('/:id')

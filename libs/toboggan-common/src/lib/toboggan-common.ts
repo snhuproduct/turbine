@@ -58,4 +58,5 @@ export type INewPermission = Omit<IPermission, 'id'>;
 export enum UserType {
   learner = 'learner',
   faculty = 'faculty',
+  other = 'other',
 }

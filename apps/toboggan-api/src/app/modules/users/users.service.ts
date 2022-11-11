@@ -44,18 +44,6 @@ export class UsersService {
     return this.httpService.delete(`/user/${id}`);
   }
 
-  // patchUser(id: string, updatedUser: PatchUserDto) {
-  //   this.users = this.users.map((user) => {
-  //     if (user.userId === id) {
-  //       return {
-  //         ...user,
-  //         ...updatedUser,
-  //       };
-  //     }
-  //     return user;
-  //   });
-  // }
-
   // resetPasswordOfUser(id: string) {
   //   // forward the pwd-reset request to the back-end
   //   // this does not do anything at the moment
