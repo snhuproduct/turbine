@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   HttpException,
   Injectable,
-  NestInterceptor,
+  NestInterceptor
 } from '@nestjs/common';
 import { catchError, map, throwError } from 'rxjs';
 import { modelToCamelCase } from './utils';

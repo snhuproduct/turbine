@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   InterstitialLoaderType,
-  ModalComponent,
+  ModalComponent
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup, IUser, UserType } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';

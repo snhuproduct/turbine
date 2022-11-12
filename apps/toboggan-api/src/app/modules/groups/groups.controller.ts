@@ -9,12 +9,12 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import {
   CreateGroupDto,
   IAddUserToGroupDto,
-  PatchGroupDto,
+  PatchGroupDto
 } from './groups.dto';
 
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
