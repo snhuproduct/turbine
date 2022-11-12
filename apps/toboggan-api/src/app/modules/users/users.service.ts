@@ -2,8 +2,9 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { UserType } from '@toboggan-ws/toboggan-common';
+import { map } from 'rxjs';
 import { UpdateStatusDTO, UpdateUserDTO } from './users.dto';
-import { ICreateUser } from './users.types';
+import { ICreateUser, UserStatus } from './users.types';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,6 @@ export class UsersService {
   }
 
   searchUser(email: string) {
-    console.log('searching user with email', email);
     return this.httpService.get(`/user/search`, {
       params: {
         email,
@@ -46,6 +46,20 @@ export class UsersService {
 
   deleteUser(id: string) {
     return this.httpService.delete(`/user/${id}`);
+  }
+
+  canLogin(email: string) {
+    return this.searchUser(email).pipe(
+      map((response) => {
+        const user = response.data.data[0];
+
+        if (user.status === UserStatus.Active) {
+          return true;
+        }
+
+        return false;
+      })
+    );
   }
 
   // resetPasswordOfUser(id: string) {

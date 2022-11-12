@@ -53,7 +53,7 @@ export class UsersController {
   patchUser(@Param('id') id, @Body() user: UpdateUserDTO) {
     return this.usersService.updateUser(id, {
       ...user,
-      user_type: user.user_type || UserType.learner,
+      user_type: user.user_type || UserType.Learner,
     });
   }
 

@@ -22,7 +22,7 @@ Authorization: Bearer {{authToken}}
 
 ## Users :: Search users by email
 
-GET {{baseUrl}}/users?email=johndoe@sada.com HTTP/1.1
+GET {{baseUrl}}/users?email=joao.furtado@sada.com HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
@@ -67,12 +67,12 @@ Content-Type: application/json
 ###
 
 # Users :: Update status
-PUT {{baseUrl}}/users/status/f7JPTU4yPzdydHRMG0oU HTTP/1.1
+PUT {{baseUrl}}/users/status/AFUNsdSdNqapM9owRYOr HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "status": "inactive"
+  "status": "active"
 }
 
 ###
@@ -81,14 +81,4 @@ Content-Type: application/json
 DELETE {{baseUrl}}/users/9ZzejgqETpX12L0w4T7G HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
-
-### 
-
-# Users :: Change user status
-PATCH {{baseUrl}}/users/16b1c5de-901a-4e30-ab40-1a83c551d945/status HTTP/1.1
-Authorization: Bearer {{authToken}}
-Content-Type: application/json
-
-{
-  "status": "disabled"
-}
+ 

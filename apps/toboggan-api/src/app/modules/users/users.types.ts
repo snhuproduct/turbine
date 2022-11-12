@@ -1,12 +1,12 @@
 export enum UserType {
-  learner = 'learner',
-  faculty = 'faculty',
-  other = 'other',
+  Learner = 'learner',
+  Faculty = 'faculty',
+  Other = 'other',
 }
 
 export enum UserStatus {
-  active = 'active',
-  inactive = 'inactive',
+  Active = 'active',
+  Inactive = 'inactive',
 }
 export interface ICreateUser {
   first_name: string;
