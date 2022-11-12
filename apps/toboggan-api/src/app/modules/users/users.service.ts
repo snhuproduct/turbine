@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { UserType } from '@toboggan-ws/toboggan-common';
-import { UpdateUserDTO } from './users.dto';
-import { ICreateUser, UserStatus } from './users.types';
+import { UpdateStatusDTO, UpdateUserDTO } from './users.dto';
+import { ICreateUser } from './users.types';
 
 @Injectable()
 export class UsersService {
@@ -40,6 +40,10 @@ export class UsersService {
     return this.httpService.put(`/user/${id}`, user);
   }
 
+  updateStatus(id: string, updateStatus: UpdateStatusDTO) {
+    return this.httpService.put(`/user/${id}`, updateStatus);
+  }
+
   deleteUser(id: string) {
     return this.httpService.delete(`/user/${id}`);
   }
@@ -56,14 +60,4 @@ export class UsersService {
   //     return user;
   //   });
   // }
-
-  // deleteUser(id: string) {
-  //   this.users = this.users.filter((user) => {
-  //     return user.userId !== id;
-  //   });
-  // }
-
-  changeStatusOfUser(id: string, newStatus: UserStatus) {
-    console.log('changing status of user', id, 'to ', newStatus);
-  }
 }

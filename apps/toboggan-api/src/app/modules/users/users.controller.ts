@@ -14,11 +14,12 @@ import {
 import { UserType } from '@toboggan-ws/toboggan-common';
 import isUndefined from 'lodash/isUndefined';
 import omitBy from 'lodash/omitBy';
+import { lastValueFrom } from 'rxjs';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
 import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
-import { CreateUserDTO, UpdateUserDTO } from './users.dto';
+import { CreateUserDTO, UpdateStatusDTO, UpdateUserDTO } from './users.dto';
 import { UsersService } from './users.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
@@ -64,6 +65,19 @@ export class UsersController {
   @Delete('/:id')
   deleteUser(@Param('id') id) {
     return this.usersService.deleteUser(id);
+  }
+
+  @Put('/status/:id')
+  async updateStatus(@Param('id') id, @Body() body: UpdateStatusDTO) {
+    const response = await lastValueFrom(this.getUser(id));
+
+    const user = response.data.data;
+
+    return this.usersService.updateUser(id, {
+      ...user,
+      status: body.status,
+      user_groups: [],
+    });
   }
 
   // @Put('/:id/password')

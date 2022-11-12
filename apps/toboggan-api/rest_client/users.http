@@ -41,10 +41,13 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "johndoe@sada.com",
-  "user_type": "learner"
+  "first_name": "John AA",
+  "last_name": "Doe SS",
+  "email": "johndoe2332@sada.com",
+  "user_type": "learner",
+  "user_groups": [
+    "CEbZ6hnW82Pr4WUqf72T"
+  ] 
 }
 
 ###
@@ -59,6 +62,17 @@ Content-Type: application/json
   "last_name": "Doe_UPDATED",
   "email": "johndoe_UPDATED@sada.com",
   "user_type": "learner" 
+}
+
+###
+
+# Users :: Update status
+PUT {{baseUrl}}/users/status/f7JPTU4yPzdydHRMG0oU HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "status": "inactive"
 }
 
 ###

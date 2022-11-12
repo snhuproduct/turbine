@@ -36,7 +36,7 @@ export class CreateUserDTO implements ICreateUser {
 
   @IsString()
   @IsOptional()
-  @IsEnum(UserStatus, enumValidationOptions('user_status', UserStatus))
+  @IsEnum(UserStatus, enumValidationOptions('status', UserStatus))
   status?: UserStatus;
 
   @IsBoolean()
@@ -53,3 +53,10 @@ export class CreateUserDTO implements ICreateUser {
 }
 
 export type UpdateUserDTO = Partial<CreateUserDTO>;
+
+export class UpdateStatusDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsEnum(UserStatus, enumValidationOptions('status', UserStatus))
+  status: UserStatus;
+}
