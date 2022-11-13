@@ -21,6 +21,8 @@ export interface IAssessment {
   achievements: string[];
   created_time: string;
   last_modified_time: string;
+  is_flagged: boolean,
+  comments: string
 }
 
 export enum AssessmentStatus {
