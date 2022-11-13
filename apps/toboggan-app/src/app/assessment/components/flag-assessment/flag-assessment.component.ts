@@ -21,7 +21,7 @@ import { AssessmentService } from '../../services/assessment.service';
 export class FlagAssessmentComponent implements AfterViewInit {
   @ViewChild('editflag') editFlagModal!: ModalComponent;
   @Output() editFlagAssessmentAction = new EventEmitter<boolean | undefined>();
-  @Input() group!: IAssessment;
+  @Input() assessment!: IAssessment;
 
   editAssessmentForm: FormGroup = new FormGroup({
     is_flagged: new FormControl(true),
@@ -90,7 +90,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
       };
       this.assessmentService
       .updateFlagAssessment(
-        this.group.id,
+        this.assessment.id,
         body
       )
       .subscribe({
@@ -102,7 +102,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
           this.bannerService.showBanner({
             type: 'success',
             heading: '',
-            message: `<strong>${this.group?.learner}</strong>'s submission has been flagged for the instructor to review.`,
+            message: `<strong>${this.assessment?.learner}</strong>'s submission has been flagged for the instructor to review.`,
             button: null,
             autoDismiss: true,
           });
@@ -112,7 +112,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
           this.editFlagModal.modal?.content?.alertBanners.push({
             type: 'error',
             heading: '',
-            message: `The flag couldn't be removed from <strong>${this.group?.learner}</strong>'s submission. Please try again.`,
+            message: `<strong>${this.assessment?.learner}</strong>'s couldn't be flagged.`,
           });
         },
       });
