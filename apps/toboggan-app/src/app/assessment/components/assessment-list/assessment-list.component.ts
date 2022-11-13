@@ -21,6 +21,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   assessmentList: TableRow[] = [];
   currentPage = 1;
   itemsPerPage = 10;
+  showFlagAssessmentModal = false;
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
@@ -43,8 +44,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     );
   }
 
+  handleEditFlagAssessmentAction(){
+    this.showFlagAssessmentModal = false;
+  }
   getActionMenuItems = () => {
-    return ['view details', 'edit', 'delete'];
+    return ['view details', 'edit', 'delete', 'flag for instructor review'];
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {
