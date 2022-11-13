@@ -1,14 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PermissionService } from '../../../providers/permissions/permissions.service';
+
 import { PermissionsController } from './permissions.controller';
 import { mockPermissions } from './permissions.mock';
+import { PermissionService } from './permissions.service';
+import { AxiosResponse } from 'axios';
+import { HttpModule } from '@nestjs/axios';
+import { environment } from '../../../environments/environment';
+import { of } from 'rxjs';
 
+const mockResponse: AxiosResponse = {
+  data: null,
+  status: 200,
+  statusText: 'OK',
+  headers: {},
+  config: {},
+};
 describe('PermissionsController', () => {
   let controller: PermissionsController;
   let service: PermissionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        HttpModule.register({
+          baseURL: environment.GPCoreBaseUrl + '/user-management/api/v1',
+          timeout: 8000,
+          maxRedirects: 3,
+        }),
+      ],
       controllers: [PermissionsController],
       providers: [PermissionService],
     }).compile();
@@ -22,25 +41,24 @@ describe('PermissionsController', () => {
   });
 
   describe('getPermissions', () => {
-    it('should return an array of paginated permissions', async () => {
+    it('should return an array of paginated learners', async () => {
+      mockResponse.data = mockPermissions;
       jest
-        .spyOn(service, 'getPaginatedPermissions')
-        .mockImplementation(() => mockPermissions);
+        .spyOn(service, 'getPermissions')
+        .mockImplementation(() => of(mockResponse));
 
-      expect(
-        controller.getPermissions({
+      controller
+        .getPermissions({
           currentPage: 1,
           resultsPerPage: 10,
         })
-      ).toBe(mockPermissions);
-    });
-
-    it('should return an array of permissions', async () => {
-      jest
-        .spyOn(service, 'getPermissions')
-        .mockImplementation(() => mockPermissions);
-
-      expect(controller.getPermissions({})).toBe(mockPermissions);
+        .subscribe((response) => {
+          expect(service.getPermissions).toHaveBeenCalledWith({
+            limit: 10,
+            skip: 1,
+          });
+          expect(response).toBe(mockResponse);
+        });
     });
   });
 
