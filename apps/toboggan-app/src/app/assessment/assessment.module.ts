@@ -7,11 +7,13 @@ import { AssessmentListComponent } from './components/assessment-list/assessment
 import { AssessmentMainPageComponent } from './pages/assessment-main-page/assessment-main-page.component';
 import { assessmentRouting } from './assessment.routing';
 import { SharedModule } from '../shared/shared.module';
+import { FlagAssessmentComponent } from './components/flag-assessment/flag-assessment.component';
 
 @NgModule({
   declarations: [
     AssessmentMainPageComponent,
     AssessmentListComponent,
+    FlagAssessmentComponent,
   ],
   imports: [
     CommonModule,
@@ -22,9 +24,6 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
     assessmentRouting,
   ],
-  exports: [
-    AssessmentMainPageComponent,
-    AssessmentListComponent,
-  ],
+  exports: [AssessmentMainPageComponent, AssessmentListComponent],
 })
 export class AssessmentModule {}
