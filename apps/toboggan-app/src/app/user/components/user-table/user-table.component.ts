@@ -7,7 +7,7 @@ import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
@@ -18,7 +18,7 @@ import { ModalAlertService } from '../../../shared/services/modal-alert/modal-al
 import {
   ITableDataGeneratorFactoryOutput,
   ITableRowFilterFunc,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -26,7 +26,7 @@ import {
   ICellRowData,
   IFilterChange,
   ITableRow,
-  RowActions,
+  RowActions
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
@@ -148,7 +148,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.deactivateUser(userId, userPayload);
         break;
       case RowActions.ResetPassword:
-        this.resetPassword(userId, first, last);
+        this.resetPassword(mail[1], first, last);
         break;
       case RowActions.Edit:
         const users = this.getAllUsers();
@@ -252,7 +252,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  resetPassword(id: string, firstName: string, lastName: string) {
+  resetPassword(mail: string, firstName: string, lastName: string) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: `Reset user's password?`,
@@ -270,7 +270,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
           onClick: async () => {
             try {
               this.modalAlertService.hideModalAlert();
-              await this.userService.resetPassword(id);
+              await this.userService.resetPassword(mail);
               this.showNotification(
                 'success',
                 ``, //passive voice is hard; like so many things in life, sometimes, the simplest solution is the best (:
