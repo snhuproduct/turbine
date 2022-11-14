@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
@@ -31,6 +32,8 @@ export class FlagAssessmentComponent implements AfterViewInit {
       this.specialCharactersValidation,
     ]),
   });
+  isLoading = false;
+  loaderType = InterstitialLoaderType.Large;
   constructor(
     private assessmentService: AssessmentService,
     private bannerService: BannerService
@@ -88,6 +91,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
         is_flagged: this.editAssessmentForm.value.is_flagged as boolean,
         comments: this.editAssessmentForm.value.comments as string,
       };
+      this.isLoading=true;
       this.assessmentService
       .updateFlagAssessment(
         this.assessment.id,
@@ -96,6 +100,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
       .subscribe({
         next: (response) => {
           // handle success
+          this.isLoading=false;
           console.log(response);
           this.editFlagAssessmentAction.emit(true);
           this.editFlagModal.close();
@@ -109,6 +114,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
         },
         error: (error: unknown) => {
           // handle error scenario
+          this.isLoading=false;
           this.editFlagModal.modal?.content?.alertBanners.push({
             type: 'error',
             heading: '',

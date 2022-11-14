@@ -31,4 +31,9 @@
     </gp-text-area>
   </form>
 </toboggan-ws-modal>
-
+<div *ngIf="isLoading">
+    <gp-interstitial-loader
+      [isOverlayVisible]="true"
+      [type]="loaderType"
+    ></gp-interstitial-loader>
+  </div>
