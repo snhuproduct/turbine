@@ -4,7 +4,7 @@ import {
   IGroup,
   INewUser,
   IUpdatedUser,
-  IUser,
+  IUser
 } from '@toboggan-ws/toboggan-common';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
@@ -35,9 +35,9 @@ export class UserService {
     return firstValueFrom(this.http.post('/api/users', user));
   }
 
-  async resetPassword(userId: string): Promise<unknown> {
+  async resetPassword(email: string): Promise<unknown> {
     return firstValueFrom(
-      this.http.put(`/api/users/${userId}/password`, { type: 'reset' })
+      this.http.post(`/api/authentication/passwordresetemail`, { email: email })
     );
   }
 
