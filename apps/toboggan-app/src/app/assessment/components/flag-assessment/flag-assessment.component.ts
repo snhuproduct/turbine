@@ -84,24 +84,17 @@ export class FlagAssessmentComponent implements AfterViewInit {
     this.editFlagModal.close();
   }
 
-  editModalAccept() {
+  async editModalAccept() {
+    
     this.editAssessmentForm.markAllAsTouched();
     if (this.editAssessmentForm.valid) {
       const body = {
         is_flagged: this.editAssessmentForm.value.is_flagged as boolean,
         comments: this.editAssessmentForm.value.comments as string,
       };
-      this.isLoading=true;
-      this.assessmentService
-      .updateFlagAssessment(
-        this.assessment.id,
-        body
-      )
-      .subscribe({
-        next: (response) => {
-          // handle success
-          this.isLoading=false;
-          console.log(response);
+      try{
+          this.isLoading=true;
+          await this.assessmentService.updateFlagAssessment(this.assessment?.id,body);
           this.editFlagAssessmentAction.emit(true);
           this.editFlagModal.close();
           this.bannerService.showBanner({
@@ -111,8 +104,8 @@ export class FlagAssessmentComponent implements AfterViewInit {
             button: null,
             autoDismiss: true,
           });
-        },
-        error: (error: unknown) => {
+          this.isLoading=false;
+        }catch(error){
           // handle error scenario
           this.isLoading=false;
           this.editFlagModal.modal?.content?.alertBanners.push({
@@ -120,8 +113,9 @@ export class FlagAssessmentComponent implements AfterViewInit {
             heading: '',
             message: `<strong>${this.assessment?.learner}</strong>'s couldn't be flagged.`,
           });
-        },
-      });
-    }
+          return false;
+        }
+      }
+    return true;
   }
 }
