@@ -34,7 +34,7 @@ describe('AuthenticationService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('getLearnerProfile', () => {
+  describe('sendPasswordResetEmail', () => {
     it('should return value', (done) => {
       const service = module.get<AuthenticationService>(AuthenticationService);
 
