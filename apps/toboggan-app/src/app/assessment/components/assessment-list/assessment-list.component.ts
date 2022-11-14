@@ -54,8 +54,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-
-    console.log(rowData);
+    
     switch (action) {
       case RowActions.FlagForInstructorReview:
         this.editAssessmentData = rowData.cellData as unknown as IAssessment;

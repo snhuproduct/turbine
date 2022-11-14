@@ -35,7 +35,7 @@ describe('FlagAssessmentComponent', () => {
 
   it('modal should close', () => {
     jest.spyOn(component.editFlagModal, 'close');
-    component.editModalHidden();
+    component.hideModal();
     expect(component.editFlagModal.close).toHaveBeenCalled();
   });
   it('should call updateFlagAssessment with valid input', () => {
@@ -44,8 +44,7 @@ describe('FlagAssessmentComponent', () => {
       is_flagged: true,
       comments: 'mock update',
     });
-    component.assessment?.id ? component.assessment.id="KPkio0XF5tsKKsKMnsRo":'';
-    component.editModalAccept();
+    component.updateAssessment();
     expect(component.editAssessmentForm.valid).toBeTruthy();
     expect(approveAssessmentSpy).toBeCalled();
   });

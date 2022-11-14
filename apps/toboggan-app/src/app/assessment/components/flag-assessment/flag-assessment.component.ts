@@ -28,8 +28,7 @@ export class FlagAssessmentComponent implements AfterViewInit {
     is_flagged: new FormControl(true),
     comments: new FormControl('', [
       Validators.required,
-      Validators.maxLength(300),
-      this.specialCharactersValidation,
+      Validators.maxLength(300)
     ]),
   });
   isLoading = false;
@@ -48,28 +47,12 @@ export class FlagAssessmentComponent implements AfterViewInit {
     if (control)
       if (control.hasError('required')) {
         return `${FormError.empty}`;
-      } else if (control.hasError('specialCharacters')) {
-        return `${FormError.characters} ! @ # $`;
-      } else if (control.hasError('pattern')) {
-        return `${FormError.lettersAndNumbers}`;
       } else if (control.hasError('maxlength')) {
         return 'Shorten the description';
       }
     return '';
   }
 
-  specialCharactersValidation(control: FormControl) {
-    const value = control.value;
-    const spChars = /[!@#$]+/;
-    if (spChars.test(value)) {
-      return {
-        specialCharacters: {
-          errors: true,
-        },
-      };
-    }
-    return null;
-  }
 
   hasError(controlName: string) {
     const control = this.editAssessmentForm.get(controlName);
@@ -79,12 +62,12 @@ export class FlagAssessmentComponent implements AfterViewInit {
     return false;
   }
 
-  editModalHidden() {
+  hideModal() {
     this.editFlagAssessmentAction.emit(true);
     this.editFlagModal.close();
   }
 
-  async editModalAccept() {
+  async updateAssessment() {
     
     this.editAssessmentForm.markAllAsTouched();
     if (this.editAssessmentForm.valid) {
