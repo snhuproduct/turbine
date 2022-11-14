@@ -28,9 +28,9 @@ export interface IUser {
   status?: string;
   userId: string;
   userName: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
   groups?: IGroup[];
   userGroups?: IGroup[];
   enabled: boolean;
@@ -56,7 +56,7 @@ export interface IPermission {
 export type INewPermission = Omit<IPermission, 'id'>;
 
 export enum UserType {
-  learner = 'learner',
-  faculty = 'faculty',
+  Learner = 'learner',
+  Faculty = 'faculty',
+  Other = 'other',
 }
-

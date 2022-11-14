@@ -9,9 +9,14 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
-import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import {
+  CreateGroupDto,
+  IAddUserToGroupDto,
+  PatchGroupDto
+} from './groups.dto';
+
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
@@ -36,17 +41,17 @@ export class GroupsController {
   }
 
   @Post('/')
-  createGroup(@Body() group: IGroup) {
+  createGroup(@Body() group: CreateGroupDto) {
     return this.groupsService.createGroup(group);
   }
 
   @Put('/:id')
-  updateGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+  updateGroup(@Param('id') id, @Body() updatedGroup: CreateGroupDto) {
     return this.groupsService.updateGroup(id, updatedGroup);
   }
 
   @Patch('/:id')
-  patchGroup(@Param('id') id, @Body() updatedGroup: IGroup) {
+  patchGroup(@Param('id') id, @Body() updatedGroup: PatchGroupDto) {
     return this.groupsService.patchGroup(id, updatedGroup);
   }
 
@@ -57,7 +62,7 @@ export class GroupsController {
 
   // TODO: Refactor this route to follow REST principles
   @Post('/addusertogroup')
-  addUsersToGroup(@Body() request: IAddUserToGroup) {
+  addUsersToGroup(@Body() request: IAddUserToGroupDto) {
     return this.groupsService.addUsersToGroup(request);
   }
 
