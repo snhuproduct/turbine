@@ -18,7 +18,6 @@ import { AuthenticationService } from './authentication.service';
 
   @Post('/passwordresetemail')
   sendPasswordResetEmail(@Body() body: {email: string}) {
-    console.log(body)
     if(!body || !body?.email) {
        throw new HttpException("Invalid email", HttpStatus.BAD_REQUEST)
     }

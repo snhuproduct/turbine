@@ -21,10 +21,6 @@ describe('AuthenticationController', () => {
       controllers: [AuthenticationController],
       providers: [
         AuthenticationService,
-        // {
-        //   provide: Request,
-        //   useValue: Request,
-        // },
       ],
     })
       .overrideProvider(AuthenticationService)
