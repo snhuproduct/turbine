@@ -4,9 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
-import { of } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.module';
-import { By } from '@angular/platform-browser';
 import { MockProxy, mock } from 'jest-mock-extended';
 
 describe('FlagAssessmentComponent', () => {
