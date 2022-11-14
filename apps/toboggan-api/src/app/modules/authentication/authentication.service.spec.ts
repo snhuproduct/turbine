@@ -4,7 +4,7 @@ import { from } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from './authentication.service';
 
-describe('CurriculumPathwayService', () => {
+describe('AuthenticationService', () => {
   let module: TestingModule;
   const data = {
     data: {
