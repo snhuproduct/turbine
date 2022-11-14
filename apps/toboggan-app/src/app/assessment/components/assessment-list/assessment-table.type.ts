@@ -70,3 +70,10 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     dataType: TableColumnDataTypeEnum.PercentLink,
   },
 ];
+
+export enum RowActions {
+  Edit = 'edit',
+  ViewDetails = 'view details',
+  FlagForInstructorReview =  'flag for instructor review',
+  Delete = 'delete',
+}

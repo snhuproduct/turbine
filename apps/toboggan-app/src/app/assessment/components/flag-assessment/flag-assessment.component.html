@@ -1,0 +1,39 @@
+<toboggan-ws-modal
+  #editflag
+  title="Flag this submission?"
+  acceptButton="Yes, flag"
+  cancelButton="No, cancel"
+  id="flag-assessment"
+  (hidden)="hideModal()"
+  (accept)="updateAssessment()"
+>
+  <p>
+    If you do, a link to this submission and your components will be emailed to
+    the instructor,
+    <strong>{{ assessment?.instructor }}</strong>
+    , to review. This will also pause the evaluation timer.<br />
+    Once you remove the flag, the timer will reset and you'll have 48 hours to
+    evaluate this submission.
+  </p>
+
+  <form [formGroup]="editAssessmentForm" class="edit-assessment-form">
+    <gp-text-area
+      size="default"
+      label="Comments"
+      [error]="hasError('comments')"
+      [errorMessage]="getErrorMessage('comments')"
+    >
+      <textarea
+        aria-label="input"
+        placeholder="Tell the instructor why you're flagging this submission (i.e., documenting a potential academic honesty violation)"
+        formControlName="comments"
+      ></textarea>
+    </gp-text-area>
+  </form>
+</toboggan-ws-modal>
+<div *ngIf="isLoading">
+    <gp-interstitial-loader
+      [isOverlayVisible]="true"
+      [type]="loaderType"
+    ></gp-interstitial-loader>
+  </div>

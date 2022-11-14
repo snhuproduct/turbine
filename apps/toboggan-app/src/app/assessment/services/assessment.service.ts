@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 
 const mockData: any[] = [
   {
@@ -76,7 +77,15 @@ const mockData: any[] = [
   providedIn: 'root',
 })
 export class AssessmentService {
+
+  constructor(private http: HttpClient) { }
+
   fetchAssessments() {
     return of(mockData);
+  }
+
+  //flagAssessment
+  async updateFlagAssessment(id: string, body:{ is_flagged:boolean, comments:string }){
+    await firstValueFrom(this.http.put('/api/assessments/:'+id, body))
   }
 }

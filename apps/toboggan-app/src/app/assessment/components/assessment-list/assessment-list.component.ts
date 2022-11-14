@@ -3,6 +3,7 @@ import {
   TableDataGenerator,
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
+import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -10,7 +11,7 @@ import {
   TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
-import { assessmentTableHeader } from './assessment-table.type';
+import { assessmentTableHeader, RowActions } from './assessment-table.type';
 
 @Component({
   selector: 'toboggan-ws-assessment-list',
@@ -21,6 +22,8 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   assessmentList: TableRow[] = [];
   currentPage = 1;
   itemsPerPage = 10;
+  showFlagAssessmentModal = false;
+  editAssessmentData!: IAssessment;
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
@@ -42,9 +45,28 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       }
     );
   }
+  onRowAction(event: IRowActionEvent) {
+    const { action, rowId } = event;
+    const rowData = this.dataGenerator.rowData.find(
+      (row) => row.rowId === rowId
+    );
 
+    if (!rowData) {
+      throw new Error('Could not find rowData for rowId: ' + rowId);
+    }
+    
+    switch (action) {
+      case RowActions.FlagForInstructorReview:
+        this.editAssessmentData = rowData.cellData as unknown as IAssessment;
+        this.showFlagAssessmentModal = true;
+        break;
+    }
+  }
+  handleEditFlagAssessmentAction(){
+    this.showFlagAssessmentModal = false;
+  }
   getActionMenuItems = () => {
-    return ['view details', 'edit', 'delete'];
+    return ['view details', 'edit', 'delete', 'flag for instructor review'];
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {
