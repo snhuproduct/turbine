@@ -8,12 +8,13 @@ import {
 } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
-import { mock, MockProxy } from 'jest-mock-extended';
+import { of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../shared/services/user/user.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { CreateUserComponent } from '../../components/create-user/create-user.component';
 import { EditUserComponent } from '../../components/edit-user/edit-user.component';
+import { mockUsers } from '../../components/user-table/mock/usersMock';
 import { UserTableComponent } from '../../components/user-table/user-table.component';
 
 import { UserMainPageComponent } from './user-main-page.component';
@@ -21,7 +22,10 @@ import { UserMainPageComponent } from './user-main-page.component';
 describe('UserMainPageComponent', () => {
   let component: UserMainPageComponent;
   let fixture: ComponentFixture<UserMainPageComponent>;
-  const mockUserService: MockProxy<UserService> = mock<UserService>();
+
+  const mockUserService = {
+    fetchUsers: jest.fn().mockReturnValue(of(mockUsers)),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,7 +46,8 @@ describe('UserMainPageComponent', () => {
       ],
       providers: [
         { provide: UserService, useValue: mockUserService },
-        { provide: FIREBASE_OPTIONS, useValue: environment.firebase }
+        { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+        { provide: UserService, useValue: mockUserService }
       ],
     }).compileComponents();
 

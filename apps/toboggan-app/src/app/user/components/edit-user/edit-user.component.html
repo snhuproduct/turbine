@@ -4,10 +4,11 @@
   acceptButton="Review changes"
   id="edit-user"
   (hidden)="editModalHidden()"
-  (accept)="editModalAccept()">
+  (accept)="editModalAccept()"
+>
   <form [formGroup]="userForm">
     <p class="gp-paragraph" *ngIf="user">
-      {{ user.firstName }} {{ user.lastName }} (User ID: {{ user.id }})
+      {{ user.firstName }} {{ user.lastName }} (User ID: {{ user.userId }})
     </p>
     <gp-input
       label="First name"
@@ -16,7 +17,8 @@
       [form]="userForm"
       controlName="firstName"
       [error]="firstNameErrMsg.hasError"
-      [errorMessage]="firstNameErrMsg.errorMessage">
+      [errorMessage]="firstNameErrMsg.errorMessage"
+    >
       <input type="text" formControlName="firstName" />
     </gp-input>
     <gp-input
@@ -26,8 +28,9 @@
       [form]="userForm"
       controlName="lastName"
       [error]="lastNameErrMsg.hasError"
-      [errorMessage]="lastNameErrMsg.errorMessage">
-      <input type="text" formControlName="lastName">
+      [errorMessage]="lastNameErrMsg.errorMessage"
+    >
+      <input type="text" formControlName="lastName" />
     </gp-input>
     <gp-input
       label="Email address"
@@ -36,8 +39,9 @@
       [form]="userForm"
       controlName="email"
       [error]="emailErrMsg.hasError"
-      [errorMessage]="emailErrMsg.errorMessage">
-      <input type="email" formControlName="email">
+      [errorMessage]="emailErrMsg.errorMessage"
+    >
+      <input type="email" formControlName="email" />
     </gp-input>
   </form>
 </toboggan-ws-modal>
@@ -45,7 +49,8 @@
 <div *ngIf="isLoading">
   <gp-interstitial-loader
     [isOverlayVisible]="true"
-    [type]="loaderType"></gp-interstitial-loader>
+    [type]="loaderType"
+  ></gp-interstitial-loader>
 </div>
 
 <toboggan-ws-modal
@@ -55,7 +60,8 @@
   cancelButton="No, keep editing"
   id="edit-user-review"
   (hidden)="reviewModalHidden()"
-  (accept)="onSubmit()">
+  (accept)="onSubmit()"
+>
   <toboggan-ws-form-changes-table [rows]="approveChanges">
   </toboggan-ws-form-changes-table>
 </toboggan-ws-modal>

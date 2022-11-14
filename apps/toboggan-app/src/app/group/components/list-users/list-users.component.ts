@@ -13,7 +13,11 @@ import { Observable, Subscription } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
-import { ITableDataGeneratorFactoryOutput, ITableRowFilterFunc, TableDataService } from '../../../shared/services/table-data/table-data.service';
+import {
+  ITableDataGeneratorFactoryOutput,
+  ITableRowFilterFunc,
+  TableDataService,
+} from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { GroupService } from '../../services/group.service';
 import { userTableHeader } from './data/user-table-header';
@@ -29,7 +33,7 @@ interface IFilterChange {
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss'],
 })
-export class ListUsersComponent implements OnInit, OnDestroy  {
+export class ListUsersComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private resultsPerPage = 10;
   itemName = 'users';
@@ -65,7 +69,7 @@ export class ListUsersComponent implements OnInit, OnDestroy  {
     private modalAlertService: ModalAlertService,
     private bannerService: BannerService,
     private groupService: GroupService,
-    private tableDataService: TableDataService,
+    private tableDataService: TableDataService
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +131,7 @@ export class ListUsersComponent implements OnInit, OnDestroy  {
     const data = usersSortedByLastName.map((user, index) => {
       return {
         rowId: String(index + 1),
-        id: user.id,
+        id: user.userId,
         cellData: {
           sequence: String(index + 1),
           first: user.firstName,

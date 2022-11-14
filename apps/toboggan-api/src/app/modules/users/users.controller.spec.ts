@@ -1,24 +1,28 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
+import { IUser } from '@toboggan-ws/toboggan-common';
+import { environment } from '../../../environments/environment';
 import { UsersController } from './users.controller';
-import { UsersService } from "../../providers/users/users.service";
-import {IUser} from "@toboggan-ws/toboggan-common";
+import { CreateUserDto } from './users.dto';
+import { UsersService } from './users.service';
 
 const id = 1;
 
-const user = {
-  id: `id-1`,
+const user: IUser = {
+  userId: `id-1`,
   userName: `user1`,
   firstName: `name1`,
   lastName: `last1`,
   email: `user-1@sada.com`,
   enabled: true,
-}
+};
 
 const users: IUser[] = [];
 
 for (let i = 0; i < 20; i++) {
   users.push({
-    id: `id-${i}`,
+    userId: `id-${i}`,
     userName: `user${i}`,
     firstName: `name${i}`,
     lastName: `last${i}`,
@@ -35,6 +39,13 @@ describe('UsersController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [UsersService],
+      imports: [
+        HttpModule.register({
+          baseURL: environment.GPCoreBaseUrl + '/user-management/api/v1',
+          timeout: 8000,
+          maxRedirects: 3,
+        }),
+      ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
@@ -46,16 +57,8 @@ describe('UsersController', () => {
   });
 
   describe('getUsers', () => {
-    it('should return an array of paginated users', async () => {
-      jest.spyOn(service, 'getPaginatedUsers').mockImplementation(() => users);
-
-      expect(await controller.getUsers({
-        currentPage: 1,
-        resultsPerPage: 10,
-      })).toBe(users);
-    });
-
     it('should return an array of users', async () => {
+      //@ts-ignore
       jest.spyOn(service, 'getUsers').mockImplementation(() => users);
 
       expect(await controller.getUsers({})).toBe(users);
@@ -76,7 +79,7 @@ describe('UsersController', () => {
     it('should update user', async () => {
       jest.spyOn(service, 'updateUser');
 
-      await controller.updateUser(id, user);
+      await controller.updateUser(id, user as CreateUserDto);
 
       expect(service.updateUser).toBeCalledWith(id, user);
     });
@@ -85,7 +88,7 @@ describe('UsersController', () => {
   describe('resetPasswordOfUser', () => {
     it('should reset password of user', async () => {
       const operationBody = {
-        type: 'reset'
+        type: 'reset',
       };
 
       jest.spyOn(service, 'resetPasswordOfUser');
@@ -97,10 +100,12 @@ describe('UsersController', () => {
 
     it('should throw http exception', async () => {
       const operationBody = {
-        type: 'something else'
+        type: 'something else',
       };
 
-      expect(() => controller.resetPasswordOfUser(id, operationBody)).toThrow('Http Exception');
+      expect(() => controller.resetPasswordOfUser(id, operationBody)).toThrow(
+        'Http Exception'
+      );
     });
   });
 
