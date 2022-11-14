@@ -1,8 +1,9 @@
-import {
-  Component, Input
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { InterstitialLoaderType, ModalComponent } from '@snhuproduct/toboggan-ui-components-library';
+import {
+  InterstitialLoaderType,
+  ModalComponent
+} from '@snhuproduct/toboggan-ui-components-library';
 import { IGroup, IUser, UserType } from '@toboggan-ws/toboggan-common';
 import { ValidatorPattern } from '@toboggan-ws/toboggan-constants';
 import { GroupService } from '../../../group/services/group.service';
@@ -22,12 +23,16 @@ export class CreateUserComponent {
   loaderType = InterstitialLoaderType.Large;
 
   userForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required,
-    Validators.pattern(ValidatorPattern.nameValidation)]),
-    lastName: new FormControl('', [Validators.required,
-    Validators.pattern(ValidatorPattern.nameValidation)]),
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(ValidatorPattern.nameValidation),
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      Validators.pattern(ValidatorPattern.nameValidation),
+    ]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    userGroups: new FormArray([])
+    userGroups: new FormArray([]),
   });
   userGroups!: IGroup[];
   constructor(
@@ -35,15 +40,17 @@ export class CreateUserComponent {
     private bannerService: BannerService,
     private groupService: GroupService
   ) {
-    this.groupService.fetchGroups().subscribe(response => {
+    this.groupService.fetchGroups().subscribe((response) => {
       this.userGroups = response;
-    })
+    });
   }
 
   onCheckboxToggle(e: any) {
     const groups: FormArray = this.userForm.get('userGroups') as FormArray;
     if (e.target.checked) {
-      const userGroup = this.userGroups.find(group => group.uuid == e.target.value)
+      const userGroup = this.userGroups.find(
+        (group) => group.uuid == e.target.value
+      );
       groups.push(new FormControl(userGroup));
     } else {
       let i = 0;
@@ -57,7 +64,6 @@ export class CreateUserComponent {
     }
   }
 
-
   async handleAddNewUserModalButton() {
     const delay = (ms: number) => {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -66,11 +72,11 @@ export class CreateUserComponent {
     if (this.userForm.valid) {
       try {
         if (this.modalHandle) {
-          this.modalHandle.alertBanners = [];  //reset if there is was error from previous attempt
+          this.modalHandle.alertBanners = []; //reset if there is was error from previous attempt
         }
         const userObj = this.userForm.getRawValue() as unknown as IUser;
         userObj.enabled = true;
-        userObj.userType = UserType.faculty;
+        userObj.userType = UserType.Faculty;
         this.isLoading = true;
         await delay(400); // add delay if need to demo loader
         await this.userService.createUser(userObj);
@@ -90,7 +96,7 @@ export class CreateUserComponent {
         this.modalHandle?.alertBanners.push({
           type: 'error',
           heading: 'Add new user',
-          message: 'couldn\'t be completed.',
+          message: "couldn't be completed.",
         });
         return false;
       } finally {

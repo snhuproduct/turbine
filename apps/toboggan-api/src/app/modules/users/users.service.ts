@@ -1,94 +1,77 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { IGroup, INewUser, IUser } from '@toboggan-ws/toboggan-common';
-import { AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+
+import { UserType } from '@toboggan-ws/toboggan-common';
+import { map } from 'rxjs';
+import { UpdateStatusDTO, UpdateUserDTO } from './users.dto';
+import { ICreateUser, UserStatus } from './users.types';
 
 @Injectable()
 export class UsersService {
-  private groups: IGroup[] = [
-    {
-      id: uuidv4(),
-      name: 'group1',
-      type: 0,
-      description: '',
-    },
-  ];
+  constructor(private readonly httpService: HttpService) {}
 
-  users: IUser[] = [];
-
-  constructor(private readonly httpService: HttpService) {
-    // generate mocked data for 20 users
-    for (let i = 0; i < 20; i++) {
-      this.users.push({
-        userId: `id-${i}`,
-        userName: `user${i}`,
-        firstName: `name${i}`,
-        lastName: `last${i}`,
-        email: `user-${i}@sada.com`,
-        enabled: true,
-      });
-    }
-  }
-  // dummy implementation  -> until Quantiphi api is verified
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // getUsers(params?: { skip?: number; limit?: number }) {
-  //   return this.users;
-  // }
-
-  //glidepath api itegrated code -- uncomment after verifying url
-  getUsers(params?: {
-    skip?: number;
-    limit?: number;
-  }): Observable<AxiosResponse<IUser[]>> {
-    return this.httpService.get('/users', { params });
+  getUsers(skip: number, limit: number, userType?: UserType) {
+    return this.httpService.get('/users', {
+      params: {
+        skip,
+        limit,
+        user_type: userType,
+      },
+    });
   }
 
-  createUser(user: INewUser): Observable<AxiosResponse<IUser[]>> {
+  getUser(id: string) {
+    return this.httpService.get(`/user/${id}`);
+  }
+
+  searchUser(email: string) {
+    return this.httpService.get(`/user/search`, {
+      params: {
+        email,
+      },
+    });
+  }
+
+  createUser(user: ICreateUser) {
     return this.httpService.post('/user', user);
   }
 
-  updateUser(id: string, updatedUser: IUser) {
-    this.users = this.users.map((user) => {
-      if (user.userId === id) {
-        return {
-          userId: user.userId,
-          ...updatedUser,
-        };
-      }
-      return user;
-    });
+  updateUser(id: string, user: UpdateUserDTO) {
+    return this.httpService.put(`/user/${id}`, user);
   }
 
-  patchUser(id: string, updatedUser: IUser) {
-    this.users = this.users.map((user) => {
-      if (user.userId === id) {
-        return {
-          ...user,
-          ...updatedUser,
-        };
-      }
-      return user;
-    });
-  }
-
-  resetPasswordOfUser(id: string) {
-    // forward the pwd-reset request to the back-end
-    // this does not do anything at the moment
-    this.users = this.users.map((user) => {
-      if (user.userId === id) {
-        return {
-          ...user,
-        };
-      }
-      return user;
-    });
+  updateStatus(id: string, updateStatus: UpdateStatusDTO) {
+    return this.httpService.put(`/user/${id}`, updateStatus);
   }
 
   deleteUser(id: string) {
-    this.users = this.users.filter((user) => {
-      return user.userId !== id;
-    });
+    return this.httpService.delete(`/user/${id}`);
   }
+
+  canLogin(email: string) {
+    return this.searchUser(email).pipe(
+      map((response) => {
+        const user = response.data.data[0];
+
+        if (user.status === UserStatus.Active) {
+          return true;
+        }
+
+        return false;
+      })
+    );
+  }
+
+  // resetPasswordOfUser(id: string) {
+  //   // forward the pwd-reset request to the back-end
+  //   // this does not do anything at the moment
+  //   this.users = this.users.map((user) => {
+  //     if (user.userId === id) {
+  //       return {
+  //         ...user,
+  //       };
+  //     }
+  //     return user;
+  //   });
+  // }
 }

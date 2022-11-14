@@ -1,10 +1,15 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { IAddUserToGroup, IGroup } from '@toboggan-ws/toboggan-common';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 import * as arrayPaginate from 'array-paginate';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    CreateGroupDto,
+    IAddUserToGroupDto,
+    PatchGroupDto
+} from './groups.dto';
 
 @Injectable()
 export class GroupsService {
@@ -48,11 +53,11 @@ export class GroupsService {
     return paginatedGroups;
   }
 
-  createGroup(newGroup: IGroup) : Observable<AxiosResponse <IGroup>> {
+  createGroup(newGroup: CreateGroupDto): Observable<AxiosResponse<IGroup>> {
     return this.httpService.post('/group', newGroup);
   }
 
-  updateGroup(id: string, updatedGroup: IGroup) {
+  updateGroup(id: string, updatedGroup: CreateGroupDto) {
     this.groups = this.groups.map((group) => {
       if (group.id === id) {
         return {
@@ -64,7 +69,7 @@ export class GroupsService {
     });
   }
 
-  patchGroup(id: string, updatedGroup: IGroup) {
+  patchGroup(id: string, updatedGroup: PatchGroupDto) {
     this.groups = this.groups.map((group) => {
       if (group.id === id) {
         return {
@@ -80,7 +85,7 @@ export class GroupsService {
     this.groups = this.groups.filter((group) => group.id !== id);
   }
 
-  addUsersToGroup(request: IAddUserToGroup) {
+  addUsersToGroup(request: IAddUserToGroupDto) {
     console.log(request);
   }
 }

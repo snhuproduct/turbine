@@ -8,8 +8,30 @@ Authorization: Bearer {{authToken}}
 
 ## Users :: Read all users (Paginated)
 
-GET {{baseUrl}}/users?currentPage=1&resultsPerPage=10 HTTP/1.1
+GET {{baseUrl}}/users?skip=1&limit=10 HTTP/1.1
 Authorization: Bearer {{authToken}}
+
+###
+
+## Users :: Read users by user_type
+
+GET {{baseUrl}}/users?user_type=learner HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+###
+
+## Users :: Search users by email
+
+GET {{baseUrl}}/users?email=joao.furtado@sada.com HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+###
+
+## Users :: Get one user
+
+GET {{baseUrl}}/users/gpzG5fOFKgXhCPE1PseE HTTP/1.1
+Authorization: Bearer {{authToken}}
+
 
 ###
 
@@ -19,52 +41,44 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "userName": "John Doe",
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "jonh.doe@sada.com",
-  "groups": [
-    {
-      "groupName": "group1",
-      "type": 0
-    }
-  ]
+  "first_name": "John AA",
+  "last_name": "Doe SS",
+  "email": "johndoe2332@sada.com",
+  "user_type": "learner",
+  "user_groups": [
+    "CEbZ6hnW82Pr4WUqf72T"
+  ] 
 }
 
 ###
 
 # Users :: Update an user (whole resource)
-PUT {{baseUrl}}/users/0f13345d-e8dd-441d-bb14-2e235d1b19f5 HTTP/1.1
+PUT {{baseUrl}}/users/sVcLggdSTs2IUFlbGo5a HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "userName": "Updated John Doe",
-  "firstName": "Updated John",
-  "lastName": "Updated Doe",
-  "email": "Updated jonh.doe@sada.com",
-  "groups": [
-    {
-      "groupName": "Updated group1",
-      "type": 0
-    }
-  ]
+  "first_name": "John_UPDATED",
+  "last_name": "Doe_UPDATED",
+  "email": "johndoe_UPDATED@sada.com",
+  "user_type": "learner" 
 }
 
 ###
 
-# Users :: Path an user (part of resource)
-PATCH {{baseUrl}}/users/4f2cc71d-ccad-41e0-8f1d-b432bdfb96de HTTP/1.1
+# Users :: Update status
+PUT {{baseUrl}}/users/status/AFUNsdSdNqapM9owRYOr HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "enabled": false
+  "status": "active"
 }
 
 ###
 
 # Users :: Delete an user
-DELETE {{baseUrl}}/users/16b1c5de-901a-4e30-ab40-1a83c551d945 HTTP/1.1
+DELETE {{baseUrl}}/users/9ZzejgqETpX12L0w4T7G HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
+ 
