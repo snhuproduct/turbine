@@ -25,6 +25,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'assessment',
+    loadChildren: () =>
+      import('./assessment/assessment.module').then((m) => m.AssessmentModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'permission',
     loadChildren: () =>
       import('./permission/permission.module').then((m) => m.PermissionModule),

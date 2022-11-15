@@ -10,6 +10,17 @@ export interface IGroup {
   uuid?: string;
 }
 
+export interface IAssessment {
+  id: string;
+  time_left: string;
+  learner: string;
+  competency: string;
+  type: string;
+  attempt: string;
+  instructor: string;
+  similarity: string;
+}
+
 export type INewGroup = Omit<IGroup, 'id'>;
 
 export interface IUser {
@@ -17,9 +28,9 @@ export interface IUser {
   status?: string;
   userId: string;
   userName: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
   groups?: IGroup[];
   userGroups?: IGroup[];
   enabled: boolean;
@@ -45,6 +56,7 @@ export interface IPermission {
 export type INewPermission = Omit<IPermission, 'id'>;
 
 export enum UserType {
-  learner = 'learner',
-  faculty = 'faculty',
+  Learner = 'learner',
+  Faculty = 'faculty',
+  Other = 'other',
 }

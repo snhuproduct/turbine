@@ -5,7 +5,8 @@ This README file contains instructions regarding our main project dependencies (
 ## Overview
 
 - [Environment Setup Review](https://drive.google.com/file/d/1gbKBwPrOcju0hHzaR9aFWiOdxlxPf0ie/view)
-- [Team Coding Standards](./md/CODING-STANDARDS.md)
+- [Team Coding Standards](./project_documents/Coding_Standards.md)
+- [Unit Testing Plan](./project_documents/Unit_Testing_Plan.md)
 
 ## Requirements
 
