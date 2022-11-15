@@ -41,6 +41,53 @@ describe('EditUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
+
+  describe('userForm validation', () => {
+    it('should check userform firstName', () => {
+      const firstName = component.userForm.controls['firstName'];
+      firstName.setValue('');
+      expect(component.userForm.valid).toBeFalsy();
+      expect(firstName.errors).toEqual({required: true});
+
+      firstName.setValue('testName1')
+      expect(component.userForm.valid).toBeFalsy();
+      expect(firstName.hasError('pattern')).toBe(true)
+
+      firstName.setValue('testName');
+      expect(firstName.valid).toBe(true);
+    });
+
+    it('should check userform lastName', () => {
+      const lasteName = component.userForm.controls['lastName'];
+      lasteName.setValue('');
+      expect(component.userForm.valid).toBeFalsy();
+      expect(lasteName.errors).toEqual({required: true});
+
+      lasteName.setValue('testName1')
+      expect(component.userForm.valid).toBeFalsy();
+      expect(lasteName.hasError('pattern')).toBe(true)
+
+      lasteName.setValue('testName')
+      expect(lasteName.valid).toBe(true);
+    });
+
+    it('should check userform email', () => {
+      const email = component.userForm.controls['email'];
+      email.setValue('');
+      expect(component.userForm.valid).toBeFalsy();
+      expect(email.errors).toEqual({required: true});
+
+      email.setValue('testemail')
+      expect(component.userForm.valid).toBeFalsy();
+      expect(email.hasError('email')).toBe(true)
+
+      email.setValue('testemail@yopmail.com')
+      expect(email.valid).toBe(true);
+    });
+   })
+
+ 
+
   it('should populate the userForm and open the modal', () => {
     const spy = jest.spyOn(component.editModal, 'open')
     component.ngOnChanges(
@@ -48,9 +95,7 @@ describe('EditUserComponent', () => {
         user: new SimpleChange(null, completedInputs, true)
       }
     );
-    expect(component.userForm.controls.firstName.value).toBe('Bob');
-    expect(component.userForm.controls.lastName.value).toBe('Jackson');
-    expect(component.userForm.controls.email.value).toBe('BobJackson@test.com');
+    expect(component.userForm.value).toEqual(completedInputs)
     expect(spy).toBeCalledTimes(1);
   })
 
@@ -61,9 +106,11 @@ describe('EditUserComponent', () => {
         user: new SimpleChange(null, null, true)
       }
     );
-    expect(component.userForm.controls.firstName.value).toBe('');
-    expect(component.userForm.controls.lastName.value).toBe('');
-    expect(component.userForm.controls.email.value).toBe('');
+    expect(component.userForm.value).toEqual({
+      firstName: "",
+      lastName: "",
+      email: ""
+    });
     expect(spy).not.toBeCalled()
   })
 
@@ -74,9 +121,7 @@ describe('EditUserComponent', () => {
    component.userForm.setValue(completedInputs);
    component.editModalHidden();
    expect(spy).toBeCalledTimes(1)
-   expect(component.userForm.controls.firstName.value).not.toBeTruthy();
-   expect(component.userForm.controls.lastName.value).not.toBeTruthy();
-   expect(component.userForm.controls.email.value).not.toBeTruthy();
+   expect(component.userForm.valid).not.toBeTruthy();
   })
 
   it('should not close the edit modal and should not reset the userForm', () => {
