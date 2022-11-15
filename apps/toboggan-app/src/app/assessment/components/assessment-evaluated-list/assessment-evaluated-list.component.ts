@@ -59,25 +59,32 @@ export class AssessmentEvaluatedListComponent implements OnInit, OnDestroy {
     //API call
     const assessments = fetchedData as IAssessment[];
 
-    // TODO: Ideally it should come sorted from our API!
-    const assessmentsSortedByName = assessments.sort((a, b) => {
-      if (a.time_left && b.time_left) {
-        if (a.time_left < b.time_left) {
-          return -1;
-        }
-        if (a.time_left > b.time_left) {
-          return 1;
-        }
-      }
-
-      return 0;
-    });
-
-    const data = assessmentsSortedByName.map((cellData, index) => {
+    const data = assessments.map((cellData, index) => {
       return {
         rowId: String(index + 1),
         cellData: {
-          ...cellData
+          learner: cellData.learner,
+          result: {
+            cellType: cellData.resultComment ? 'tooltip' : null,
+            cellTypeOptions: {
+              heading: 'Comments',
+              text: cellData.resultComment
+            },
+            value: cellData.result,
+          },
+          competency: cellData.competency,
+          type: cellData.type,
+          attempt: [cellData.currentAttempt, cellData.attempts],
+          instructor: cellData.instructor,
+          similarity: [
+            cellData.similarity,
+            cellData.similarityUrl,
+            cellData.similarity < .27
+              ? 'gp-green-80'
+              : (cellData.similarity >= .27 && cellData.similarity < .89)
+                ? 'gp-yellow-80'
+                : 'gp-red-80',
+          ],
         },
       };
     });

@@ -12,13 +12,18 @@ export interface IGroup {
 
 export interface IAssessment {
   id: string;
-  time_left: string;
+  timeLeft: string;
   learner: string;
+  result: string | null;
+  resultComment: string | null;
   competency: string;
   type: string;
-  attempt: string;
+  attempts: number;
+  currentAttempt: number;
   instructor: string;
-  similarity: string;
+  similarity: number;
+  similarityUrl: string;
+  evaluated: boolean;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;

@@ -5,7 +5,7 @@ import {
   TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
-import { IAssessment } from '@toboggan-ws/toboggan-common';
+import { IAssessment, getFormattedDateDiff, getDateDiffObject } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
 import {
   ITableDataGeneratorFactoryOutput,
@@ -13,6 +13,9 @@ import {
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { assessmentTableHeader, RowActions } from './assessment-table.type';
+
+const THRESHOLD_OF_RED = 0;
+const THRESHOLD_OF_YELLOW = 6 * 60 * 60 * 1000; // 6 hours
 
 @Component({
   selector: 'toboggan-ws-assessment-list',
@@ -57,7 +60,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    
+
     switch (action) {
       case RowActions.FlagForInstructorReview:
         this.editAssessmentData = rowData.cellData as unknown as IAssessment;
@@ -80,25 +83,45 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     //API call
     const assessments = fetchedData as IAssessment[];
 
-    // TODO: Ideally it should come sorted from our API!
-    const assessmentsSortedByTimeleft = assessments.sort((a, b) => {
-      if (a.time_left && b.time_left) {
-        if (a.time_left < b.time_left) {
-          return -1;
-        }
-        if (a.time_left > b.time_left) {
-          return 1;
-        }
-      }
+    const data = assessments.map((cellData, index) => {
+      const dateDiffObj = getDateDiffObject(cellData.timeLeft, new Date());
+      const timeLeft = getFormattedDateDiff(dateDiffObj);
+      const timeLeftCellColor = dateDiffObj.diff < THRESHOLD_OF_RED
+        ? 'gp-red-20'
+        : dateDiffObj.diff >= THRESHOLD_OF_RED && dateDiffObj.diff < THRESHOLD_OF_YELLOW
+          ? 'gp-yellow-20'
+          : '';
+      const similarityColor = cellData.similarity < .27
+          ? 'gp-green-80'
+          : (cellData.similarity >= .27 && cellData.similarity < .89)
+            ? 'gp-yellow-80'
+            : 'gp-red-80';
+      const attemptBorderCellClass = cellData.currentAttempt > cellData.attempts
+          ? 'gp-table-x-cell-warning-border'
+          : '';
 
-      return 0;
-    });
-
-    const data = assessmentsSortedByTimeleft.map((cellData, index) => {
       return {
         rowId: String(index + 1),
         cellData: {
-          ...cellData,
+          id: cellData.id,
+          time_left: {
+            value: timeLeft,
+            cellClass: timeLeftCellColor,
+          },
+          learner: cellData.learner,
+          competency: cellData.competency,
+          type: cellData.type,
+          attempt: {
+            0: cellData.currentAttempt,
+            1: cellData.attempts,
+            cellClass: attemptBorderCellClass,
+          },
+          instructor: cellData.instructor,
+          similarity: [
+            cellData.similarity,
+            cellData.similarityUrl,
+            similarityColor,
+          ],
         },
       };
     });
