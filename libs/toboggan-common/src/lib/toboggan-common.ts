@@ -19,6 +19,7 @@ export interface IAssessment {
   attempt: string;
   instructor: string;
   similarity: string;
+  is_flagged: boolean;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;
