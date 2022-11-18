@@ -1,21 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
+import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { assessmentTableHeader, RowActions } from './assessment-table.type';
-
 @Component({
   selector: 'toboggan-ws-assessment-list',
   templateUrl: './assessment-list.component.html',
+  styleUrls: ['./assessment-list.component.scss'],
 })
 export class AssessmentListComponent implements OnInit, OnDestroy {
   dataGenerator: TableDataGenerator = {} as TableDataGenerator;
@@ -31,8 +32,9 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
   constructor(
     private assessmentService: AssessmentService,
-    private tableDataService: TableDataService
-  ) {}
+    private tableDataService: TableDataService,
+    private modalAlertService: ModalAlertService
+  ) { }
 
   ngOnInit(): void {
     this.refreshTableData();
@@ -45,6 +47,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
     const rowData = this.dataGenerator.rowData.find(
@@ -54,19 +57,31 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    
+
     switch (action) {
       case RowActions.FlagForInstructorReview:
         this.editAssessmentData = rowData.cellData as unknown as IAssessment;
         this.showFlagAssessmentModal = true;
         break;
+      case RowActions.RemoveFlag:
+        this.unFlagConfirmationModal();
+        break;
     }
   }
-  handleEditFlagAssessmentAction(){
+
+  handleEditFlagAssessmentAction() {
     this.showFlagAssessmentModal = false;
+    this.modalAlertService.hideModalAlert();
   }
-  getActionMenuItems = () => {
-    return ['view details', 'edit', 'delete', 'flag for instructor review'];
+
+  getActionMenuItems = (rowData: TableRow) => {
+    const actions = [RowActions.Evaluate];
+    if (rowData.cellData['is_flagged']) {
+      actions.push(RowActions.RemoveFlag);
+    } else {
+      actions.push(RowActions.FlagForInstructorReview);
+    }
+    return actions;
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {
@@ -75,11 +90,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
     // TODO: Ideally it should come sorted from our API!
     const assessmentsSortedByTimeleft = assessments.sort((a, b) => {
-      if (a.time_left && b.time_left) {
-        if (a.time_left < b.time_left) {
+      if (a.time_left[1] && b.time_left[1]) {
+        if (a.time_left[1] < b.time_left[1]) {
           return -1;
         }
-        if (a.time_left > b.time_left) {
+        if (a.time_left[1] > b.time_left[1]) {
           return 1;
         }
       }
@@ -88,10 +103,21 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     });
 
     const data = assessmentsSortedByTimeleft.map((cellData, index) => {
+      let className = '';
+      let actionIcon = '';
+      const copyCellData = Object.assign({}, cellData) as any;
+      if (cellData.is_flagged) {
+        className = 'flagged-row';
+        actionIcon = 'gp-icon-flag';
+        copyCellData.time_left[0] = 'gp-icon-lock';
+        copyCellData.time_left[1] = 'Paused';
+      }
       return {
         rowId: String(index + 1),
+        className: className,
+        actionIcon: actionIcon,
         cellData: {
-          ...cellData,
+          ...copyCellData,
         },
       };
     });
@@ -117,7 +143,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         this.itemsPerPage,
         prevCurrentPage,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => {},
+        () => { },
         []
       );
 
@@ -130,5 +156,29 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           this.dataGenerator.searchString = prevSearchString;
         }
       );
+  }
+
+  unFlagConfirmationModal() {
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: 'Remove this flag?',
+      message: `If you do, this submission will be added back to your evaluation list, and you’ll have 48 hours to evaluate it.`,
+      buttons: [
+        {
+          title: 'No, cancel',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'secondary',
+        },
+        {
+          title: 'Yes, remove flag',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'primary',
+        },
+      ],
+    });
   }
 }
