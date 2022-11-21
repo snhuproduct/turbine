@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IUser } from '@toboggan-ws/toboggan-common';
 import { environment } from '../../../environments/environment';
 import { UsersController } from './users.controller';
-import { CreateUserDto } from './users.dto';
+import { CreateUserDTO } from './users.dto';
 import { UsersService } from './users.service';
 
 const id = 1;
@@ -69,7 +69,7 @@ describe('UsersController', () => {
     it('should create user', async () => {
       jest.spyOn(service, 'createUser');
 
-      await controller.createUser(user);
+      await controller.createUser(user as unknown as CreateUserDTO);
 
       expect(service.createUser).toBeCalledWith(user);
     });
@@ -79,45 +79,35 @@ describe('UsersController', () => {
     it('should update user', async () => {
       jest.spyOn(service, 'updateUser');
 
-      await controller.updateUser(id, user as CreateUserDto);
+      await controller.updateUser(id, user as unknown as CreateUserDTO);
 
       expect(service.updateUser).toBeCalledWith(id, user);
     });
   });
 
-  describe('resetPasswordOfUser', () => {
-    it('should reset password of user', async () => {
-      const operationBody = {
-        type: 'reset',
-      };
+  // describe('resetPasswordOfUser', () => {
+  //   it('should reset password of user', async () => {
+  //     const operationBody = {
+  //       type: 'reset',
+  //     };
 
-      jest.spyOn(service, 'resetPasswordOfUser');
+  //     jest.spyOn(service, 'resetPasswordOfUser');
 
-      await controller.resetPasswordOfUser(id, operationBody);
+  //     await controller.resetPasswordOfUser(id, operationBody);
 
-      expect(service.resetPasswordOfUser).toBeCalledWith(id);
-    });
+  //     expect(service.resetPasswordOfUser).toBeCalledWith(id);
+  //   });
 
-    it('should throw http exception', async () => {
-      const operationBody = {
-        type: 'something else',
-      };
+  //   it('should throw http exception', async () => {
+  //     const operationBody = {
+  //       type: 'something else',
+  //     };
 
-      expect(() => controller.resetPasswordOfUser(id, operationBody)).toThrow(
-        'Http Exception'
-      );
-    });
-  });
-
-  describe('patchUser', () => {
-    it('should patch user', async () => {
-      jest.spyOn(service, 'patchUser');
-
-      await controller.patchUser(id, user);
-
-      expect(service.patchUser).toBeCalledWith(id, user);
-    });
-  });
+  //     expect(() => controller.resetPasswordOfUser(id, operationBody)).toThrow(
+  //       'Http Exception'
+  //     );
+  //   });
+  // });
 
   describe('deleteUser', () => {
     it('should delete user', async () => {

@@ -12,8 +12,7 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { UserType } from '@toboggan-ws/toboggan-common';
-import isUndefined from 'lodash/isUndefined';
-import omitBy from 'lodash/omitBy';
+import { omitBy , isUndefined } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
