@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -112,10 +112,10 @@ export class EditUserComponent implements OnChanges {
   async onSubmit() {
     try {
       if (this.user) {
-        const userObj = this.userForm.getRawValue() as IUser;
+        const userObj = {...this.userForm.getRawValue() as IUser, userType: this.user.userType};
         this.isLoading = true;
 
-        await this.userService.patchUser(userObj, this.user?.userId);
+        await this.userService.updateUser(userObj, this.user?.userId);
 
         this.bannerService.showBanner({
           type: 'success',
