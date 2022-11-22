@@ -6,6 +6,7 @@ import {
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
+import { BannerService } from '../../../shared/services/banner/banner.service';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
@@ -33,7 +34,8 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   constructor(
     private assessmentService: AssessmentService,
     private tableDataService: TableDataService,
-    private modalAlertService: ModalAlertService
+    private modalAlertService: ModalAlertService,
+    private bannerService: BannerService
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   }
 
   onRowAction(event: IRowActionEvent) {
+
     const { action, rowId } = event;
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
@@ -64,7 +67,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         this.showFlagAssessmentModal = true;
         break;
       case RowActions.RemoveFlag:
-        this.unFlagConfirmationModal();
+        this.unFlagConfirmationModal(rowData);
         break;
     }
   }
@@ -158,7 +161,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       );
   }
 
-  unFlagConfirmationModal() {
+  unFlagConfirmationModal(rowData: any) {
     this.modalAlertService.showModalAlert({
       type: 'warning',
       heading: 'Remove this flag?',
@@ -173,12 +176,36 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         },
         {
           title: 'Yes, remove flag',
-          onClick: () => {
-            this.modalAlertService.hideModalAlert();
+          onClick: async () => {
+            try {
+              this.modalAlertService.hideModalAlert();
+              const body = {
+                is_flagged: false
+              };
+              await this.assessmentService.updateFlagAssessment(rowData.cellData.id, body);
+              this.bannerService.showBanner({
+                type: 'success',
+                heading: '',
+                message: `message`,
+                button: null,
+                autoDismiss: true,
+              });
+              return true;
+            } catch (error) {
+              this.bannerService.showBanner({
+                type: 'error',
+                heading: '',
+                message: `message`,
+                button: null,
+                autoDismiss: true,
+              });
+              return false;
+            }
           },
           style: 'primary',
         },
       ],
     });
+    return true;
   }
 }
