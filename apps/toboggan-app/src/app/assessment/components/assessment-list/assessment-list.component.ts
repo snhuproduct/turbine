@@ -84,30 +84,50 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     const assessments = fetchedData as IAssessment[];
 
     const data = assessments.map((cellData, index) => {
+      const actionIcon = cellData.flagged ? 'gp-icon-flag' : '';
+      const className = cellData.flagged ? 'gp-table-x-bodyrow-diabled' : '';
+
       const dateDiffObj = getDateDiffObject(cellData.timeLeft, new Date());
-      const timeLeft = getFormattedDateDiff(dateDiffObj);
+
       const timeLeftCellColor = dateDiffObj.diff < THRESHOLD_OF_RED
         ? 'gp-red-20'
         : dateDiffObj.diff >= THRESHOLD_OF_RED && dateDiffObj.diff < THRESHOLD_OF_YELLOW
           ? 'gp-yellow-20'
           : '';
+
       const similarityColor = cellData.similarity < .27
           ? 'gp-green-80'
           : (cellData.similarity >= .27 && cellData.similarity < .89)
             ? 'gp-yellow-80'
             : 'gp-red-80';
+
       const attemptBorderCellClass = cellData.currentAttempt > cellData.attempts
           ? 'gp-table-x-cell-warning-border'
           : '';
 
+      const pausedTimeLeftCellObject = {
+        value: 'Paused',
+        cellType: 'icon-right',
+        cellTypeOptions: {
+          icon: 'gp-icon-lock',
+          iconClass: 'gp-fill-cool-gray-100'
+        },
+      };
+
+      const defaultTimeLeftCellObject = {
+        value: getFormattedDateDiff(dateDiffObj),
+        cellClass: timeLeftCellColor,
+      };
+
+      const timeLeftCellObject = cellData.flagged ? pausedTimeLeftCellObject : defaultTimeLeftCellObject;
+
       return {
         rowId: String(index + 1),
+        actionIcon,
+        className,
         cellData: {
           id: cellData.id,
-          time_left: {
-            value: timeLeft,
-            cellClass: timeLeftCellColor,
-          },
+          time_left: timeLeftCellObject,
           learner: cellData.learner,
           competency: cellData.competency,
           type: cellData.type,

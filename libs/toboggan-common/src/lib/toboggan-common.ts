@@ -24,6 +24,7 @@ export interface IAssessment {
   similarity: number;
   similarityUrl: string;
   evaluated: boolean;
+  flagged: boolean;
 }
 
 export type INewGroup = Omit<IGroup, 'id'>;

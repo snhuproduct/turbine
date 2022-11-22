@@ -33,6 +33,7 @@ export class AssessmentsService {
           "similarity": .27,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": true,
         },
         {
           "id": "2",
@@ -48,6 +49,7 @@ export class AssessmentsService {
           "similarity": .89,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": false,
         },
         {
           "id": "3",
@@ -63,6 +65,7 @@ export class AssessmentsService {
           "similarity": .1,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": false,
         },
         {
           "id": "4",
@@ -78,6 +81,7 @@ export class AssessmentsService {
           "similarity": .27,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": false,
         },
         {
           "id": "5",
@@ -93,6 +97,7 @@ export class AssessmentsService {
           "similarity": .89,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": false,
         },
         {
           "id": "6",
@@ -108,6 +113,7 @@ export class AssessmentsService {
           "similarity": .1,
           "similarityUrl": 'https://google.com',
           "evaluated": false,
+          "flagged": false,
         },
         {
           "id": "7",
@@ -123,6 +129,7 @@ export class AssessmentsService {
           "similarity": .27,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
         {
           "id": "8",
@@ -138,6 +145,7 @@ export class AssessmentsService {
           "similarity": .89,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
         {
           "id": "9",
@@ -153,6 +161,7 @@ export class AssessmentsService {
           "similarity": .1,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
         {
           "id": "10",
@@ -168,6 +177,7 @@ export class AssessmentsService {
           "similarity": .27,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
         {
           "id": "11",
@@ -183,6 +193,7 @@ export class AssessmentsService {
           "similarity": .89,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
         {
           "id": "12",
@@ -198,6 +209,7 @@ export class AssessmentsService {
           "similarity": .1,
           "similarityUrl": 'https://google.com',
           "evaluated": true,
+          "flagged": false,
         },
       ];
     }
