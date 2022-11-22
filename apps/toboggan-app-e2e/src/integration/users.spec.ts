@@ -169,15 +169,15 @@ describe('Users', () => {
 
       cy.get('input[ng-reflect-name="firstName"]').clear();
 
-      cy.get('[label="First Name"] .gp-input-x-error').should('contain', 'First Name is required');
+      cy.get('[label="First name"] .gp-input-x-error').should('contain', 'This field can\'t be empty');
 
       cy.get('input[ng-reflect-name="lastName"]').clear();
 
-      cy.get('[label="Last Name"] .gp-input-x-error').should('contain', 'Last Name is required');
+      cy.get('[label="Last name"] .gp-input-x-error').should('contain', 'This field can\'t be empty');
 
       cy.get('input[ng-reflect-name="email"]').clear();
 
-      cy.get('[label="Email Address"] .gp-input-x-error').should('contain', 'Email is required');
+      cy.get('[label="Email address"] .gp-input-x-error').should('contain', 'This field can\'t be empty');
     });
 
     it('should show an error when the email has inappropriate format when edit user', function () {
@@ -185,7 +185,7 @@ describe('Users', () => {
       cy.get('.gp-table-x-dropdownmenubutton').contains('Edit').click();
       cy.get('input[ng-reflect-name="email"]').clear().type('testemail.com');
 
-      cy.get('[label="Email Address"] .gp-input-x-error > span').should('contain', 'Email format is invalid');
+      cy.get('[label="Email address"] .gp-input-x-error').should('contain', 'Check email format');
     });
 
     it('should show the difference table on submission when edit user', function () {
@@ -194,7 +194,7 @@ describe('Users', () => {
       cy.get('input[ng-reflect-name="firstName"]').clear().type('Name');
       cy.get('input[ng-reflect-name="lastName"]').clear().type('Surname');
       cy.get('input[ng-reflect-name="email"]').clear().type('new@email.com');
-      cy.get('button').contains('Review Changes').click();
+      cy.get('.modal-dialog .gp-button-primary').contains('Review changes').click();
 
       cy.get('table').should('contain', 'Name');
       cy.get('table').should('contain', 'Surname');
@@ -240,14 +240,14 @@ describe('Users', () => {
         },
       });
 
-      cy.get('.gp-button-x-label').contains('Add New User').click({ force: true });
+      cy.get('.gp-button-x-label').contains('Add new user').click({ force: true });
 
       cy.get('input[formcontrolname="firstName"]').type('abc', { force: true });
       cy.get('input[formcontrolname="lastName"]').type('abc', { force: true });
       cy.get('input[formcontrolname="email"]').type('abc@abc', { force: true });
-      cy.get('.modal-content button').contains('Add New User').click({ force: true });
+      cy.get('.modal-content button').contains('Add new user').click({ force: true });
 
-      cy.get('.gp-banneralert-x-message').contains('Couldn\'t be completed').should('exist');
+      cy.get('.gp-banneralert').contains('Add new user couldn\'t be completed').should('exist');
     });
 
     it('should display success banner', () => {
@@ -255,14 +255,14 @@ describe('Users', () => {
         statusCode: 201,
       });
 
-      cy.get('.gp-button-x-label').contains('Add New User').click({ force: true });
+      cy.get('.gp-button-x-label').contains('Add new user').click({ force: true });
 
       cy.get('input[formcontrolname="firstName"]').type('abc', { force: true });
       cy.get('input[formcontrolname="lastName"]').type('abc', { force: true });
       cy.get('input[formcontrolname="email"]').type('abc@abc', { force: true });
-      cy.get('.modal-content button').contains('Add New User').click({ force: true });
+      cy.get('.modal-content button').contains('Add new user').click({ force: true });
 
-      cy.get('.gp-banneralert-x-message').contains('has been added as user').should('exist');
+      cy.get('.gp-banneralert').contains('abc abc has been added as a user.').should('exist');
     });
 
     it('should successfully reset password', () => {
@@ -291,11 +291,11 @@ describe('Users', () => {
     });
 
     it('should filter table on search', () => {
-      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 21 Users');
+      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 21 users');
 
       cy.get('input[placeholder="Search"]').type('name1', { force: true });
 
-      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 11 Users');
+      cy.get('.gp-pagination-x-total').should('contain', '1-10 of 11 users');
     });
 
     it('should not display pagination when results are less than 10', function () {
