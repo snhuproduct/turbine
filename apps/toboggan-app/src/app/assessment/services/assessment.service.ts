@@ -91,7 +91,7 @@ export class AssessmentService {
   }
 
   //flagAssessment
-  async updateFlagAssessment(id: string, body: { is_flagged: boolean, comments: string }) {
+  async updateFlagAssessment(id: string, body: { is_flagged: boolean, comments?: string }) {
     await firstValueFrom(this.http.put('/api/assessments/:' + id, body))
   }
 }
