@@ -1,9 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { v4 as uuidv4 } from 'uuid';
-import { GroupsService } from '../../../providers/groups/groups.service';
+import { AxiosResponse } from 'axios';
 import { GroupsController } from './groups.controller';
-
+import { GroupsService } from './groups.service';
+import { HttpModule } from '@nestjs/axios';
+import { environment } from '../../../environments/environment';
+import { of } from 'rxjs';
 const id = 1;
 
 const group: IGroup = {
@@ -21,13 +24,26 @@ for (let i = 0; i < 20; i++) {
     description: 'Desc',
   });
 }
-
+const mockResponse: AxiosResponse = {
+  data: null,
+  status: 200,
+  statusText: 'OK',
+  headers: {},
+  config: {},
+};
 describe('GroupsController', () => {
   let controller: GroupsController;
   let service: GroupsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        HttpModule.register({
+          baseURL: environment.GPCoreBaseUrl + '/user-management/api/v1',
+          timeout: 8000,
+          maxRedirects: 3,
+        }),
+      ],
       controllers: [GroupsController],
       providers: [GroupsService],
     }).compile();
@@ -41,23 +57,24 @@ describe('GroupsController', () => {
   });
 
   describe('getGroups', () => {
-    it('should return an array of paginated groups', async () => {
+    it('should return an array of paginated learners', async () => {
+      mockResponse.data = groups;
       jest
-        .spyOn(service, 'getPaginatedGroups')
-        .mockImplementation(() => groups);
+        .spyOn(service, 'getGroups')
+        .mockImplementation(() => of(mockResponse));
 
-      expect(
-        controller.getGroups({
+      controller
+        .getGroups({
           currentPage: 1,
           resultsPerPage: 10,
         })
-      ).toBe(groups);
-    });
-
-    it('should return an array of groups', async () => {
-      jest.spyOn(service, 'getGroups').mockImplementation(() => groups);
-
-      expect(controller.getGroups({})).toBe(groups);
+        .subscribe((response) => {
+          expect(service.getGroups).toHaveBeenCalledWith({
+            limit: 10,
+            skip: 1,
+          });
+          expect(response).toBe(mockResponse);
+        });
     });
   });
 

@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IGroup,
-  INewUser,
-  IUpdatedUser,
-  IUser
+  INewUser, IUser
 } from '@toboggan-ws/toboggan-common';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
@@ -41,9 +39,8 @@ export class UserService {
     );
   }
 
-  async updateUser(updatedUser: IUpdatedUser, userId: string): Promise<void> {
+  async updateUser(updatedUser: Partial<IUser>, userId: string): Promise<void> {
     await firstValueFrom(this.http.put(`/api/users/${userId}`, updatedUser));
-    this.fetchUsers();
   }
 
   async patchUser(patchUser: Partial<IUser>, userId: string): Promise<void> {
