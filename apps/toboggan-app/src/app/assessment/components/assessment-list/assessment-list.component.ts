@@ -22,8 +22,9 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   assessmentList: TableRow[] = [];
   currentPage = 1;
   itemsPerPage = 10;
-  showFlagAssessmentModal = false;
+  showAssessmentModal = false;
   editAssessmentData!: IAssessment;
+  selectedOption!: RowActions;
   private dataGeneratorFactoryOutputObserver: Observable<ITableDataGeneratorFactoryOutput> =
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
@@ -45,28 +46,44 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     );
-
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    
     switch (action) {
       case RowActions.FlagForInstructorReview:
         this.editAssessmentData = rowData.cellData as unknown as IAssessment;
-        this.showFlagAssessmentModal = true;
+        this.showAssessmentModal = true;
+        this.selectedOption = RowActions.FlagForInstructorReview;
+        break;
+      case RowActions.ReturnUnEvaluated:
+        this.editAssessmentData = rowData.cellData as unknown as IAssessment;
+        this.showAssessmentModal = true;
+        this.selectedOption = RowActions.ReturnUnEvaluated;
         break;
     }
   }
-  handleEditFlagAssessmentAction(){
-    this.showFlagAssessmentModal = false;
+
+  handleAssessmentAction(id: string | undefined) {
+    if (this.selectedOption === RowActions.ReturnUnEvaluated && id) {
+      this.refreshTableData();
+    }
+    this.showAssessmentModal = false;
   }
+
   getActionMenuItems = () => {
-    return ['view details', 'edit', 'delete', 'flag for instructor review'];
+    const menuItems = [
+      RowActions.Evaluate,
+      RowActions.FlagForInstructorReview,
+      RowActions.ReturnUnEvaluated,
+    ];
+    // return ['view details', 'edit', 'delete', 'flag for instructor review'];
+    return menuItems;
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {

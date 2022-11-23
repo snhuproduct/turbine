@@ -21,6 +21,7 @@ export class ModalComponent {
   @Input() title!: string;
   @Input() acceptButton = 'Submit';
   @Input() cancelButton = 'Cancel';
+  @Input() class = '';
   @Output() accept = new EventEmitter();
   @Output() hidden = new EventEmitter();
   @Output() hide = new EventEmitter();
@@ -49,7 +50,7 @@ export class ModalComponent {
           },
         ],
       },
-      class: 'gp-modal',
+      class: `gp-modal ${this.class}`,
     });
     const hideSubscr = this.modal?.onHide?.subscribe(() => {
       this.hide.emit();

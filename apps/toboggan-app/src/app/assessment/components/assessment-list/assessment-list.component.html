@@ -1,8 +1,9 @@
 <div class="table-container">
   <toboggan-ws-flag-assessment
   [assessment]="editAssessmentData"
-  *ngIf="showFlagAssessmentModal"
-  (editFlagAssessmentAction)="handleEditFlagAssessmentAction()">
+  [selectedOption]="selectedOption"
+  *ngIf="showAssessmentModal"
+  (editFlagAssessmentAction)="handleAssessmentAction($event)">
   </toboggan-ws-flag-assessment>
   <gp-table
     [dataGenerator]="dataGenerator"
