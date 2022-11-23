@@ -42,7 +42,7 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "9.0.8",
     "@nrwl/angular": "14.5.4",
-    "@snhuproduct/toboggan-ui-components-library": "^1.4.49",
+    "@snhuproduct/toboggan-ui-components-library": "^1.4.50",
     "@types/uuid": "^8.3.4",
     "array-paginate": "^1.0.2",
     "class-transformer": "^0.5.1",
