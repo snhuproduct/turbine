@@ -9,7 +9,7 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserType } from '@toboggan-ws/toboggan-common';
 import { omitBy , isUndefined } from 'lodash';

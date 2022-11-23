@@ -1,19 +1,28 @@
 <toboggan-ws-modal
   #editflag
-  title="Flag this submission?"
-  acceptButton="Yes, flag"
+  [title]="modalTitle"
+  [acceptButton]="acceptButtonText"
   cancelButton="No, cancel"
   id="flag-assessment"
   (hidden)="hideModal()"
   (accept)="updateAssessment()"
+  [class]="modalClassName"
 >
-  <p>
+
+  <p *ngIf="selectedOption === rowActions.FlagForInstructorReview">
     If you do, a link to this submission and your components will be emailed to
     the instructor,
     <strong>{{ assessment?.instructor }}</strong>
     , to review. This will also pause the evaluation timer.<br />
     Once you remove the flag, the timer will reset and you'll have 48 hours to
     evaluate this submission.
+  </p>
+
+  <p *ngIf="selectedOption === rowActions.ReturnUnEvaluated">
+    If you feel this submission isn't ready to be evaluated, you can sent it back to the learner,
+    <strong>{{ assessment.learner }}</strong>
+    , with comments on what to fix. They'll be asked to address the issue(s) you noted before they resubmit. <br>
+    An unevaluated submission <em>doesn't</em> count as an attempt
   </p>
 
   <form [formGroup]="editAssessmentForm" class="edit-assessment-form">
@@ -23,9 +32,9 @@
       [error]="hasError('comments')"
       [errorMessage]="getErrorMessage('comments')"
     >
-      <textarea
+      <textarea rows="4"
         aria-label="input"
-        placeholder="Tell the instructor why you're flagging this submission (i.e., documenting a potential academic honesty violation)"
+        [placeholder]="placeHolderText"
         formControlName="comments"
       ></textarea>
     </gp-text-area>
