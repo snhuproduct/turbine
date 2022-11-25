@@ -181,11 +181,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
               const body = {
                 is_flagged: false
               };
-              await this.assessmentService.updateFlagAssessment(rowData.cellData.learner, body);
+              await this.assessmentService.updateFlagAssessment(rowData.cellData.id, body);
               this.bannerService.showBanner({
                 type: 'success',
                 heading: '',
-                message: `<b>${rowData.cellData.id}</b>’s submission is no longer flagged. You now have 48 hours to evaluate it.`,
+                message: `<b>${rowData.cellData.learner}</b>’s submission is no longer flagged. You now have 48 hours to evaluate it.`,
                 button: null,
                 autoDismiss: true,
               });
