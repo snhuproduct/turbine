@@ -74,6 +74,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
   handleEditFlagAssessmentAction() {
     this.showFlagAssessmentModal = false;
+    this.modalAlertService.hideModalAlert();
   }
 
   getActionMenuItems = (rowData: TableRow) => {
