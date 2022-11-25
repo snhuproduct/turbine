@@ -1,50 +1,48 @@
+import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AxiosResponse } from 'axios';
+import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { AssessmentsController } from './assessments.controller';
 import { AssessmentsService } from "./assessments.service";
-import { v4 as uuidv4 } from 'uuid';
-import { of } from 'rxjs';
-import { IAssessmentFlag } from './assessments.types';
-import { HttpModule } from '@nestjs/axios';
-import { environment } from '../../../environments/environment';
-import { AxiosResponse } from 'axios';
 
 
-const mockData =[
+const mockData = [
   {
     "uuid": "KPkio0XF5tsKKsKMnsRo",
     "name": "Short name or label for the assessment item.",
     "question": "Assessment item question",
     "answer": "Answer for the question",
     "context": "Context from which the question was created",
-    "options": [ ],
+    "options": [],
     "question_type": "Type of question",
     "activity_type": "Type of activity",
     "use_type": "Field to distinguish the type of assessment profile (Formative/Summative)",
-    "metadata": { },
+    "metadata": {},
     "author": "A person or organization chiefly responsible for the intellectual or artistic content of this assessment item",
     "difficulty": 1,
-    "alignments": { },
+    "alignments": {},
     "parent_nodes": {
-    "learning_experiences": [ ],
-    "learning_objects": [ ]
+      "learning_experiences": [],
+      "learning_objects": []
     },
     "references": {
-    "competencies": [ ],
-    "skills": [ ]
+      "competencies": [],
+      "skills": []
     },
-    "child_nodes": { },
+    "child_nodes": {},
     "assessment_reference": {
-    "activity_id": "",
-    "activity_template_id": "",
-    "source": "learnosity"
+      "activity_id": "",
+      "activity_template_id": "",
+      "source": "learnosity"
     },
-    "achievements": [ ],
+    "achievements": [],
     "pass_threshold": 1,
     "is_flagged": false,
     "comments": "",
     "created_time": "2022-03-03 09:22:49.843674+00:00",
     "last_modified_time": "2022-03-03 09:22:49.843674+00:00"
-    }
+  }
 ]
 
 const mockResponse: AxiosResponse = {
@@ -83,7 +81,7 @@ describe('AssessmentsController', () => {
 
   describe('updateFlagStatus', () => {
     it('should update flag status', async () => {
-      
+
       const existingAssessment = mockData[0];
       mockResponse.data = existingAssessment;
       mockResponse.data['is_flagged'] = true;
@@ -98,9 +96,9 @@ describe('AssessmentsController', () => {
           expect(service.updateFlagStatus).toHaveBeenCalledWith(
             mockAssessmentId,
             existingAssessment
-        );
-        expect(response).toBe(mockResponse);
-      });
+          );
+          expect(response).toBe(mockResponse);
+        });
     });
   });
 

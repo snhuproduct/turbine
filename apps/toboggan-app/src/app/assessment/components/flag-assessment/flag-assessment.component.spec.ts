@@ -1,11 +1,11 @@
-import { AssessmentService } from '../../services/assessment.service';
-import { FlagAssessmentComponent } from './flag-assessment.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { mock, MockProxy } from 'jest-mock-extended';
 import { SharedModule } from '../../../shared/shared.module';
-import { MockProxy, mock } from 'jest-mock-extended';
+import { AssessmentService } from '../../services/assessment.service';
+import { FlagAssessmentComponent } from './flag-assessment.component';
 
 describe('FlagAssessmentComponent', () => {
   let component: FlagAssessmentComponent;

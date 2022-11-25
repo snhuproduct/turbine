@@ -30,7 +30,7 @@ export enum AssessmentStatus {
   NotReadyToBeScored = 'not_ready_to_be_scored',
 }
 
-export interface IAssessmentAlignments {}
+export interface IAssessmentAlignments { }
 
 export interface IAssessmentReference {
   activity_id: string;
@@ -49,6 +49,6 @@ export interface IAssessmentReferences {
 }
 
 export interface IAssessmentFlag {
-  is_flagged : boolean;
-  comments : string;
+  is_flagged: boolean;
+  comments: string;
 }
