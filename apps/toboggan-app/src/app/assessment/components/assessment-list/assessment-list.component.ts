@@ -51,7 +51,6 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   }
 
   onRowAction(event: IRowActionEvent) {
-
     const { action, rowId } = event;
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
@@ -178,6 +177,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           title: 'Yes, remove flag',
           onClick: async () => {
             try {
+              this.modalAlertService.hideModalAlert();
               const body = {
                 is_flagged: false
               };
@@ -203,6 +203,5 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         },
       ],
     });
-    return true;
   }
 }
