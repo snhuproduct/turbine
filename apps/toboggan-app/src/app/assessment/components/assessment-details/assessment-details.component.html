@@ -1,0 +1,132 @@
+<gp-page [loggedin]="true">
+    <toboggan-ws-banner></toboggan-ws-banner>
+    <div class="gp-level-4 page-heading mb-8 mt-6">
+        Jessica’s submission
+        <div class="gp-x-more" (click)="toggleMoreActions()">
+            <svg class="gp-moreicon" aria-hidden="true">
+                <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-more-vert'"></use>
+            </svg>
+        </div>
+    </div>
+    <ul [collapse]="!isExpanded" [isAnimated]="true" class="gp-dropdownmenu">
+        <li *ngFor="let action of actions" class="gp-dropdownmenuitem">
+            <button class="gp-dropdownmenubutton">{{action}}</button>
+        </li>
+    </ul>
+    <div class="assessment-details-container" *ngIf="!isShown">
+        <div class="assessment-details-header">
+            <div class="col-md-12">
+                <div class="row m-0">
+                    <div class="col-3">
+                        <label class="gp-paragraph p-4"><b>Analyze Written Works</b></label>
+                        <label class="gp-paragraph p-3">Practice 3</label>
+                    </div>
+                    <div class="col-1 gp-vertical"></div>
+                    <div class="col-6">
+                        <label class="gp-paragraph p-4"><b>Instructor</b></label>
+                        <label class="gp-paragraph p-3">Joseph Garcia</label>
+                    </div>
+                    <div class="col-2 gp-tool-bar">
+                        <div class="gp-attempt-selector">
+                            <div class="gp-attempt-selector-left">
+                                <svg class="gp-chevron" aria-hidden="true">
+                                    <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-chevron-left'"></use>
+                                </svg>
+                            </div>
+                            <div class="gp-attempt-selector-value p-1">
+                                <span>2/2</span>
+                            </div>
+                            <div class="gp-attempt-selector-right">
+                                <svg class="gp-chevron" aria-hidden="true">
+                                    <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-chevron-right'"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="gp-assessment-percent m-2">
+                            <a gp-link class="gp-link gp-link-default"> <span class="gp-link-x-label">27%</span></a>
+                        </div>
+                        <div class="gp-assessment-percent m-2 pt-2">
+                            <span class="gp-ellipse gp-yellow-80"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="assessment-details-submission">
+            <!-- load iframe here -->
+            <div class="iframe">
+                <iframe src="https://www.wiki.com" title="Load learner submission iframe"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="m-0">
+        <div class="expand mt-0" (click)="toggleShowEvaluation()">
+            <svg class="expand-icon">
+                <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-menu'"></use>
+            </svg>
+        </div>
+
+        <div class="expandable-container">
+            <span class="gp-level-6 page-heading gp-white mb-5 p-3">Jessica’s submission</span>
+            <label class="gp-paragraph gp-white p-4"><b>Analyze Written Works</b></label>
+            <span class="gp-paragraph gp-white p-3">Practice 3</span>
+        </div>
+        <div class="assessment-details-expand-container" *ngIf="isShown">
+            <div class="assessment-details-submission">
+                <!-- load dynamic table here -->
+            </div>
+            <div class="assessment-details-submission">
+                <div class="assessment-details-header">
+                    <div class="col-12">
+                        <div class="row m-0">
+                            <div class="col-10">
+                                <label class="gp-level-6 p-4"><b>Evaluation rubric</b></label>
+                            </div>
+                            <div class="col-2 gp-tool-bar p-0">
+                                <div><label class="gp-paragraph p-4 me-1 ms-0">Attempt</label></div>
+                                <div class="gp-attempt-selector mt-4">
+                                    <div class="gp-attempt-selector-left">
+                                        <svg class="gp-chevron" aria-hidden="true">
+                                            <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-chevron-left'"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="gp-attempt-selector-value p-1">
+                                        <span>2/2</span>
+                                    </div>
+                                    <div class="gp-attempt-selector-right">
+                                        <svg class="gp-chevron" aria-hidden="true">
+                                            <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-chevron-right'"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- load dynamic table here -->
+                <label class="gp-paragraph p-4"><b>Overall feedback</b></label>
+                <div class="col-md-12 div-feedback">
+                    <div class="row div-feedback-header wrapper">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="row div-feedback-content">
+                        <p class="gp-paragraph">
+                            Euclid at the edge of forever Cambrian explosion extraordinary claims require extraordinary evidence trillion the ash of stellar alchemy. Rig Veda two ghostly white figures in coveralls and helmets are softly
+                            dancing the carbon in our apple pies. Euclid at the edge of forever Cambrian explosion extraordinary
+                        </p>
+                    </div>
+                    <div class="row div-feedback-footer">
+                        <span class="gp-paragraph-sm">80 / 10000 Word Limit</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sticky">
+                <button type="submit" class="review-changes-btn" gp-button label="Finish evaluation" size="default" styleType="primary" [isLoading]="false"></button>
+            </div>
+        </div>
+    </div>
+</gp-page>

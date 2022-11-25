@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { of } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.module';
 import { AssessmentListComponent } from '../../components/assessment-list/assessment-list.component';
 import { AssessmentService } from '../../services/assessment.service';
@@ -32,6 +33,10 @@ describe('AssessmentMainPageComponent', () => {
       ],
       providers: [
         { provide: AssessmentService, useValue: mockAssessmentService },
+        {
+          provide: Router,
+          useValue: {},
+        }
       ],
     }).compileComponents();
 
