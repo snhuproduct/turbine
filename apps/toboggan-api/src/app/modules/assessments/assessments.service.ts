@@ -10,6 +10,6 @@ export class AssessmentsService {
   constructor(private readonly httpService: HttpService) { }
 
   updateFlagStatus(uuid: string, body: IAssessmentFlag): Observable<AxiosResponse<IAssessment>> {
-    return this.httpService.put(`/assessment-item?uuid=${uuid}`,body)
+    return this.httpService.put(`/assessment-item?uuid=${uuid}`, body)
   }
 }

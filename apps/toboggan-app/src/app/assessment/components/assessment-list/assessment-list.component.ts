@@ -74,7 +74,6 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
   handleEditFlagAssessmentAction() {
     this.showFlagAssessmentModal = false;
-    this.modalAlertService.hideModalAlert();
   }
 
   getActionMenuItems = (rowData: TableRow) => {
@@ -178,28 +177,25 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           title: 'Yes, remove flag',
           onClick: async () => {
             try {
-              this.modalAlertService.hideModalAlert();
               const body = {
                 is_flagged: false
               };
-              await this.assessmentService.updateFlagAssessment(rowData.cellData.id, body);
+              await this.assessmentService.updateFlagAssessment(rowData.cellData.learner, body);
               this.bannerService.showBanner({
                 type: 'success',
                 heading: '',
-                message: `message`,
+                message: `<b>${rowData.cellData.id}</b>’s submission is no longer flagged. You now have 48 hours to evaluate it.`,
                 button: null,
                 autoDismiss: true,
               });
-              return true;
             } catch (error) {
               this.bannerService.showBanner({
                 type: 'error',
                 heading: '',
-                message: `message`,
+                message: `The flag couldn’t be removed from <b>${rowData.cellData.learner}</b>’s submission. Please try again.`,
                 button: null,
                 autoDismiss: true,
               });
-              return false;
             }
           },
           style: 'primary',
