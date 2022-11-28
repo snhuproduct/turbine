@@ -3,15 +3,16 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
-import { AssessmentService } from '../../services/assessment.service';
+import { AssessmentService, mockData } from '../../services/assessment.service';
 
 import { AssessmentListComponent } from './assessment-list.component';
+import { RowActions } from './assessment-table.type';
 
 describe('AssessmentListComponent with empty results ', () => {
   let component: AssessmentListComponent;
   let fixture: ComponentFixture<AssessmentListComponent>;
   const mockAssessmentService = {
-    fetchAssessments: jest.fn().mockReturnValue(of([])),
+    fetchAssessments: jest.fn().mockReturnValue(of(mockData)),
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,5 +46,26 @@ describe('AssessmentListComponent with empty results ', () => {
       By.css('.gp-table-x-noresults')
     );
     expect(noResultsContainer).toBeDefined();
+  });
+
+  it('onRowAction method should call with - argument action RemoveFlag', () => {
+    const unFlagConfirmationModal = jest.spyOn(
+      component, 'unFlagConfirmationModal'
+    );
+    component.onRowAction({ action: RowActions.RemoveFlag, rowId: '1' });
+    expect(unFlagConfirmationModal).toHaveBeenCalled();
+  });
+
+  it('onRowAction method should call with - argument action FlagForInstructorReview', () => {
+    component.onRowAction({ action: RowActions.FlagForInstructorReview, rowId: '1' });
+    expect(component.editAssessmentData).toBeDefined();
+  });
+
+  it('getActionMenuItems method should call', () => {
+    const data = {
+      cellData: mockData[4]
+    };
+    const actions = component.getActionMenuItems(data as any);
+    expect(actions).toBeDefined();
   });
 });

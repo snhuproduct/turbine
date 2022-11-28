@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, of } from 'rxjs';
 
-const mockData: any[] = [
+export const mockData: any[] = [
   {
     "id": "1",
     "time_left": { 1: '-10hr 30m', cellClass: 'gp-red-20' },
