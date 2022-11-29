@@ -51,11 +51,11 @@ export class CreateUserComponent {
       const userGroup = this.userGroups.find(
         (group) => group.uuid == e.target.value
       );
-      groups.push(new FormControl(userGroup));
+      groups.push(new FormControl(userGroup?.uuid));
     } else {
       let i = 0;
       groups.controls.forEach((item: any) => {
-        if (item.value.uuid == e.target.value) {
+        if (item.value == e.target.value) {
           groups.removeAt(i);
           return;
         }
