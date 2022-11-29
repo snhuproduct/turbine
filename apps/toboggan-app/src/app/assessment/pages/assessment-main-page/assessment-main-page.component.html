@@ -5,7 +5,7 @@
   <div class="assessment-list-container p-5">
     <gp-tabs orientation="horz">
       <gp-tab label="To evaluate (30)">
-        <toboggan-ws-assessment-list>
+        <toboggan-ws-assessment-list [selectedTab]="'toBeEvaluate'">
           <div table-cta-right>
             <button
               gp-button
@@ -21,7 +21,7 @@
         </toboggan-ws-assessment-list>
       </gp-tab>
       <gp-tab label="Evaluated">
-        <toboggan-ws-assessment-list>
+        <toboggan-ws-assessment-list [selectedTab]="'evaluated'">
           <div table-cta-right>
             <button
               gp-button
