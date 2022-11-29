@@ -27,7 +27,7 @@ export class GroupService {
 
   // Updates group
   async updateGroup(group: IGroup) {
-    await firstValueFrom(this.http.put('/api/groups/:' + group.id, group));
+    await firstValueFrom(this.http.put('/api/groups/:' + group.uuid, group));
   }
 
   // Add user to group
