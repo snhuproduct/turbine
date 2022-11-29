@@ -42,8 +42,8 @@ export class GroupsService {
     return this.httpService.get('/groups', { params });
   }
 
-  getGroup(id: string): Observable<AxiosResponse<IGroup>> {
-    return this.httpService.get(`/group/${id}`);
+  getGroup(uuid: string): Observable<AxiosResponse<IGroup>> {
+    return this.httpService.get(`/group/${uuid}`);
   }
 
   getPaginatedGroups(currentPage: number, resultsPerPage = 10): IGroup[] {
@@ -60,8 +60,8 @@ export class GroupsService {
     return this.httpService.post('/group', newGroup);
   }
 
-  updateGroup(id: string, updatedGroup: Partial<CreateGroupDto>) {
-    return this.httpService.put(`/group/${id}`, updatedGroup);
+  updateGroup(uuid: string, updatedGroup: Partial<CreateGroupDto>) {
+    return this.httpService.put(`/group/${uuid}`, updatedGroup);
   }
 
   patchGroup(id: string, updatedGroup: PatchGroupDto) {

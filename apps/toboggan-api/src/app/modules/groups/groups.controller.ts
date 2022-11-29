@@ -36,9 +36,9 @@ export class GroupsController {
     return this.groupsService.getGroups({ skip, limit });
   }
 
-  @Get('/:id')
-  getGroup(@Param('id') id) {
-    return this.groupsService.getGroup(id);
+  @Get('/:uuid')
+  getGroup(@Param('uuid') uuid) {
+    return this.groupsService.getGroup(uuid);
   }
 
   @Post('/')
@@ -46,9 +46,12 @@ export class GroupsController {
     return this.groupsService.createGroup(group);
   }
 
-  @Put('/:id')
-  updateGroup(@Param('id') id, @Body() updatedGroup: Partial<CreateGroupDto>) {
-    return this.groupsService.updateGroup(id, updatedGroup);
+  @Put('/:uuid')
+  updateGroup(
+    @Param('uuid') uuid,
+    @Body() updatedGroup: Partial<CreateGroupDto>
+  ) {
+    return this.groupsService.updateGroup(uuid, updatedGroup);
   }
 
   @Patch('/:id')

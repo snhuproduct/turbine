@@ -1,18 +1,21 @@
+import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
-import { v4 as uuidv4 } from 'uuid';
 import { AxiosResponse } from 'axios';
+import { of } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+import { environment } from '../../../environments/environment';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './groups.service';
-import { HttpModule } from '@nestjs/axios';
-import { environment } from '../../../environments/environment';
-import { of } from 'rxjs';
 const id = 1;
 
 const group: IGroup = {
   id: uuidv4(),
   name: 'Group name',
   description: 'Desc',
+  uuid: 'uuid',
+  members: [],
+  permissions: [],
 };
 
 const groups: IGroup[] = [];
@@ -22,6 +25,9 @@ for (let i = 0; i < 20; i++) {
     id: uuidv4(),
     name: `Group name ${i}`,
     description: 'Desc',
+    uuid: `uuid-${i}`,
+    members: [],
+    permissions: [],
   });
 }
 const mockResponse: AxiosResponse = {
@@ -80,9 +86,9 @@ describe('GroupsController', () => {
 
   describe('getGroup', () => {
     it('should return a group', async () => {
-      jest.spyOn(service, 'getGroup').mockImplementation(() => group);
+      jest.spyOn(service, 'getGroup').mockImplementation(() => group as any);
 
-      expect(await controller.getGroup()).toBe(group);
+      expect(await controller.getGroup(group.id)).toBe(group);
     });
   });
 
