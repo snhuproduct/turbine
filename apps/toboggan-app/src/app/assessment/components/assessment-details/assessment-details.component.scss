@@ -1,6 +1,6 @@
-@use "../../../../../../../node_modules/@snhuproduct/toboggan-ui-components-library/src/scss/bootstrap_overrides";
+@use "../../../shared/styles/bootstrap_overrides";
 @import '../../../shared/styles/colors';
-@import "../../../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+@import "~bootstrap/scss/mixins/breakpoints";
 
 .assessment-details-container {
     border-radius: 15px;
