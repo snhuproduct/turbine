@@ -1,6 +1,6 @@
 import {
   HttpClientTestingModule,
-  HttpTestingController,
+  HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -47,9 +47,10 @@ describe('GroupService', () => {
         name: 'Admin',
         type: 0,
         description: '',
+        uuid: '2AE9GWE5E1A9'
       };
       setTimeout(() => {
-        const req = httpMock.expectOne('/api/groups/:' + group.id);
+        const req = httpMock.expectOne('/api/groups/:' + group.uuid);
         req.flush(group);
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toBe(group);
