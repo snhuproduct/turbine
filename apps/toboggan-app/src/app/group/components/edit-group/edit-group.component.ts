@@ -4,7 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InterstitialLoaderType } from '@snhuproduct/toboggan-ui-components-library';
@@ -131,6 +131,7 @@ export class EditGroupComponent implements OnChanges, AfterViewInit {
   async approveChanges() {
     const group: IGroup = {
       id: this.group.id,
+      uuid: this.group.uuid,
       name: this.editGroupForm.value.name as string,
       description: this.editGroupForm.value.description as string,
     };
