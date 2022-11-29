@@ -104,6 +104,9 @@ describe('GroupMainPageComponent', () => {
         id: 'group-10',
         name: 'group name 0',
         description: 'description',
+        uuid: 'uuid',
+        members: [],
+        permissions: [],
       },
       addUser: true,
     };

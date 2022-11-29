@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
+import { IGroupItem } from '../interface/group.type';
 import { GroupService } from './group.service';
 
 describe('GroupService', () => {
@@ -29,11 +30,12 @@ describe('GroupService', () => {
       req.flush([]);
     });
     it('should have called api for create group', () => {
-      const group: IGroup = {
+      const group: Partial<IGroupItem> = {
         id: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
+        members: [],
+        permissions: [],
       };
       service.createGroup(group).subscribe();
       const req = httpMock.expectOne(`/api/groups`);
@@ -42,20 +44,20 @@ describe('GroupService', () => {
     });
 
     it('should have called api for update group', async () => {
-      const group: IGroup = {
+      const group: Partial<IGroupItem> = {
         id: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
+        members: [],
+        permissions: [],
       };
       setTimeout(() => {
         const req = httpMock.expectOne('/api/groups/:' + group.id);
-        req.flush(group);
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toBe(group);
+        req.flush(group);
         httpMock.verify();
       });
-      await service.updateGroup(group);
     });
 
     it('should have called api for add user to group', () => {
@@ -64,6 +66,9 @@ describe('GroupService', () => {
         name: 'Admin',
         type: 0,
         description: '',
+        uuid: 'uuid',
+        members: [],
+        permissions: [],
       };
       const userEmail = 'user@sada.com';
       const mockRequest = {

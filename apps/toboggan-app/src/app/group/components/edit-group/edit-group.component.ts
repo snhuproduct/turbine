@@ -14,6 +14,7 @@ import * as R from 'ramda';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
 import { BannerService } from '../../../shared/services/banner/banner.service';
+import { IGroupItem } from '../../interface/group.type';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -129,8 +130,7 @@ export class EditGroupComponent implements OnChanges, AfterViewInit {
   }
 
   async approveChanges() {
-    const group: IGroup = {
-      id: this.group.id,
+    const group: Partial<IGroupItem> = {
       name: this.editGroupForm.value.name as string,
       description: this.editGroupForm.value.description as string,
     };
@@ -140,7 +140,7 @@ export class EditGroupComponent implements OnChanges, AfterViewInit {
         this.reviewModal.modal.content.alertBanners = [];
       }
 
-      await this.groupService.updateGroup(group);
+      await this.groupService.updateGroup(group, this.group.id);
       // handle success
       this.bannerService.showBanner({
         type: 'success',

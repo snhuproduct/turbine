@@ -86,11 +86,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     );
-
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    const { id: groupId } = rowData.cellData;
+    const { uuid: groupId } = rowData.cellData;
 
     switch (action) {
       case RowActions.Edit:
@@ -133,6 +132,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
           id: group.id,
           name: group.name,
           description: group.description,
+          uuid: group.uuid,
         },
       };
     });
@@ -168,7 +168,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
               );
             } catch (error) {
               console.error(error);
-
               this.showNotification(
                 'error',
                 `Delete group`,

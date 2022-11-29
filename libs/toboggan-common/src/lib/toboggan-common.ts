@@ -7,7 +7,9 @@ export interface IGroup {
   name: string;
   type?: number;
   description: string | null;
-  uuid?: string;
+  uuid: string;
+  members: string[];
+  permissions: string[];
 }
 
 export interface IAssessment {

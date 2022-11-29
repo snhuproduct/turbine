@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber } from 'class-validator';
-import {PartialType} from "@nestjs/mapped-types";
+import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateGroupDto {
   @IsString()
@@ -12,9 +12,13 @@ export class CreateGroupDto {
   type?: number;
 
   @IsString()
-  @IsNotEmpty()
-  @IsOptional()
   description: string | null;
+
+  @IsOptional()
+  members: string[];
+
+  @IsOptional()
+  permissions: string[];
 }
 
 export class PatchGroupDto extends PartialType(CreateGroupDto) {}

@@ -36,11 +36,17 @@ for (let i = 0, j = 0, k = 0, m = 0; i < 20; i++) {
       id: `group-id-${i}`,
       name: groupList[m],
       description: '',
+      uuid: `group-id-${i}`,
+      members: [],
+      permissions: [],
     },
     {
       id: `group-id-${i + 1}`,
       name: groupList[m + 1],
       description: '',
+      uuid: `group-id-${i}`,
+      members: [],
+      permissions: [],
     },
   ];
   if (i < 5) {

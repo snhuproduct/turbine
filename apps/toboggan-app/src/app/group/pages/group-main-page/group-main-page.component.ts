@@ -22,6 +22,9 @@ export class GroupMainPageComponent {
     id: 'group-id-1000',
     name: 'Group name -10000',
     description: 'description',
+    uuid: 'sample id',
+    members: [],
+    permissions: [],
   };
 
   constructor(private modalService: BsModalService) {}

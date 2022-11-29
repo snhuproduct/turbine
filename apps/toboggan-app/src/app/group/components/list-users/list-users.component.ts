@@ -19,6 +19,7 @@ import {
   TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
+import { IGroupItem } from '../../interface/group.type';
 import { GroupService } from '../../services/group.service';
 import { userTableHeader } from './data/user-table-header';
 import { RowActions } from './types/list-users.type';
@@ -90,7 +91,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
 
   getActionMenuItems(rowData: TableRow) {
-    const actions = ['remove'];
+    const actions = [RowActions.Remove];
     return actions;
   }
 
@@ -104,7 +105,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
     const user = rowData.cellData;
-    console.log(rowData);
     switch (action) {
       case RowActions.Remove:
         this.openRemoveUserConfirmation(user);
@@ -140,6 +140,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
           status: user.enabled
             ? ['is-category', 'Active', 50] // this will generate the custom tag
             : ['is-category', 'Inactive', 50],
+          userId: user.userId,
         },
       };
     });
@@ -148,7 +149,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   openRemoveUserConfirmation(user: any) {
-    const { id, first: firstName, last: lastName } = user;
+    const { first: firstName, last: lastName } = user;
     const { name: groupName } = this.group;
     const userName = firstName + ' ' + lastName;
     this.modalAlertService.showModalAlert({
@@ -165,27 +166,8 @@ export class ListUsersComponent implements OnInit, OnDestroy {
         },
         {
           title: 'Yes, remove user',
-          onClick: async () => {
-            try {
-              this.modalAlertService.hideModalAlert();
-              await this.removeUserFromGroup(this.group.id, id);
-              this.showNotification(
-                'success',
-                ``,
-                `<strong>${userName}</strong> has been removed from <strong>${groupName}</strong>.`,
-                true
-              );
-            } catch (error) {
-              console.error(error);
-
-              this.showNotification(
-                'error',
-                `Remove user`,
-                `couldn't be completed.`,
-                true,
-                null
-              );
-            }
+          onClick: () => {
+            this.removeUser(user);
           },
           style: 'primary',
         },
@@ -223,8 +205,46 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async removeUserFromGroup(groupId: string, userId: string) {
-    await this.groupService.removeUserFromGroup(groupId, userId);
+  async removeUser(user: any) {
+    const { first: firstName, last: lastName } = user;
+    const { name: groupName } = this.group;
+    const userName = firstName + ' ' + lastName;
+    try {
+      this.modalAlertService.hideModalAlert();
+      await this.removeUserFromGroupAPI(user);
+      this.refreshTableData();
+      this.showNotification(
+        'success',
+        ``,
+        `<strong>${userName}</strong> has been removed from <strong>${groupName}</strong>.`,
+        true
+      );
+    } catch (error) {
+      this.showNotification(
+        'error',
+        `Remove user`,
+        `couldn't be completed.`,
+        true,
+        null
+      );
+    }
+  }
+
+  private async removeUserFromGroupAPI(user: IUser) {
+    // if group does not have the user
+    if (
+      !this.group.members?.length ||
+      !this.group.members.includes(user.userId)
+    ) {
+      return;
+    }
+    const members = this.group.members?.filter((item) => item !== user.userId);
+    const body = {
+      name: this.group.name,
+      description: this.group.description,
+      members: members,
+    } as Partial<IGroupItem>;
+    await this.groupService.updateGroup(body, this.group.uuid);
   }
 
   private refreshTableData(

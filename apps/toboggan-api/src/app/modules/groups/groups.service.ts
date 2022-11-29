@@ -6,9 +6,9 @@ import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import {
-    CreateGroupDto,
-    IAddUserToGroupDto,
-    PatchGroupDto
+  CreateGroupDto,
+  IAddUserToGroupDto,
+  PatchGroupDto,
 } from './groups.dto';
 
 @Injectable()
@@ -22,6 +22,9 @@ export class GroupsService {
         id: uuidv4(),
         name: `Group name ${i}`,
         description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
+        uuid: uuidv4(),
+        members: [],
+        permissions: [],
       });
     }
     this.group = this.groups[0];
@@ -39,8 +42,8 @@ export class GroupsService {
     return this.httpService.get('/groups', { params });
   }
 
-  getGroup(): IGroup {
-    return this.group;
+  getGroup(id: string): Observable<AxiosResponse<IGroup>> {
+    return this.httpService.get(`/group/${id}`);
   }
 
   getPaginatedGroups(currentPage: number, resultsPerPage = 10): IGroup[] {
@@ -57,16 +60,8 @@ export class GroupsService {
     return this.httpService.post('/group', newGroup);
   }
 
-  updateGroup(id: string, updatedGroup: CreateGroupDto) {
-    this.groups = this.groups.map((group) => {
-      if (group.id === id) {
-        return {
-          id: group.id,
-          ...updatedGroup,
-        };
-      }
-      return group;
-    });
+  updateGroup(id: string, updatedGroup: Partial<CreateGroupDto>) {
+    return this.httpService.put(`/group/${id}`, updatedGroup);
   }
 
   patchGroup(id: string, updatedGroup: PatchGroupDto) {
