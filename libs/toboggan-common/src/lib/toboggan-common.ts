@@ -8,6 +8,7 @@ export interface IGroup {
   type?: number;
   description: string | null;
   uuid?: string;
+  members?: string[];
 }
 
 export interface IAssessment {

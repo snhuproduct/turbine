@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup, IUser } from '@toboggan-ws/toboggan-common';
@@ -60,48 +60,41 @@ export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  addUsertoGroup() {
+  async addUsertoGroup() {
     const userEmail = this.addUserForm.value.user;
     if (!this.userEmails.includes(userEmail)) {
       this.addUserForm.get('user')?.setErrors({ incorrect: true });
       return;
     }
-    if (this.addUserForm.valid) {
-      const user = this.users.find(
-        (user) => user.email == this.addUserForm.value.user
-      );
-      this.groupService
-        .addUsertoGroup(
-          this.addUserForm.value.groupId,
-          this.addUserForm.value.user
-        )
-        .subscribe({
-          next: (response) => {
-            // handle success
-            console.log(response);
-            this.addUserToGroupAction.emit(true);
-            this.adduserModal.close();
-            this.bannerService.showBanner({
-              type: 'success',
-              heading: '',
-              message: `<strong>${user?.firstName} ${user?.lastName}</strong> has been added to ${this.group.name}.`,
-              button: null,
-              autoDismiss: true,
-            });
-          },
-          error: (error: unknown) => {
-            // handle error scenario
-            this.adduserModal.modal?.content?.alertBanners.push({
-              type: 'error',
-              heading: 'Add user to group',
-              message: `couldn't be completed: ${error}`,
-            });
-          },
-        });
-    }
+    try {
+      if (this.addUserForm.valid) {
+        const user = this.users.find(
+          (user) => user.email == this.addUserForm.value.user
+        ) as IUser;      
+        if (user.userId) this.group = { ...this.group,members:[user.userId] }; // condition check added as there is users without userId.
 
-    return false;
-  }
+        await this.groupService.updateGroup(this.group);
+        // handle success
+        this.addUserToGroupAction.emit(true);
+        this.adduserModal.close();
+        this.bannerService.showBanner({
+          type: 'success',
+          heading: '',
+          message: `<strong>${user?.firstName} ${user?.lastName}</strong> has been added to ${this.group.name}.`,
+          button: null,
+          autoDismiss: true,
+        });
+      }
+    } catch (error) {
+      this.adduserModal.modal?.content?.alertBanners.push({
+        type: 'error',
+        heading: 'Add user to group',
+        message: `couldn't be completed: ${error}`,
+      });
+      return false;
+    }  
+    return true;
+  } 
 
   hideModal() {
     this.adduserModal.close();
