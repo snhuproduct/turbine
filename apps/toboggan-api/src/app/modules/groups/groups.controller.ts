@@ -31,9 +31,8 @@ export class GroupsController {
 
   @Get('/')
   getGroups(@Query() query) {
-    const { currentPage: skip, resultsPerPage: limit } = query;
-
-    return this.groupsService.getGroups({ skip, limit });
+    const { skip, limit } = query;
+    return this.groupsService.getGroups(skip, limit);
   }
 
   @Get('/:uuid')

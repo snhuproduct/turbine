@@ -24,9 +24,9 @@ export class PermissionsController {
 
   @Get('/')
   getPermissions(@Query() query) {
-    const { currentPage: skip, resultsPerPage: limit } = query;
+    const { skip, limit } = query;
 
-    return this.permissionService.getPermissions({ skip, limit });
+    return this.permissionService.getPermissions(skip, limit);
   }
 
   @Get('/:id')

@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { HttpModule } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
+import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { PermissionsController } from './permissions.controller';
 import { mockPermissions } from './permissions.mock';
 import { PermissionService } from './permissions.service';
-import { AxiosResponse } from 'axios';
-import { HttpModule } from '@nestjs/axios';
-import { environment } from '../../../environments/environment';
-import { of } from 'rxjs';
 
 const mockResponse: AxiosResponse = {
   data: null,
@@ -49,14 +49,11 @@ describe('PermissionsController', () => {
 
       controller
         .getPermissions({
-          currentPage: 1,
-          resultsPerPage: 10,
+          skip: 1,
+          limit: 10,
         })
         .subscribe((response) => {
-          expect(service.getPermissions).toHaveBeenCalledWith({
-            limit: 10,
-            skip: 1,
-          });
+          expect(service.getPermissions).toHaveBeenCalledWith(1, 10);
           expect(response).toBe(mockResponse);
         });
     });
