@@ -1,14 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { assessmentTableHeader, RowActions } from './assessment-table.type';
@@ -28,10 +29,12 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     {} as Observable<ITableDataGeneratorFactoryOutput>;
   private datageneratorSubscription: Subscription = {} as Subscription;
   private updateAssessmentSubscription: Subscription = {} as Subscription;
+  @Input() selectedTab = 'toBeEvaluate';
 
   constructor(
     private assessmentService: AssessmentService,
-    private tableDataService: TableDataService
+    private tableDataService: TableDataService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -60,13 +63,17 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         this.editAssessmentData = rowData.cellData as unknown as IAssessment;
         this.showFlagAssessmentModal = true;
         break;
+      case RowActions.Evaluate:
+        this.router.navigate([`/assessment/details/${rowId}`]);
+        break;
     }
   }
   handleEditFlagAssessmentAction(){
     this.showFlagAssessmentModal = false;
   }
   getActionMenuItems = () => {
-    return ['view details', 'edit', 'delete', 'flag for instructor review'];
+    const actionMenuItems = ['view details', 'edit', 'delete', 'flag for instructor review']
+    return this.selectedTab === 'toBeEvaluate' ? [...actionMenuItems,'evaluate']: actionMenuItems;
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {

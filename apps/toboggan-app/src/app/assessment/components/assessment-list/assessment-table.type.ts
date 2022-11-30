@@ -2,7 +2,7 @@ import {
   TableColumnAlignmentEnum,
   TableColumnDataTypeEnum,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum,
+  TableColumnSortStateEnum
 } from '@snhuproduct/toboggan-ui-components-library';
 
 export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
@@ -76,4 +76,5 @@ export enum RowActions {
   ViewDetails = 'view details',
   FlagForInstructorReview =  'flag for instructor review',
   Delete = 'delete',
+  Evaluate = 'evaluate',
 }
