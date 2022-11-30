@@ -4,7 +4,6 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
-import { IGroupItem } from '../interface/group.type';
 import { GroupService } from './group.service';
 
 describe('GroupService', () => {
@@ -30,8 +29,8 @@ describe('GroupService', () => {
       req.flush([]);
     });
     it('should have called api for create group', () => {
-      const group: Partial<IGroupItem> = {
-        id: '2AE9GWE5E1A9',
+      const group: Partial<IGroup> = {
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
         description: '',
         members: [],
@@ -44,15 +43,15 @@ describe('GroupService', () => {
     });
 
     it('should have called api for update group', async () => {
-      const group: Partial<IGroupItem> = {
-        id: '2AE9GWE5E1A9',
+      const group: Partial<IGroup> = {
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
         description: '',
         members: [],
         permissions: [],
       };
       setTimeout(() => {
-        const req = httpMock.expectOne('/api/groups/:' + group.id);
+        const req = httpMock.expectOne('/api/groups/:' + group.uuid);
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toBe(group);
         req.flush(group);
