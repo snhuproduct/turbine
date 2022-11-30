@@ -16,7 +16,8 @@ import { applicationTab } from './data/applicationTab';
   styleUrls: ['./group-details-page.component.scss'],
 })
 export class GroupDetailsPageComponent
-  implements OnInit, IComponentCanDeactivate {
+  implements OnInit, IComponentCanDeactivate
+{
   id: any;
   group!: IGroup;
   showAddUserModal = false;
@@ -31,7 +32,7 @@ export class GroupDetailsPageComponent
     private route: ActivatedRoute,
     private groupService: GroupService,
     private modalAlertService: ModalAlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -79,7 +80,6 @@ export class GroupDetailsPageComponent
       event.target.innerText == 'Users' &&
       !this.permissionComponent.canDeactivate()
     ) {
-      console.log('unsaved data is there');
       this.openUserConfirmationModal();
     }
   }
@@ -93,7 +93,6 @@ export class GroupDetailsPageComponent
         {
           title: 'No, continue editing',
           onClick: () => {
-            console.log('no');
             this.modalAlertService.hideModalAlert();
             this.tabsComponent.showTab(1);
           },
@@ -103,7 +102,6 @@ export class GroupDetailsPageComponent
           title: 'Yes, leave page',
           onClick: () => {
             this.modalAlertService.hideModalAlert();
-            console.log('yes ');
           },
           style: 'primary',
         },

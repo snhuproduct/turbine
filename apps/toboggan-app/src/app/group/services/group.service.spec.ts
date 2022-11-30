@@ -1,6 +1,6 @@
 import {
   HttpClientTestingModule,
-  HttpTestingController
+  HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -29,11 +29,12 @@ describe('GroupService', () => {
       req.flush([]);
     });
     it('should have called api for create group', () => {
-      const group: IGroup = {
-        id: '2AE9GWE5E1A9',
+      const group: Partial<IGroup> = {
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
+        members: [],
+        permissions: [],
       };
       service.createGroup(group).subscribe();
       const req = httpMock.expectOne(`/api/groups`);
@@ -42,36 +43,36 @@ describe('GroupService', () => {
     });
 
     it('should have called api for update group', async () => {
-      const group: IGroup = {
-        id: '2AE9GWE5E1A9',
+      const group: Partial<IGroup> = {
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
-        uuid: '2AE9GWE5E1A9'
+        members: [],
+        permissions: [],
       };
       setTimeout(() => {
         const req = httpMock.expectOne('/api/groups/:' + group.uuid);
-        req.flush(group);
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toBe(group);
+        req.flush(group);
         httpMock.verify();
       });
-      await service.updateGroup(group);
     });
 
     it('should have called api for add user to group', () => {
       const group: IGroup = {
-        id: '2AE9GWE5E1A9',
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
+        members: [],
+        permissions: [],
       };
       const userEmail = 'user@sada.com';
       const mockRequest = {
-        groupId: group.id,
+        groupId: group.uuid,
         user: userEmail,
       };
-      service.addUsertoGroup(group.id as string, userEmail).subscribe();
+      service.addUsertoGroup(group.uuid as string, userEmail).subscribe();
       const req = httpMock.expectOne('/api/groups/addusertogroup');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toStrictEqual(mockRequest);

@@ -41,7 +41,7 @@ describe('EditGroupComponent', () => {
     groupService = TestBed.inject(GroupService);
     component = fixture.componentInstance;
     component.group = {
-      id: '1',
+      uuid: '1',
       name: 'group1',
       description: 'desc',
     } as IGroup;

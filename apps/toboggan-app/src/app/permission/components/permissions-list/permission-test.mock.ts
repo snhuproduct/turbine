@@ -35,6 +35,9 @@ for (let i = 0, j = 0, k = 0, m = 0; i < 20; i++) {
     id: `group-id-${i}`,
     name: groupList[m],
     description: '',
+    uuid: `group-uuid-${i}`,
+    members: [],
+    permissions: [],
   };
 
   permissions.push({

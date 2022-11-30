@@ -142,7 +142,7 @@ export class PermissionsListComponent implements OnInit, OnDestroy {
       userGroupList = R.concat(userGroupList, permission.userGroups);
       const groupLinkList = permission.userGroups.map((group) => {
         return {
-          href: this.router.createUrlTree(['/group', 'details', group.id]),
+          href: this.router.createUrlTree(['/group', 'details', group.uuid]),
           text: group.name,
         };
       });

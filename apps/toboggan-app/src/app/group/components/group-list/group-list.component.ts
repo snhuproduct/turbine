@@ -3,13 +3,13 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -19,7 +19,7 @@ import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from '../edit-group/edit-group.component';
@@ -86,11 +86,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
     const rowData = this.dataGenerator.rowData.find(
       (row) => row.rowId === rowId
     );
-
     if (!rowData) {
       throw new Error('Could not find rowData for rowId: ' + rowId);
     }
-    const { id: groupId } = rowData.cellData;
+    const { uuid: groupId } = rowData.cellData;
 
     switch (action) {
       case RowActions.Edit:
@@ -130,10 +129,9 @@ export class GroupListComponent implements OnInit, OnDestroy {
       return {
         rowId: String(index + 1),
         cellData: {
-          id: group.id,
           name: group.name,
           description: group.description,
-          uuid: group.uuid
+          uuid: group.uuid,
         },
       };
     });
@@ -142,7 +140,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   openDeleteGroupConfirmation(group: IGroup) {
-    const { id, name } = group;
+    const { uuid, name } = group;
     this.modalAlertService.showModalAlert({
       type: 'error',
       heading: `Delete ${name}`,
@@ -160,7 +158,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
           onClick: async () => {
             try {
               this.modalAlertService.hideModalAlert();
-              await this.deleteGroup(id);
+              await this.deleteGroup(uuid);
               this.showNotification(
                 'success',
                 ``,
@@ -169,7 +167,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
               );
             } catch (error) {
               console.error(error);
-
               this.showNotification(
                 'error',
                 `Delete group`,

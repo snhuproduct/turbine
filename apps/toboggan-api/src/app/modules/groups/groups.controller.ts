@@ -9,21 +9,22 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   CreateGroupDto,
   IAddUserToGroupDto,
-  PatchGroupDto
+  PatchGroupDto,
 } from './groups.dto';
 
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
+import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
 import { GroupsService } from './groups.service';
 
 @UseGuards(HTTPHeaderAuthGuard)
-@UseInterceptors(TokenInterceptor, ResponseInterceptor)
+@UseInterceptors(TokenInterceptor, ResponseInterceptor, RequestInterceptor)
 @Controller('groups')
 export class GroupsController {
   constructor(private groupsService: GroupsService) {}
@@ -35,9 +36,9 @@ export class GroupsController {
     return this.groupsService.getGroups({ skip, limit });
   }
 
-  @Get('/:id')
-  getGroup() {
-    return this.groupsService.getGroup();
+  @Get('/:uuid')
+  getGroup(@Param('uuid') uuid) {
+    return this.groupsService.getGroup(uuid);
   }
 
   @Post('/')
@@ -45,9 +46,12 @@ export class GroupsController {
     return this.groupsService.createGroup(group);
   }
 
-  @Put('/:id')
-  updateGroup(@Param('id') id, @Body() updatedGroup: CreateGroupDto) {
-    return this.groupsService.updateGroup(id, updatedGroup);
+  @Put('/:uuid')
+  updateGroup(
+    @Param('uuid') uuid,
+    @Body() updatedGroup: Partial<CreateGroupDto>
+  ) {
+    return this.groupsService.updateGroup(uuid, updatedGroup);
   }
 
   @Patch('/:id')
@@ -64,11 +68,5 @@ export class GroupsController {
   @Post('/addusertogroup')
   addUsersToGroup(@Body() request: IAddUserToGroupDto) {
     return this.groupsService.addUsersToGroup(request);
-  }
-
-  //Remove user from a group
-  @Delete('/:id/user/:userid')
-  removeUserFromGroup(@Param('id') groupId, @Param('userId') userId) {
-    console.log(groupId, userId);
   }
 }
