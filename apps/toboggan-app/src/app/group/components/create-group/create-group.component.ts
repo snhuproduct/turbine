@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IGroup, INewGroup } from '@toboggan-ws/toboggan-common';
+import { IGroup } from '@toboggan-ws/toboggan-common';
 import { FormError } from '@toboggan-ws/toboggan-constants';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -87,7 +87,7 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
   createGroup() {
     this.createGroupForm.markAllAsTouched();
     if (this.createGroupForm.valid) {
-      const group: INewGroup = {
+      const group: Partial<IGroup> = {
         name: this.createGroupForm.value.name,
         description: this.createGroupForm.value.description,
       };

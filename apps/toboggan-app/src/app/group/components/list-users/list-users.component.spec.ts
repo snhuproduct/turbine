@@ -5,13 +5,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   StoriesModule,
   TableComponent,
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
+import { BannerService } from '../../../shared/services/banner/banner.service';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
 import { ListUsersComponent } from './list-users.component';
 import { mockUsers } from './mock/usersMock';
+import { RowActions } from './types/list-users.type';
 
 const mockUserService = {
   fetchUsers: jest.fn().mockReturnValue(of(mockUsers)),
@@ -31,11 +34,11 @@ describe('ListUsersComponent with empty results ', () => {
           provide: UserService,
           useValue: mockEmptyUserService,
         },
+        BannerService,
       ],
       imports: [StoriesModule, BrowserModule, BrowserAnimationsModule],
       declarations: [ListUsersComponent, TableComponent],
     }).compileComponents();
-
     fixture = TestBed.createComponent(ListUsersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -96,15 +99,90 @@ describe('ListUsersComponent', () => {
       const tableRows = fixture.debugElement.queryAll(
         By.css('.gp-table-x-table tbody tr')
       );
-       expect(tableHeaders.length).toBe(userTableHeader.length+1);
-       expect(tableRows.length).toBeGreaterThan(0);
+      expect(tableHeaders.length).toBe(userTableHeader.length + 1);
+      expect(tableRows.length).toBeGreaterThan(0);
     });
   });
   it('remove user should bring the confirmation modal', () => {
     const spy = jest.spyOn(modalAlertService, 'showModalAlert');
-    component.openRemoveUserConfirmation({id:123,firstName:'first', lastName:'last', email:'email'});
-    expect(spy).toHaveBeenCalledWith(expect.objectContaining({
-      'heading': `Remove user from this group?`, 
-     }))
+    component.openRemoveUserConfirmation({
+      id: 123,
+      firstName: 'first',
+      lastName: 'last',
+      email: 'email',
+    });
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        heading: `Remove user from this group?`,
+      })
+    );
+  });
+
+  it('should getAllRows returns an array', () => {
+    expect(component.getAllRows().length).toBe(0);
+  });
+
+  it('should getActionMenuItems returns an array', () => {
+    expect(component.getActionMenuItems({} as TableRow)).toEqual([
+      RowActions.Remove,
+    ]);
+  });
+
+  it('should formatTableRowsWithUserData returns an array with sort', () => {
+    const data = [
+      {
+        userType: 'type',
+        status: 'status',
+        userId: 'userid',
+        userName: 'username',
+        firstName: 'beena',
+        lastName: 'babish',
+        email: 'email',
+        groups: [],
+        userGroups: [],
+        enabled: true,
+      },
+      {
+        userType: 'type',
+        status: 'status',
+        userId: 'userid',
+        userName: 'username',
+        firstName: 'anand',
+        lastName: 'ajith',
+        email: 'email',
+        groups: [],
+        userGroups: [],
+        enabled: true,
+      },
+    ];
+    expect(
+      component.formatTableRowsWithUserData(data)[0].cellData['first']
+    ).toBe('anand');
+    expect(
+      component.formatTableRowsWithUserData(data)[1].cellData['first']
+    ).toBe('beena');
+  });
+
+  it('should check onRowAction with error', () => {
+    const event = { action: 'remove', rowId: '1' };
+    component.dataGenerator.rowData = [{ rowId: '0', cellData: {} }];
+    expect(() => {
+      component.onRowAction(event);
+    }).toThrow('Could not find rowData for rowId: 1');
+  });
+
+  it('should check onRowAction without error for remove', () => {
+    const spy = jest.spyOn(component, 'openRemoveUserConfirmation');
+    const event = { action: 'remove', rowId: '0' };
+    component.dataGenerator.rowData = [{ rowId: '0', cellData: {} }];
+    component.onRowAction(event);
+    expect(spy).toBeCalled();
+  });
+
+  it('should check removeuser', () => {
+    const spy = jest.spyOn(modalAlertService, 'hideModalAlert');
+    const user = { first: 'first', last: 'last' };
+    component.removeUser(user);
+    expect(spy).toBeCalledTimes(1);
+  });
 });
-})

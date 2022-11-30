@@ -101,9 +101,11 @@ describe('GroupMainPageComponent', () => {
   it('should open add user to group modal', () => {
     const event: groupActionType = {
       group: {
-        id: 'group-10',
+        uuid: 'group-10',
         name: 'group name 0',
         description: 'description',
+        members: [],
+        permissions: [],
       },
       addUser: true,
     };

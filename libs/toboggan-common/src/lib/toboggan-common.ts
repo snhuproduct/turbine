@@ -3,11 +3,11 @@ export function tobogganCommon(): string {
 }
 
 export interface IGroup {
-  id: string;
   name: string;
-  type?: number;
   description: string | null;
-  uuid?: string;
+  uuid: string;
+  members: string[];
+  permissions: string[];
 }
 
 export interface IAssessment {
