@@ -12,7 +12,6 @@ import { FormError } from '@toboggan-ws/toboggan-constants';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { BannerService } from '../../../shared/services/banner/banner.service';
 import { IBannerButton } from '../../../shared/services/banner/banner.types';
-import { IGroupItem } from '../../interface/group.type';
 import { groupActionType } from '../../pages/group-main-page/group-main-page.component';
 import { GroupService } from '../../services/group.service';
 
@@ -88,7 +87,7 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
   createGroup() {
     this.createGroupForm.markAllAsTouched();
     if (this.createGroupForm.valid) {
-      const group: Partial<IGroupItem> = {
+      const group: Partial<IGroup> = {
         name: this.createGroupForm.value.name,
         description: this.createGroupForm.value.description,
       };

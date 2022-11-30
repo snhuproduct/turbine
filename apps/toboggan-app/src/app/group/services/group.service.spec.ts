@@ -64,7 +64,6 @@ describe('GroupService', () => {
       const group: IGroup = {
         id: '2AE9GWE5E1A9',
         name: 'Admin',
-        type: 0,
         description: '',
         uuid: 'uuid',
         members: [],

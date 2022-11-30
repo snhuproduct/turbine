@@ -19,7 +19,6 @@ import {
   TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
-import { IGroupItem } from '../../interface/group.type';
 import { GroupService } from '../../services/group.service';
 import { userTableHeader } from './data/user-table-header';
 import { RowActions } from './types/list-users.type';
@@ -243,7 +242,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       name: this.group.name,
       description: this.group.description,
       members: members,
-    } as Partial<IGroupItem>;
+    } as Partial<IGroup>;
     await this.groupService.updateGroup(body, this.group.uuid);
   }
 

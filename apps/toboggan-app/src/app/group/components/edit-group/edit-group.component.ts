@@ -14,7 +14,6 @@ import * as R from 'ramda';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
 import { BannerService } from '../../../shared/services/banner/banner.service';
-import { IGroupItem } from '../../interface/group.type';
 import { GroupService } from '../../services/group.service';
 
 @Component({
@@ -130,7 +129,7 @@ export class EditGroupComponent implements OnChanges, AfterViewInit {
   }
 
   async approveChanges() {
-    const group: Partial<IGroupItem> = {
+    const group: Partial<IGroup> = {
       name: this.editGroupForm.value.name as string,
       description: this.editGroupForm.value.description as string,
     };

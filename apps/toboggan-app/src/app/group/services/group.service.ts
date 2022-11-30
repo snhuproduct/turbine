@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { IGroupItem } from '../interface/group.type';
 
 @Injectable({
   providedIn: 'root',
@@ -22,12 +21,12 @@ export class GroupService {
   }
 
   // Creates group
-  createGroup(group: Partial<IGroupItem>) {
+  createGroup(group: Partial<IGroup>) {
     return this.http.post('/api/groups', group);
   }
 
   // Updates group
-  async updateGroup(group: Partial<IGroupItem>, id: string) {
+  async updateGroup(group: Partial<IGroup>, id: string) {
     await firstValueFrom(this.http.put('/api/groups/' + id, group));
   }
 
