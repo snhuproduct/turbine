@@ -73,7 +73,7 @@ export class AddUsersComponent implements OnInit, OnChanges, AfterViewInit {
         ) as IUser;      
         if (user.userId) this.group = { ...this.group,members:[user.userId] }; // condition check added as there is users without userId.
 
-        await this.groupService.updateGroup(this.group);
+        await this.groupService.updateGroup(this.group, this.group.uuid);
         // handle success
         this.addUserToGroupAction.emit(true);
         this.adduserModal.close();
