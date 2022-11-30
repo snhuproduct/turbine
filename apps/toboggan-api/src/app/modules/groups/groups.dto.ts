@@ -1,15 +1,10 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateGroupDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @IsOptional()
-  type?: number;
 
   @IsString()
   description: string | null;
