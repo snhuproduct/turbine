@@ -3,14 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
 import { AxiosResponse } from 'axios';
 import { of } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 import { environment } from '../../../environments/environment';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './groups.service';
 const id = 1;
 
 const group: IGroup = {
-  id: uuidv4(),
   name: 'Group name',
   description: 'Desc',
   uuid: 'uuid',
@@ -22,7 +20,6 @@ const groups: IGroup[] = [];
 
 for (let i = 0; i < 20; i++) {
   groups.push({
-    id: uuidv4(),
     name: `Group name ${i}`,
     description: 'Desc',
     uuid: `uuid-${i}`,
@@ -88,7 +85,7 @@ describe('GroupsController', () => {
     it('should return a group', async () => {
       jest.spyOn(service, 'getGroup').mockImplementation(() => group as any);
 
-      expect(await controller.getGroup(group.id)).toBe(group);
+      expect(await controller.getGroup(group.uuid)).toBe(group);
     });
   });
 
