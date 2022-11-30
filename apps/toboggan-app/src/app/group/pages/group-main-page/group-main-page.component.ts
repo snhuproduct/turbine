@@ -19,10 +19,9 @@ export class GroupMainPageComponent {
   showAddUserModal = false;
   showCreategroup = false;
   dummyGroup: IGroup = {
-    id: 'group-id-1000',
+    uuid: 'group-id-1000',
     name: 'Group name -10000',
     description: 'description',
-    uuid: 'sample id',
     members: [],
     permissions: [],
   };

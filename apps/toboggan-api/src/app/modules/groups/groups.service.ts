@@ -19,10 +19,9 @@ export class GroupsService {
   constructor(private readonly httpService: HttpService) {
     for (let i = 0; i < 20; i++) {
       this.groups.push({
-        id: uuidv4(),
+        uuid: uuidv4(),
         name: `Group name ${i}`,
         description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
-        uuid: uuidv4(),
         members: [],
         permissions: [],
       });
@@ -66,7 +65,7 @@ export class GroupsService {
 
   patchGroup(id: string, updatedGroup: PatchGroupDto) {
     this.groups = this.groups.map((group) => {
-      if (group.id === id) {
+      if (group.uuid === id) {
         return {
           ...group,
           ...updatedGroup,
@@ -77,7 +76,7 @@ export class GroupsService {
   }
 
   deleteGroup(id: string) {
-    this.groups = this.groups.filter((group) => group.id !== id);
+    this.groups = this.groups.filter((group) => group.uuid !== id);
   }
 
   addUsersToGroup(request: IAddUserToGroupDto) {

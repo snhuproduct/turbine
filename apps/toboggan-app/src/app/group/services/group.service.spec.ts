@@ -62,19 +62,18 @@ describe('GroupService', () => {
 
     it('should have called api for add user to group', () => {
       const group: IGroup = {
-        id: '2AE9GWE5E1A9',
+        uuid: '2AE9GWE5E1A9',
         name: 'Admin',
         description: '',
-        uuid: 'uuid',
         members: [],
         permissions: [],
       };
       const userEmail = 'user@sada.com';
       const mockRequest = {
-        groupId: group.id,
+        groupId: group.uuid,
         user: userEmail,
       };
-      service.addUsertoGroup(group.id as string, userEmail).subscribe();
+      service.addUsertoGroup(group.uuid as string, userEmail).subscribe();
       const req = httpMock.expectOne('/api/groups/addusertogroup');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toStrictEqual(mockRequest);

@@ -129,7 +129,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
       return {
         rowId: String(index + 1),
         cellData: {
-          id: group.id,
           name: group.name,
           description: group.description,
           uuid: group.uuid,
@@ -141,7 +140,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   openDeleteGroupConfirmation(group: IGroup) {
-    const { id, name } = group;
+    const { uuid, name } = group;
     this.modalAlertService.showModalAlert({
       type: 'error',
       heading: `Delete ${name}`,
@@ -159,7 +158,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
           onClick: async () => {
             try {
               this.modalAlertService.hideModalAlert();
-              await this.deleteGroup(id);
+              await this.deleteGroup(uuid);
               this.showNotification(
                 'success',
                 ``,

@@ -13,12 +13,11 @@ import { GroupListComponent } from './group-list.component';
 const mockGroups: IGroup[] = [];
 for (let i = 0; i < 20; i++) {
   mockGroups.push({
-    id: i as unknown as string,
+    uuid: i as unknown as string,
     name: `Group name-${i}`,
     description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`,
     members: [],
     permissions: [],
-    uuid: `grouo-uuid-${i}`,
   });
 }
 

@@ -3,7 +3,6 @@ export function tobogganCommon(): string {
 }
 
 export interface IGroup {
-  id: string;
   name: string;
   description: string | null;
   uuid: string;

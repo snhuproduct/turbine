@@ -139,7 +139,7 @@ export class EditGroupComponent implements OnChanges, AfterViewInit {
         this.reviewModal.modal.content.alertBanners = [];
       }
 
-      await this.groupService.updateGroup(group, this.group.id);
+      await this.groupService.updateGroup(group, this.group.uuid);
       // handle success
       this.bannerService.showBanner({
         type: 'success',
