@@ -56,8 +56,8 @@ export class GroupsController {
     return this.groupsService.patchGroup(id, updatedGroup);
   }
 
-  @Delete('/:id')
-  deleteGroup(@Param('id') id) {
-    return this.groupsService.deleteGroup(id);
+  @Delete('/:uuid')
+  deleteGroup(@Param('uuid') uuid) {
+    return this.groupsService.deleteGroup(uuid);
   }
 }
