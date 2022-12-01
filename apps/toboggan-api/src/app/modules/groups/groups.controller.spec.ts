@@ -68,14 +68,11 @@ describe('GroupsController', () => {
 
       controller
         .getGroups({
-          currentPage: 1,
-          resultsPerPage: 10,
+          skip: 1,
+          limit: 10,
         })
         .subscribe((response) => {
-          expect(service.getGroups).toHaveBeenCalledWith({
-            limit: 10,
-            skip: 1,
-          });
+          expect(service.getGroups).toHaveBeenCalledWith(1, 10);
           expect(response).toBe(mockResponse);
         });
     });

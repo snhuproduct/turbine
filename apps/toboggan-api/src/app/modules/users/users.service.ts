@@ -11,13 +11,12 @@ export class UsersService {
   constructor(private readonly httpService: HttpService) {}
 
   getUsers(skip: number, limit: number, userType?: UserType) {
-    return this.httpService.get('/users', {
-      params: {
-        skip,
-        limit,
-        user_type: userType,
-      },
-    });
+    const params = {
+      skip: skip ?? 0,
+      limit: limit ?? 1000,
+      userType: userType ?? null,
+    };
+    return this.httpService.get('/users', { params });
   }
 
   getUser(id: string) {

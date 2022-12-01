@@ -2,6 +2,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IUser } from '@toboggan-ws/toboggan-common';
+import { of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UsersController } from './users.controller';
 import { CreateUserDTO } from './users.dto';
@@ -57,11 +58,28 @@ describe('UsersController', () => {
   });
 
   describe('getUsers', () => {
-    it('should return an array of users', async () => {
+    it('should return an array of users with email query', async () => {
       //@ts-ignore
-      jest.spyOn(service, 'getUsers').mockImplementation(() => users);
+      jest.spyOn(service, 'searchUser').mockImplementation(() => of(users));
 
-      expect(await controller.getUsers({})).toBe(users);
+      controller
+        .getUsers({ skip: 1, limit: 10, user_type: 'type', email: 'email' })
+        .subscribe((response) => {
+          expect(service.searchUser).toHaveBeenCalledWith('email');
+          expect(response).toBe(users);
+        });
+    });
+
+    it('should return an array of users without email query', async () => {
+      //@ts-ignore
+      jest.spyOn(service, 'getUsers').mockImplementation(() => of(users));
+
+      controller
+        .getUsers({ skip: 1, limit: 10, user_type: 'type' })
+        .subscribe((response) => {
+          expect(service.getUsers).toHaveBeenCalledWith(1, 10, 'type');
+          expect(response).toBe(users);
+        });
     });
   });
 
