@@ -9,7 +9,14 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, GroupsModule, PermissionsModule, AssessmentsModule, AuthenticationModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    GroupsModule,
+    PermissionsModule,
+    AssessmentsModule,
+    AuthenticationModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

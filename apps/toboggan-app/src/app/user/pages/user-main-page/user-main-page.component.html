@@ -1,4 +1,4 @@
-<gp-page [loggedin]="true">
+<gp-page [loggedin]="true" [onLogOutClick]="logout.bind(this)">
   <toboggan-ws-banner></toboggan-ws-banner>
   <h1>Users</h1>
 
@@ -19,9 +19,6 @@
               aria-label="blomp">
               Add new user
             </button>
-
-            <!-- TODO: Move to side navigation bar -->
-            <button gp-button (click)="logout()">Log out</button>
 
             <ng-template #createusertemplate>
               <toboggan-ws-create-user
