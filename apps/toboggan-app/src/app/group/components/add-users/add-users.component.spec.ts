@@ -119,11 +119,14 @@ describe('AddUsersComponent', () => {
       user: 'email1@sada.com',
       groupId: '2AE9GWE5E1A9',
     });
-    component.users = mockUsers
-    component.userEmails = mockUsers.map((user)=>user.email as string); 
+    component.users = mockUsers;
+    component.userEmails = mockUsers.map((user) => user.email as string);
     component.addUsertoGroup();
     expect(component.addUserForm.valid).toBeTruthy();
-    expect(approveGroupSpy).toBeCalled();
+    expect(approveGroupSpy).toHaveBeenCalledWith(
+      component.group,
+      component.group.uuid
+    );
   });
 
   it('Should call banner service after user is added', async () => {
@@ -132,8 +135,8 @@ describe('AddUsersComponent', () => {
       user: 'email1@sada.com',
       groupId: '2AE9GWE5E1A9',
     });
-    component.users = mockUsers
-    component.userEmails = mockUsers.map((user)=>user.email as string); 
+    component.users = mockUsers;
+    component.userEmails = mockUsers.map((user) => user.email as string);
     await component.addUsertoGroup();
     expect(showBannerSpy).toBeCalled();
   });
