@@ -36,8 +36,8 @@ export class GroupService {
   }
 
   //Delete group
-  async deleteGroup(groupId: string) {
-    await firstValueFrom(this.http.delete(`/api/groups/${groupId}`));
+  async deleteGroup(id: string) {
+    await firstValueFrom(this.http.delete(`/api/groups/${id}`));
   }
 
   publishGroupCompleted(group: IGroup) {

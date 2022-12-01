@@ -76,8 +76,8 @@ export class GroupsService {
     });
   }
 
-  deleteGroup(id: string) {
-    this.groups = this.groups.filter((group) => group.uuid !== id);
+  deleteGroup(uuid: string) {
+    return this.httpService.delete(`/group/${uuid}`);
   }
 
   addUsersToGroup(request: IAddUserToGroupDto) {

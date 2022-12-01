@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -143,6 +144,22 @@ describe('GroupListComponent ', () => {
       expect.objectContaining({
         heading: `Delete Group name-0`,
       })
+    );
+  });
+
+  it('should call delete api', async () => {
+    // @ts-ignore:
+    const spyAPI = jest.spyOn(component, 'deleteGroupAPI');
+    // @ts-ignore:
+    const spyNotification = jest.spyOn(component, 'showNotification');
+    // @ts-ignore:
+    await component.deleteGroup('uuid', 'name');
+    expect(spyAPI).toBeCalledTimes(1);
+    expect(spyNotification).toBeCalledWith(
+      'success',
+      '',
+      'The <strong>name</strong> user group has been deleted.',
+      true
     );
   });
 });
