@@ -30,11 +30,6 @@ export class GroupService {
     await firstValueFrom(this.http.put('/api/groups/' + uuid, group));
   }
 
-  // Add user to group
-  addUsertoGroup(groupId: string, user: string) {
-    return this.http.post('/api/groups/addusertogroup', { groupId, user });
-  }
-
   //Delete group
   async deleteGroup(uuid: string) {
     await firstValueFrom(this.http.delete(`/api/groups/${uuid}`));

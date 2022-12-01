@@ -9,12 +9,10 @@ import {
   Put,
   Query,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import {
-  CreateGroupDto,
-  IAddUserToGroupDto,
-  PatchGroupDto,
+  CreateGroupDto, PatchGroupDto
 } from './groups.dto';
 
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
@@ -61,11 +59,5 @@ export class GroupsController {
   @Delete('/:uuid')
   deleteGroup(@Param('uuid') uuid) {
     return this.groupsService.deleteGroup(uuid);
-  }
-
-  // TODO: Refactor this route to follow REST principles
-  @Post('/addusertogroup')
-  addUsersToGroup(@Body() request: IAddUserToGroupDto) {
-    return this.groupsService.addUsersToGroup(request);
   }
 }
