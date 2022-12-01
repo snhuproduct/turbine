@@ -37,7 +37,7 @@ describe('AssessmentEvaluatedListComponent with empty results ', () => {
     expect(fetchEvaluatedAssessments).toHaveBeenCalled();
   });
 
-  it('table should show "No Results Found" when no groups are available', () => {
+  it('table should show "No evaluated assessments yet" when no assessments are available', () => {
     const noResultsContainer = fixture.debugElement.query(
       By.css('.gp-table-x-noresults')
     );

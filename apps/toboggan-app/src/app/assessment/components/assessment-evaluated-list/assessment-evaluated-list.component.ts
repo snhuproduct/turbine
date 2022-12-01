@@ -1,19 +1,16 @@
 import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
+  Component, OnDestroy,
+  OnInit
 } from '@angular/core';
 import {
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { evaluatedAssessmentTableHeader } from './assessment-evaluated-table.type';
@@ -33,12 +30,10 @@ export class AssessmentEvaluatedListComponent implements OnInit, OnDestroy {
   private datageneratorSubscription: Subscription = {} as Subscription;
   private updateEvaluatedAssessmentSubscription: Subscription = {} as Subscription;
 
-  @ViewChild('editGroup') editGroupTemplate?: ElementRef;
-
   constructor(
     private assessmentService: AssessmentService,
     private tableDataService: TableDataService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refreshTableData();
@@ -55,7 +50,7 @@ export class AssessmentEvaluatedListComponent implements OnInit, OnDestroy {
     return ['view details', 'edit', 'delete'];
   };
 
-  formatTableRowsWithGroupData(fetchedData: unknown): TableRow[] {
+  formatTableRowsWithAssessmentsData(fetchedData: unknown): TableRow[] {
     //API call
     const assessments = fetchedData as IAssessment[];
 
@@ -104,11 +99,11 @@ export class AssessmentEvaluatedListComponent implements OnInit, OnDestroy {
       this.tableDataService.dataGeneratorFactoryObs(
         this.assessmentService.fetchEvaluatedAssessments(),
         evaluatedAssessmentTableHeader,
-        this.formatTableRowsWithGroupData,
+        this.formatTableRowsWithAssessmentsData,
         this.itemsPerPage,
         prevCurrentPage,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => {},
+        () => { },
         []
       );
     this.datageneratorSubscription =
@@ -116,7 +111,6 @@ export class AssessmentEvaluatedListComponent implements OnInit, OnDestroy {
         (dataGeneratorFactoryOutput) => {
           this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
           this.assessmentList = dataGeneratorFactoryOutput.tableRows as TableRow[];
-          // this.users = dataGeneratorFactoryOutput.rawData as IUser[];
           this.dataGenerator.searchString = prevSearchString;
         }
       );
