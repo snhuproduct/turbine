@@ -135,10 +135,12 @@ export class UserTableComponent implements OnInit, OnDestroy {
     }
     const { first, last, mail } = rowData.cellData as unknown as ICellRowData;
     const userId = rowData.userId;
+    const user = this.getAllUsers()?.find((user) => user?.userId === userId);
     const userPayload: UserStatusPayload = {
       firstName: first,
       lastName: last,
       email: mail[1],
+      userType : user?.userType
     };
     switch (action) {
       case RowActions.Activate:
