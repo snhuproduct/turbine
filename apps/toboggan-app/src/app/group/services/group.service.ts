@@ -16,8 +16,8 @@ export class GroupService {
     return this.http.get<IGroup[]>('/api/groups');
   }
 
-  fetchGroupDetails(id: string) {
-    return this.http.get<IGroup>('/api/groups/' + id);
+  fetchGroupDetails(uuid: string) {
+    return this.http.get<IGroup>('/api/groups/' + uuid);
   }
 
   // Creates group
@@ -26,8 +26,8 @@ export class GroupService {
   }
 
   // Updates group
-  async updateGroup(group: Partial<IGroup>, id: string) {
-    await firstValueFrom(this.http.put('/api/groups/' + id, group));
+  async updateGroup(group: Partial<IGroup>, uuid: string) {
+    await firstValueFrom(this.http.put('/api/groups/' + uuid, group));
   }
 
   // Add user to group
@@ -36,8 +36,8 @@ export class GroupService {
   }
 
   //Delete group
-  async deleteGroup(id: string) {
-    await firstValueFrom(this.http.delete(`/api/groups/${id}`));
+  async deleteGroup(uuid: string) {
+    await firstValueFrom(this.http.delete(`/api/groups/${uuid}`));
   }
 
   publishGroupCompleted(group: IGroup) {

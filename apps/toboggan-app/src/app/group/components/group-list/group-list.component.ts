@@ -208,7 +208,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
         `The <strong>${name}</strong> user group has been deleted.`,
         true
       );
-      console.log('333');
     } catch (error) {
       this.showNotification(
         'error',
@@ -220,8 +219,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async deleteGroupAPI(id: string) {
-    await this.groupService.deleteGroup(id);
+  private async deleteGroupAPI(uuid: string) {
+    await this.groupService.deleteGroup(uuid);
     this.refreshTableData();
   }
 
