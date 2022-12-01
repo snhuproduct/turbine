@@ -15,7 +15,7 @@ import { GroupListComponent } from '../../components/group-list/group-list.compo
 import { GroupService } from '../../services/group.service';
 import {
   groupActionType,
-  GroupMainPageComponent,
+  GroupMainPageComponent
 } from './group-main-page.component';
 
 const mockUsers = [
@@ -41,8 +41,7 @@ const mockUserService = {
 
 const mockGroupService = {
   createGroup: jest.fn().mockReturnValue(of({})),
-  addUsertoGroup: jest.fn().mockReturnValue(of({})),
-  fetchGroups: jest.fn().mockReturnValue(of({})),
+  fetchGroups: jest.fn().mockReturnValue(of({}))
 };
 describe('GroupMainPageComponent', () => {
   let component: GroupMainPageComponent;
