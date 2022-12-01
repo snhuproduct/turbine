@@ -4,21 +4,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { assessmentRouting } from './assessment.routing';
-import { AssessmentDetailsComponent } from './components/assessment-details/assessment-details.component';
-import { FlagAssessmentComponent } from './components/flag-assessment/flag-assessment.component';
-import { AssessmentListComponent } from './components/assessment-list/assessment-list.component';
-import { AssessmentEvaluatedListComponent } from './components/assessment-evaluated-list/assessment-evaluated-list.component';
-import { AssessmentMainPageComponent } from './pages/assessment-main-page/assessment-main-page.component';
 import { SharedModule } from '../shared/shared.module';
+import { assessmentsRouting } from './assessments.routing';
+import { AssessmentEvaluatedListComponent } from './components/assessment-evaluated-list/assessment-evaluated-list.component';
+import { AssessmentListComponent } from './components/assessment-list/assessment-list.component';
+import { AssessmentSubmissionDetailsComponent } from './components/assessment-submission-details/assessment-submission-details.component';
+import { FlagAssessmentComponent } from './components/flag-assessment/flag-assessment.component';
+import { AssessmentMainPageComponent } from './pages/assessment-main-page/assessment-main-page.component';
+import { AssessmentsDetailPageComponent } from './pages/assessments-detail-page/assessments-detail-page.component';
 
 @NgModule({
   declarations: [
     AssessmentMainPageComponent,
     AssessmentListComponent,
-    AssessmentEvaluatedListComponent,
     FlagAssessmentComponent,
-    AssessmentDetailsComponent,
+    AssessmentsDetailPageComponent,
+    AssessmentSubmissionDetailsComponent,
+    AssessmentEvaluatedListComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,7 @@ import { SharedModule } from '../shared/shared.module';
     TypeaheadModule.forRoot(),
     SharedModule,
     CollapseModule.forRoot(),
-    assessmentRouting,
+    assessmentsRouting,
   ],
   exports: [
     AssessmentMainPageComponent,
@@ -36,4 +38,4 @@ import { SharedModule } from '../shared/shared.module';
     AssessmentEvaluatedListComponent,
   ],
 })
-export class AssessmentModule {}
+export class AssessmentsModule {}

@@ -7,7 +7,7 @@ import {
   SingleHeaderRowTableDataGenerator,
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow
+  TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IUpdatedUser, IUser } from '@toboggan-ws/toboggan-common';
@@ -18,7 +18,7 @@ import { ModalAlertService } from '../../../shared/services/modal-alert/modal-al
 import {
   ITableDataGeneratorFactoryOutput,
   ITableRowFilterFunc,
-  TableDataService
+  TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { UserService } from '../../../shared/services/user/user.service';
 import { userTableHeader } from './data/user-table-header';
@@ -26,7 +26,7 @@ import {
   ICellRowData,
   IFilterChange,
   ITableRow,
-  RowActions
+  RowActions,
 } from './user-table.types';
 
 type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;

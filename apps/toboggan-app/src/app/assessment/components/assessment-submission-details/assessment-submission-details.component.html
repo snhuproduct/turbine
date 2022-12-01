@@ -1,0 +1,124 @@
+<div class="assessment-details-container" *ngIf="!isShown">
+  <div class="assessment-details-header">
+    <div class="col-md-12">
+      <div class="row m-0">
+        <div class="col-3">
+          <label class="gp-paragraph p-4"><b>Analyze Written Works</b></label>
+          <label class="gp-paragraph p-3">Practice 3</label>
+        </div>
+        <div class="col-1 gp-vertical"></div>
+        <div class="col-6">
+          <label class="gp-paragraph p-4"><b>Instructor</b></label>
+          <label class="gp-paragraph p-3">Joseph Garcia</label>
+        </div>
+        <div class="col-2 gp-tool-bar">
+          <div class="gp-attempt-selector m-2">
+            <div class="gp-attempt-selector-left">
+              <svg class="gp-chevron" aria-hidden="true">
+                <use
+                  [attr.href]="
+                    '/assets/images/svg-defs.svg#gp-icon-chevron-left'
+                  "
+                ></use>
+              </svg>
+            </div>
+            <div class="gp-attempt-selector-value p-1">
+              <span>2/2</span>
+            </div>
+            <div class="gp-attempt-selector-right">
+              <svg class="gp-chevron" aria-hidden="true">
+                <use
+                  [attr.href]="
+                    '/assets/images/svg-defs.svg#gp-icon-chevron-right'
+                  "
+                ></use>
+              </svg>
+            </div>
+          </div>
+          <div class="gp-assessment-percent m-2">
+            <a gp-link class="gp-link gp-link-default">
+              <span class="gp-link-x-label">27%</span></a
+            >
+          </div>
+          <div class="gp-assessment-percent m-2 pt-2">
+            <span class="gp-ellipse gp-yellow-80"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="assessments-details-container">
+    <!-- load iframe here -->
+    <div class="reports">
+      <div id="report-1"></div>
+    </div>
+  </div>
+</div>
+<div class="mt-5">
+  <div class="expand mt-0" (click)="toggleShowEvaluation()">
+    <svg class="expand-icon">
+      <use [attr.href]="'/assets/images/svg-defs.svg#gp-icon-menu'"></use>
+    </svg>
+  </div>
+
+  <div class="expandable-container">
+    <span class="gp-level-6 page-heading gp-white mb-5 p-3"
+      >Jessica’s submission</span
+    >
+    <label class="gp-paragraph gp-white p-4"
+      ><b>Analyze Written Works</b></label
+    >
+    <span class="gp-paragraph gp-white p-3">Practice 3</span>
+  </div>
+  <div class="assessment-details-expand-container" *ngIf="isShown">
+    <div class="assessments-rubrics">
+      <div class="col-md-12 rubric-details">
+        <div class="row m-0">
+          <div class="col-10">
+            <label class="gp-paragraph p-4"><b>Evaluation rubric</b></label>
+          </div>
+
+          <div class="col-2 gp-tool-bar">
+            <div class="gp-attempt-selector m-2">
+              <div class="gp-attempt-selector-left">
+                <svg class="gp-chevron" aria-hidden="true">
+                  <use
+                    [attr.href]="
+                      '/assets/images/svg-defs.svg#gp-icon-chevron-left'
+                    "
+                  ></use>
+                </svg>
+              </div>
+              <div class="gp-attempt-selector-value p-1">
+                <span>2/2</span>
+              </div>
+              <div class="gp-attempt-selector-right">
+                <svg class="gp-chevron" aria-hidden="true">
+                  <use
+                    [attr.href]="
+                      '/assets/images/svg-defs.svg#gp-icon-chevron-right'
+                    "
+                  ></use>
+                </svg>
+              </div>
+            </div>
+            <div class="gp-assessment-percent m-2">
+              <a gp-link class="gp-link gp-link-default">
+                <span class="gp-link-x-label">27%</span></a
+              >
+            </div>
+            <div class="gp-assessment-percent m-2 pt-2">
+              <span class="gp-ellipse gp-yellow-80"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="rubric-container"></div>
+      <div class="learnosity-button-container">
+        <span class="learnosity-save-button"></span>
+      </div>
+
+      <!-- load dynamic table here -->
+    </div>
+  </div>
+</div>

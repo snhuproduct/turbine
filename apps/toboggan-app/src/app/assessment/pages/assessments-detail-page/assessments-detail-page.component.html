@@ -1,0 +1,19 @@
+<gp-page [loggedin]="true">
+  <toboggan-ws-banner></toboggan-ws-banner>
+  <div class="gp-level-4 page-heading mb-8 mt-6">
+    Jessica’s submission
+    <div class="gp-x-more" (click)="toggleMoreActions()">
+      <svg class="gp-moreicon" aria-hidden="true">
+        <use
+          [attr.href]="'/assets/images/svg-defs.svg#gp-icon-more-vert'"
+        ></use>
+      </svg>
+    </div>
+  </div>
+  <ul [collapse]="!isExpanded" [isAnimated]="true" class="gp-dropdownmenu">
+    <li *ngFor="let action of actions" class="gp-dropdownmenuitem">
+      <button class="gp-dropdownmenubutton">{{ action }}</button>
+    </li>
+  </ul>
+  <toboggan-ws-assessment-submission-details></toboggan-ws-assessment-submission-details>
+</gp-page>
