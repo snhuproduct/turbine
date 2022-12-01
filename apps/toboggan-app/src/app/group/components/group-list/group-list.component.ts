@@ -77,7 +77,11 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getActionMenuItems = (rowData: TableRow) => {
-    const actions = ['view details', 'edit', 'delete'];
+    const actions = [
+      RowActions.ViewDetails,
+      RowActions.Edit,
+      RowActions.Delete,
+    ];
     return actions;
   };
 
@@ -156,25 +160,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
         {
           title: 'Yes, delete user group',
           onClick: async () => {
-            try {
-              this.modalAlertService.hideModalAlert();
-              await this.deleteGroup(uuid);
-              this.showNotification(
-                'success',
-                ``,
-                `The <strong>${name}</strong> user group has been deleted.`,
-                true
-              );
-            } catch (error) {
-              console.error(error);
-              this.showNotification(
-                'error',
-                `Delete group`,
-                `couldn't be completed.`,
-                true,
-                null
-              );
-            }
+            this.deleteGroup(uuid, name);
           },
           style: 'primary',
         },
@@ -212,8 +198,29 @@ export class GroupListComponent implements OnInit, OnDestroy {
       );
   }
 
-  private async deleteGroup(id: string) {
-    await this.groupService.deleteGroup(id);
+  private async deleteGroup(uuid: string, name: string) {
+    try {
+      this.modalAlertService.hideModalAlert();
+      await this.deleteGroupAPI(uuid);
+      this.showNotification(
+        'success',
+        ``,
+        `The <strong>${name}</strong> user group has been deleted.`,
+        true
+      );
+    } catch (error) {
+      this.showNotification(
+        'error',
+        `Delete group`,
+        `couldn't be completed.`,
+        true,
+        null
+      );
+    }
+  }
+
+  private async deleteGroupAPI(uuid: string) {
+    await this.groupService.deleteGroup(uuid);
     this.refreshTableData();
   }
 

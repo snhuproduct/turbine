@@ -1,6 +1,6 @@
 import {
   HttpClientTestingModule,
-  HttpTestingController,
+  HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -57,26 +57,6 @@ describe('GroupService', () => {
         req.flush(group);
         httpMock.verify();
       });
-    });
-
-    it('should have called api for add user to group', () => {
-      const group: IGroup = {
-        uuid: '2AE9GWE5E1A9',
-        name: 'Admin',
-        description: '',
-        members: [],
-        permissions: [],
-      };
-      const userEmail = 'user@sada.com';
-      const mockRequest = {
-        groupId: group.uuid,
-        user: userEmail,
-      };
-      service.addUsertoGroup(group.uuid as string, userEmail).subscribe();
-      const req = httpMock.expectOne('/api/groups/addusertogroup');
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toStrictEqual(mockRequest);
-      req.flush(group);
     });
   });
 });
