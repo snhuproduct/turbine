@@ -24,10 +24,14 @@ export class PermissionService {
   //   return this.permissions;
   // }
 
-  getPermissions(params?: {
-    skip?: number;
-    limit?: number;
-  }): Observable<AxiosResponse<IPermission[]>> {
+  getPermissions(
+    skip: number,
+    limit: number
+  ): Observable<AxiosResponse<IPermission[]>> {
+    const params = {
+      skip: skip ?? 0,
+      limit: limit ?? 1000,
+    };
     return this.httpService.get('/permissions', { params });
   }
 
