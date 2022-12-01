@@ -34,10 +34,11 @@ export class GroupsService {
   //   return this.groups;
   // }
 
-  getGroups(params?: {
-    skip?: number;
-    limit?: number;
-  }): Observable<AxiosResponse<IGroup[]>> {
+  getGroups(skip: number, limit: number): Observable<AxiosResponse<IGroup[]>> {
+    const params = {
+      skip: skip ?? 0,
+      limit: limit ?? 1000,
+    };
     return this.httpService.get('/groups', { params });
   }
 
