@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CreateGroupDto,
-  IAddUserToGroupDto,
-  PatchGroupDto,
+  PatchGroupDto
 } from './groups.dto';
 
 @Injectable()
@@ -78,9 +77,5 @@ export class GroupsService {
 
   deleteGroup(id: string) {
     this.groups = this.groups.filter((group) => group.uuid !== id);
-  }
-
-  addUsersToGroup(request: IAddUserToGroupDto) {
-    console.log(request);
   }
 }

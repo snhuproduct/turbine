@@ -18,12 +18,3 @@ export class CreateGroupDto {
 
 export class PatchGroupDto extends PartialType(CreateGroupDto) {}
 
-export class IAddUserToGroupDto {
-  @IsString()
-  @IsNotEmpty()
-  groupId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  email: string;
-}
