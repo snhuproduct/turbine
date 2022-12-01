@@ -127,6 +127,7 @@ export class TableDataService {
                 currentPage,
                 Math.ceil(sortedAndFilteredRows.length / rowsPerPage)
               );
+              observer.next(tableDataGeneratorFactoryOutput);
             });
           },
           // updateRow
