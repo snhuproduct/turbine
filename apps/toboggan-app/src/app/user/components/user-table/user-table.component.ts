@@ -153,8 +153,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(mail[1], first, last);
         break;
       case RowActions.Edit:
-        const users = this.getAllUsers();
-        const user = users.find((user) => user.userId === userId);
         if (!user) {
           throw new Error('Could not find user with id: ' + userId);
         }
@@ -400,6 +398,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
       {
         ...userPayload,
         enabled: status === 'active',
+        status: status
       },
       userId
     );
