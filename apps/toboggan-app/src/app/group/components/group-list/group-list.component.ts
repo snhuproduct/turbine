@@ -65,8 +65,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
         }
       );
     }
-
-    this.refreshTableData();
   }
 
   ngOnDestroy(): void {
