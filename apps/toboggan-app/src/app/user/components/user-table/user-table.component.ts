@@ -397,7 +397,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
     await this.userService.updateUser(
       {
         ...userPayload,
-        enabled: status === 'active',
         status: status
       },
       userId
