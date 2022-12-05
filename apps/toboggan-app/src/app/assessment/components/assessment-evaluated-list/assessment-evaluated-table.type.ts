@@ -2,20 +2,10 @@ import {
   TableColumnAlignmentEnum,
   TableColumnDataTypeEnum,
   TableColumnDisplayMetadatum,
-  TableColumnSortStateEnum
+  TableColumnSortStateEnum,
 } from '@snhuproduct/toboggan-ui-components-library';
 
-export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
-  {
-    title: 'Time left',
-    dataKey: 'time_left',
-    parents: '',
-    defaultSort: true,
-    searchableField: true,
-    sort: TableColumnSortStateEnum.Descending,
-    alignment: TableColumnAlignmentEnum.Left,
-    dataType: TableColumnDataTypeEnum.TextNowrap,
-  },
+export const evaluatedAssessmentTableHeader: TableColumnDisplayMetadatum[] = [
   {
     title: 'Learner',
     dataKey: 'learner',
@@ -23,6 +13,16 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Left,
     sort: TableColumnSortStateEnum.Disabled,
+  },
+  {
+    title: 'Result',
+    dataKey: 'result',
+    parents: '',
+    defaultSort: true,
+    searchableField: true,
+    sort: TableColumnSortStateEnum.Descending,
+    alignment: TableColumnAlignmentEnum.Left,
+    dataType: TableColumnDataTypeEnum.Text,
   },
   {
     title: 'Competency',
@@ -70,12 +70,3 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     dataType: TableColumnDataTypeEnum.PercentLink,
   },
 ];
-
-export enum RowActions {
-  Edit = 'edit',
-  ViewDetails = 'view details',
-  FlagForInstructorReview = 'flag for instructor review',
-  Delete = 'delete',
-  Evaluate = 'evaluate',
-  RemoveFlag = 'remove flag',
-}

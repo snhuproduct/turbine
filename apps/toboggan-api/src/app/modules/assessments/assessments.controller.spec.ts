@@ -83,7 +83,7 @@ describe('AssessmentsController', () => {
 
   describe('updateFlagStatus', () => {
     it('should update flag status', async () => {
-      
+
       const existingAssessment = mockData[0];
       mockResponse.data = existingAssessment;
       mockResponse.data['is_flagged'] = true;

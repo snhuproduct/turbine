@@ -4,7 +4,7 @@ import {
   EventEmitter,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -100,6 +100,7 @@ export class CreateGroupComponent implements OnInit, AfterViewInit {
           });
           this.createGroupModal.close();
           const newGroup = response as IGroup;
+          this.groupService.publishGroupCompleted(newGroup);
           this.bannerService.showBanner({
             type: 'success',
             heading: '',
