@@ -5,15 +5,20 @@ import {
   TableRow,
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
-import { IAssessment, getFormattedDateDiff, getDateDiffObject } from '@toboggan-ws/toboggan-common';
+import {
+  getDateDiffObject,
+  getFormattedDateDiff,
+  IAssessment,
+} from '@toboggan-ws/toboggan-common';
 import { Observable, Subscription } from 'rxjs';
+import { BannerService } from '../../../shared/services/banner/banner.service';
+import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
   TableDataService,
 } from '../../../shared/services/table-data/table-data.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { assessmentTableHeader, RowActions } from './assessment-table.type';
-
 const THRESHOLD_OF_RED = 0;
 const THRESHOLD_OF_YELLOW = 6 * 60 * 60 * 1000; // 6 hours
 
@@ -37,7 +42,9 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   constructor(
     private assessmentService: AssessmentService,
     private tableDataService: TableDataService,
-    private router: Router
+    private router: Router,
+    private modalAlertService: ModalAlertService,
+    private bannerService: BannerService
   ) {}
 
   ngOnInit(): void {
@@ -71,18 +78,26 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           `/assessments/details/${rowData.cellData['id']}`,
         ]);
         break;
+      case RowActions.RemoveFlag:
+        this.unFlagConfirmationModal(rowData);
+        break;
     }
   }
   handleEditFlagAssessmentAction() {
     this.showFlagAssessmentModal = false;
   }
-  getActionMenuItems = () => {
+  getActionMenuItems = (rowData: TableRow) => {
     const actionMenuItems = [
       'view details',
       'edit',
       'delete',
       'flag for instructor review',
     ];
+    if (rowData.cellData['flagged']) {
+      actionMenuItems.push(RowActions.RemoveFlag);
+    } else {
+      actionMenuItems.push(RowActions.FlagForInstructorReview);
+    }
     return this.selectedTab === 'toBeEvaluate'
       ? [...actionMenuItems, 'evaluate']
       : actionMenuItems;
@@ -98,19 +113,23 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
       const dateDiffObj = getDateDiffObject(cellData.timeLeft, new Date());
 
-      const timeLeftCellColor = dateDiffObj.diff < THRESHOLD_OF_RED
-        ? 'gp-red-20'
-        : dateDiffObj.diff >= THRESHOLD_OF_RED && dateDiffObj.diff < THRESHOLD_OF_YELLOW
+      const timeLeftCellColor =
+        dateDiffObj.diff < THRESHOLD_OF_RED
+          ? 'gp-red-20'
+          : dateDiffObj.diff >= THRESHOLD_OF_RED &&
+            dateDiffObj.diff < THRESHOLD_OF_YELLOW
           ? 'gp-yellow-20'
           : '';
 
-      const similarityColor = cellData.similarity < .27
+      const similarityColor =
+        cellData.similarity < 0.27
           ? 'gp-green-80'
-          : (cellData.similarity >= .27 && cellData.similarity < .89)
-            ? 'gp-yellow-80'
-            : 'gp-red-80';
+          : cellData.similarity >= 0.27 && cellData.similarity < 0.89
+          ? 'gp-yellow-80'
+          : 'gp-red-80';
 
-      const attemptBorderCellClass = cellData.currentAttempt > cellData.attempts
+      const attemptBorderCellClass =
+        cellData.currentAttempt > cellData.attempts
           ? 'gp-table-x-cell-warning-border'
           : '';
 
@@ -119,7 +138,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         cellType: 'icon-right',
         cellTypeOptions: {
           icon: 'gp-icon-lock',
-          iconClass: 'gp-fill-cool-gray-100'
+          iconClass: 'gp-fill-cool-gray-100',
         },
       };
 
@@ -128,7 +147,9 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         cellClass: timeLeftCellColor,
       };
 
-      const timeLeftCellObject = cellData.flagged ? pausedTimeLeftCellObject : defaultTimeLeftCellObject;
+      const timeLeftCellObject = cellData.flagged
+        ? pausedTimeLeftCellObject
+        : defaultTimeLeftCellObject;
 
       return {
         rowId: String(index + 1),
@@ -140,6 +161,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           learner: cellData.learner,
           competency: cellData.competency,
           type: cellData.type,
+          flagged: cellData.flagged,
           attempt: {
             0: cellData.currentAttempt,
             1: cellData.attempts,
@@ -189,5 +211,53 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
           this.dataGenerator.searchString = prevSearchString;
         }
       );
+  }
+
+  unFlagConfirmationModal(rowData: any) {
+    this.modalAlertService.showModalAlert({
+      type: 'warning',
+      heading: 'Remove this flag?',
+      message: `If you do, this submission will be added back to your evaluation list, and you’ll have 48 hours to evaluate it.`,
+      buttons: [
+        {
+          title: 'No, cancel',
+          onClick: () => {
+            this.modalAlertService.hideModalAlert();
+          },
+          style: 'secondary',
+        },
+        {
+          title: 'Yes, remove flag',
+          onClick: async () => {
+            try {
+              this.modalAlertService.hideModalAlert();
+              const body = {
+                is_flagged: false,
+              };
+              await this.assessmentService.updateFlagAssessment(
+                rowData.cellData.id,
+                body
+              );
+              this.bannerService.showBanner({
+                type: 'success',
+                heading: '',
+                message: `<b>${rowData.cellData.learner}</b>’s submission is no longer flagged. You now have 48 hours to evaluate it.`,
+                button: null,
+                autoDismiss: true,
+              });
+            } catch (error) {
+              this.bannerService.showBanner({
+                type: 'error',
+                heading: '',
+                message: `The flag couldn’t be removed from <b>${rowData.cellData.learner}</b>’s submission. Please try again.`,
+                button: null,
+                autoDismiss: true,
+              });
+            }
+          },
+          style: 'primary',
+        },
+      ],
+    });
   }
 }

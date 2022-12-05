@@ -74,7 +74,8 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
 export enum RowActions {
   Edit = 'edit',
   ViewDetails = 'view details',
-  FlagForInstructorReview =  'flag for instructor review',
+  FlagForInstructorReview = 'flag for instructor review',
   Delete = 'delete',
   Evaluate = 'evaluate',
+  RemoveFlag = 'remove flag',
 }

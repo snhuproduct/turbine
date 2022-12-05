@@ -7,12 +7,28 @@ import { of } from 'rxjs';
 import { AssessmentService } from '../../services/assessment.service';
 
 import { AssessmentListComponent } from './assessment-list.component';
+import { RowActions } from './assessment-table.type';
 
 describe('AssessmentListComponent with empty results ', () => {
   let component: AssessmentListComponent;
   let fixture: ComponentFixture<AssessmentListComponent>;
+  const mockData = [{
+    "id": "1",
+    "learner": "Jessica",
+    "result": null,
+    "resultComment": null,
+    "competency": "Analyze Written Works",
+    "type": "Final",
+    "currentAttempt": 1,
+    "attempts": 3,
+    "instructor": "Christopher Edwards",
+    "similarity": .27,
+    "similarityUrl": 'https://google.com',
+    "evaluated": false,
+    "flagged": true,
+  }]
   const mockAssessmentService = {
-    fetchAssessments: jest.fn().mockReturnValue(of([])),
+    fetchAssessments: jest.fn().mockReturnValue(of(mockData)),
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,4 +67,26 @@ describe('AssessmentListComponent with empty results ', () => {
     );
     expect(noResultsContainer).toBeDefined();
   });
+
+  it('onRowAction method should call with - argument action RemoveFlag', () => {
+    const unFlagConfirmationModal = jest.spyOn(
+      component, 'unFlagConfirmationModal'
+    );
+    component.onRowAction({ action: RowActions.RemoveFlag, rowId: '1' });
+    expect(unFlagConfirmationModal).toHaveBeenCalled();
+  });
+
+  it('onRowAction method should call with - argument action FlagForInstructorReview', () => {
+    component.onRowAction({ action: RowActions.FlagForInstructorReview, rowId: '1' });
+    expect(component.editAssessmentData).toBeDefined();
+  });
+
+  it('getActionMenuItems method should call', () => {
+    const data = {
+      cellData: mockData[0]
+    };
+    const actions = component.getActionMenuItems(data as any);
+    expect(actions).toBeDefined();
+  });
+
 });
