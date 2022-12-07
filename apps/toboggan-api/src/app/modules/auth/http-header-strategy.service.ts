@@ -46,7 +46,6 @@ export class HTTPHeaderStrategy extends PassportStrategy(
         jwtToken.getEmailId()
       );
       if (cachedToken) {
-        console.log('found token for user: ', jwtToken.getEmailId());
         return cachedToken;
       }
     } else {
