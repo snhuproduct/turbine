@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,17 +28,15 @@ describe('AssessmentMainPageComponent', () => {
         ReactiveFormsModule,
         TypeaheadModule.forRoot(),
       ],
-      declarations: [
-        AssessmentMainPageComponent,
-        AssessmentListComponent,
-      ],
+      declarations: [AssessmentMainPageComponent, AssessmentListComponent],
       providers: [
         { provide: AssessmentService, useValue: mockAssessmentService },
         {
           provide: Router,
           useValue: {},
-        }
+        },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AssessmentMainPageComponent);

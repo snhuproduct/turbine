@@ -155,7 +155,7 @@ export class AssessmentSubmissionDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.injectServiceSubscription)
+    if (this.injectServiceSubscription.unsubscribe)
       this.injectServiceSubscription.unsubscribe();
   }
 }
