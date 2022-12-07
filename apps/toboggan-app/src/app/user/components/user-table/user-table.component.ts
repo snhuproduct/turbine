@@ -345,6 +345,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     if (this.datageneratorSubscription.unsubscribe) {
       this.datageneratorSubscription.unsubscribe();
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [prevSearchString, prevCurrentPage] = [
       this.dataGenerator.searchString || '', //prevSearchString
       this.dataGenerator.currentPage || this.currentPage, //prevCurrentPage
@@ -364,7 +365,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
         (dataGeneratorFactoryOutput) => {
           this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
           this.dataGenerator = this.dataGenFactoryOutput.dataGenerator;
-          this.dataGenerator.searchString = prevSearchString;
         }
       );
   }

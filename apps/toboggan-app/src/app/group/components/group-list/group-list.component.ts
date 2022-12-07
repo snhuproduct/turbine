@@ -3,13 +3,13 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   TableColumnDisplayMetadatum,
   TableDataGenerator,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { IRowActionEvent } from '@snhuproduct/toboggan-ui-components-library/lib/table/row-action-event.interface';
 import { IGroup } from '@toboggan-ws/toboggan-common';
@@ -19,7 +19,7 @@ import { IBannerButton } from '../../../shared/services/banner/banner.types';
 import { ModalAlertService } from '../../../shared/services/modal-alert/modal-alert.service';
 import {
   ITableDataGeneratorFactoryOutput,
-  TableDataService,
+  TableDataService
 } from '../../../shared/services/table-data/table-data.service';
 import { GroupService } from '../../services/group.service';
 import { EditGroupComponent } from '../edit-group/edit-group.component';
@@ -172,6 +172,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     if (this.datageneratorSubscription.unsubscribe) {
       this.datageneratorSubscription.unsubscribe();
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [prevSearchString, prevCurrentPage] = [
       this.dataGenerator.searchString || '',
       this.dataGenerator.currentPage || this.currentPage,
@@ -193,7 +194,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
           this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
           this.groupList = dataGeneratorFactoryOutput.tableRows as TableRow[];
           // this.users = dataGeneratorFactoryOutput.rawData as IUser[];
-          this.dataGenerator.searchString = prevSearchString;
         }
       );
   }
