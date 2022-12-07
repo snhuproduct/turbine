@@ -4,7 +4,10 @@ import { AssessmentsDetailPageComponent } from './pages/assessments-detail-page/
 
 const assessmentsRoutes: Routes = [
   { path: '', component: AssessmentMainPageComponent },
-  { path: 'details/:id', component: AssessmentsDetailPageComponent },
+  {
+    path: 'details/:uuid',
+    component: AssessmentsDetailPageComponent,
+  },
 ];
 
 export const assessmentsRouting = RouterModule.forChild(assessmentsRoutes);

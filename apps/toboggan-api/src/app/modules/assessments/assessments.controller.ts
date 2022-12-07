@@ -7,12 +7,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { IAssessment } from '@toboggan-ws/toboggan-common';
 import { HTTPHeaderAuthGuard } from '../auth/http-header-auth-guard.service';
 import { TokenInterceptor } from '../auth/token.interceptor';
 import { RequestInterceptor } from '../common/request.interceptor';
 import { ResponseInterceptor } from '../common/response.interceptor';
 import { AssessmentsService } from './assessments.service';
-import { IAssessmentFlag } from './assessments.types';
 
 @UseGuards(HTTPHeaderAuthGuard)
 @UseInterceptors(TokenInterceptor, ResponseInterceptor, RequestInterceptor)
@@ -31,8 +31,15 @@ export class AssessmentsController {
   }
 
   //Update Flag assessment
+  // @Put('/:uuid')
+  // updateFlagStatus(@Param('uuid') uuid, @Body() body: IAssessmentFlag) {
+  //   return this.assessmentsService.updateFlagStatus(uuid, body);
+  // }
+
   @Put('/:uuid')
-  updateFlagStatus(@Param('uuid') uuid, @Body() body: IAssessmentFlag) {
-    return this.assessmentsService.updateFlagStatus(uuid, body);
+  updateAssessment(@Param('uuid') uuid, @Body() body: Partial<IAssessment>) {
+    console.log(body);
+    return true;
+    // return this.assessmentsService.updateAssessment(uuid, body);
   }
 }

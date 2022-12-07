@@ -19,7 +19,7 @@ declare let LearnosityItems: any;
   providedIn: 'root',
 })
 export class LearnosityItemsInjectService {
-  public renderItemsComplete$ = new BehaviorSubject<string>('');
+  public renderItemsComplete$ = new BehaviorSubject<any>({});
   constructor(
     private http: HttpClient,
     @Inject(DOCUMENT) private _document: Document
@@ -108,9 +108,9 @@ export class LearnosityItemsInjectService {
       session_id: newSessionId,
       items: references,
       type: 'feedback',
-      config: {
-        renderSaveButton: true,
-      },
+      // config: {
+      //   renderSaveButton: true,
+      // },
     };
 
     this.http
@@ -121,13 +121,14 @@ export class LearnosityItemsInjectService {
       .pipe(
         map((assessmentSessionInitObj) => {
           if (assessmentSessionInitObj && assessmentSessionInitObj?.request) {
-            LearnosityItems.init(assessmentSessionInitObj, {
+            const itemsApp = LearnosityItems.init(assessmentSessionInitObj, {
               readyListener: () => {
                 console.log(
                   'Learnosity items for report -  Initialization is ready!'
                 );
+                console.log(itemsApp);
                 console.log('sessionId in inject service=>', sessionId);
-                this.renderItemsComplete$.next(newSessionId);
+                this.renderItemsComplete$.next({ newSessionId, itemsApp });
               },
               errorListener(err: unknown) {
                 console.log('error', err);

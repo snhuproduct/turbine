@@ -1,7 +1,8 @@
 <gp-page [loggedin]="true">
   <toboggan-ws-banner></toboggan-ws-banner>
+  <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
   <div class="gp-level-4 page-heading mb-8 mt-6">
-    Jessica’s submission
+    {{ learnerName }}’s submission
     <div class="gp-x-more" (click)="toggleMoreActions()">
       <svg class="gp-moreicon" aria-hidden="true">
         <use

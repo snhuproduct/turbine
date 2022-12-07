@@ -38,6 +38,11 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   private datageneratorSubscription: Subscription = {} as Subscription;
   private updateAssessmentSubscription: Subscription = {} as Subscription;
   @Input() selectedTab = 'toBeEvaluate';
+  private dataGenFactoryOutput: ITableDataGeneratorFactoryOutput = {
+    dataGenerator: this.dataGenerator,
+    tableRows: [],
+    rawData: [],
+  };
 
   constructor(
     private assessmentService: AssessmentService,
@@ -58,6 +63,15 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  getAllRows(): TableRow[] {
+    return this.dataGenFactoryOutput.tableRows as TableRow[];
+  }
+
+  getAllAssessments(): IAssessment[] {
+    return this.dataGenFactoryOutput.rawData as IAssessment[];
+  }
+
   onRowAction(event: IRowActionEvent) {
     const { action, rowId } = event;
     const rowData = this.dataGenerator.rowData.find(
@@ -74,9 +88,19 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
         this.showFlagAssessmentModal = true;
         break;
       case RowActions.Evaluate:
-        this.router.navigate([
-          `/assessments/details/${rowData.cellData['id']}`,
-        ]);
+        {
+          const itemId = rowData.cellData['id'];
+          const assessment = this.getAllAssessments().find(
+            (assessment) => assessment.id == itemId
+          );
+          this.assessmentService.setAssessmentInEvaluation(
+            assessment as IAssessment
+          );
+          this.router.navigate([
+            `/assessments/details/${rowData?.cellData['id']}`,
+          ]);
+        }
+
         break;
       case RowActions.RemoveFlag:
         this.unFlagConfirmationModal(rowData);
@@ -88,19 +112,26 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
   }
   getActionMenuItems = (rowData: TableRow) => {
     const actionMenuItems = [
-      'view details',
-      'edit',
-      'delete',
-      'flag for instructor review',
+      RowActions.ViewDetails,
+      RowActions.Edit,
+      RowActions.Delete,
     ];
     if (rowData.cellData['flagged']) {
       actionMenuItems.push(RowActions.RemoveFlag);
     } else {
       actionMenuItems.push(RowActions.FlagForInstructorReview);
     }
-    return this.selectedTab === 'toBeEvaluate'
-      ? [...actionMenuItems, 'evaluate']
-      : actionMenuItems;
+    if (this.selectedTab === 'toBeEvaluate') {
+      console.log(rowData.cellData);
+      if (
+        rowData.cellData['activityId'] &&
+        rowData.cellData['userId'] &&
+        rowData.cellData['sessionId']
+      ) {
+        return [...actionMenuItems, RowActions.Evaluate];
+      }
+    }
+    return actionMenuItems;
   };
 
   formatTableRowsWithAssessmentData(fetchedData: unknown): TableRow[] {
@@ -173,6 +204,10 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
             cellData.similarityUrl,
             similarityColor,
           ],
+          userId: cellData?.userId,
+          activityId: cellData?.activityId,
+          sessionId: cellData?.sessionId,
+          feedbackSessionId: cellData?.feedbackSessionId,
         },
       };
     });
@@ -205,6 +240,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
     this.datageneratorSubscription =
       this.dataGeneratorFactoryOutputObserver.subscribe(
         (dataGeneratorFactoryOutput) => {
+          this.dataGenFactoryOutput = dataGeneratorFactoryOutput;
           this.dataGenerator = dataGeneratorFactoryOutput.dataGenerator;
           this.assessmentList =
             dataGeneratorFactoryOutput.tableRows as TableRow[];

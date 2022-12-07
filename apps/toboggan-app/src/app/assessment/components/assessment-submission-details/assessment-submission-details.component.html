@@ -3,13 +3,17 @@
     <div class="col-md-12">
       <div class="row m-0">
         <div class="col-3">
-          <label class="gp-paragraph p-4"><b>Analyze Written Works</b></label>
-          <label class="gp-paragraph p-3">Practice 3</label>
+          <label class="gp-paragraph p-4"
+            ><b>{{ currentAssessment.competency }}</b></label
+          >
+          <label class="gp-paragraph p-3">{{ currentAssessment.type }}</label>
         </div>
         <div class="col-1 gp-vertical"></div>
         <div class="col-6">
           <label class="gp-paragraph p-4"><b>Instructor</b></label>
-          <label class="gp-paragraph p-3">Joseph Garcia</label>
+          <label class="gp-paragraph p-3">{{
+            currentAssessment.instructor
+          }}</label>
         </div>
         <div class="col-2 gp-tool-bar">
           <div class="gp-attempt-selector m-2">
@@ -23,7 +27,11 @@
               </svg>
             </div>
             <div class="gp-attempt-selector-value p-1">
-              <span>2/2</span>
+              <span
+                >{{ currentAssessment.currentAttempt }}/{{
+                  currentAssessment.attempts
+                }}</span
+              >
             </div>
             <div class="gp-attempt-selector-right">
               <svg class="gp-chevron" aria-hidden="true">
@@ -36,12 +44,18 @@
             </div>
           </div>
           <div class="gp-assessment-percent m-2">
-            <a gp-link class="gp-link gp-link-default">
-              <span class="gp-link-x-label">27%</span></a
+            <a
+              gp-link
+              class="gp-link gp-link-default"
+              [href]="currentAssessment.similarityUrl"
+            >
+              <span class="gp-link-x-label"
+                >{{ currentAssessment.similarity * 100 }}%</span
+              ></a
             >
           </div>
           <div class="gp-assessment-percent m-2 pt-2">
-            <span class="gp-ellipse gp-yellow-80"></span>
+            <span class="gp-ellipse" [ngClass]="getSimilarityClass()"></span>
           </div>
         </div>
       </div>
@@ -63,10 +77,10 @@
 
   <div class="expandable-container">
     <span class="gp-level-6 page-heading gp-white mb-5 p-3"
-      >Jessica’s submission</span
+      >{{ learnerName }}’s submission</span
     >
     <label class="gp-paragraph gp-white p-4"
-      ><b>Analyze Written Works</b></label
+      ><b>{{ currentAssessment.competency }}</b></label
     >
     <span class="gp-paragraph gp-white p-3">Practice 3</span>
   </div>
@@ -90,7 +104,11 @@
                 </svg>
               </div>
               <div class="gp-attempt-selector-value p-1">
-                <span>2/2</span>
+                <span
+                  >{{ currentAssessment.currentAttempt }}/{{
+                    currentAssessment.attempts
+                  }}</span
+                >
               </div>
               <div class="gp-attempt-selector-right">
                 <svg class="gp-chevron" aria-hidden="true">
@@ -103,22 +121,44 @@
               </div>
             </div>
             <div class="gp-assessment-percent m-2">
-              <a gp-link class="gp-link gp-link-default">
-                <span class="gp-link-x-label">27%</span></a
+              <a
+                gp-link
+                class="gp-link gp-link-default"
+                [href]="currentAssessment.similarityUrl"
+              >
+                <span class="gp-link-x-label"
+                  >{{ currentAssessment.similarity * 100 }}%</span
+                ></a
               >
             </div>
             <div class="gp-assessment-percent m-2 pt-2">
-              <span class="gp-ellipse gp-yellow-80"></span>
+              <span class="gp-ellipse" [ngClass]="getSimilarityClass()"></span>
             </div>
           </div>
         </div>
       </div>
       <div id="rubric-container"></div>
       <div class="learnosity-button-container">
-        <span class="learnosity-save-button"></span>
+        <button
+          (click)="finishEvaluation()"
+          type="button"
+          class="finish-evaluation"
+          gp-button
+          label="Finish Evaluation"
+          size="default"
+          styleType="primary"
+          iconId="gp-icon-edit"
+        ></button>
       </div>
 
       <!-- load dynamic table here -->
     </div>
   </div>
+</div>
+
+<div *ngIf="isLoading">
+  <gp-interstitial-loader
+    [isOverlayVisible]="true"
+    [type]="loaderType"
+  ></gp-interstitial-loader>
 </div>
