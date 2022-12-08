@@ -19,7 +19,8 @@
       "@toboggan-ws/toboggan-common": ["libs/toboggan-common/src/index.ts"],
       "@toboggan-ws/toboggan-constants": [
         "libs/toboggan-constants/src/index.ts"
-      ]
+      ],
+      "@utils" : ["apps/toboggan-api/src/app/utils"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -40,6 +40,11 @@ export const environment = {
        url: "${process.env.IDENTITY_TOOLKIT_URL}",
        providerID: "google.com"
     },
+    learnosity: {
+      domain: "${process.env.LEARNOSITY_DOMAIN}",
+      consumerKey: "${process.env.LEARNOSITY_DEV_CONSUMER_KEY}",
+      consumerSecret: "${process.env.LEARNOSITY_DEV_CONSUMER_SECRET}",
+    }
 };
 `;
 // write the content to the respective file
