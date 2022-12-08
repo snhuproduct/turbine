@@ -4,183 +4,160 @@
     "userName": "user0",
     "firstName": "name0",
     "lastName": "last0",
-    "email": "user-0@sada.com",
-    "enabled": true
+    "email": "user-0@sada.com"
   },
   {
     "id": "88867fe5-81e2-42f2-ac07-40b55c943a90",
     "userName": "user1",
     "firstName": "name1",
     "lastName": "last1",
-    "email": "user-1@sada.com",
-    "enabled": true
+    "email": "user-1@sada.com"
   },
   {
     "id": "2fbbe6a5-55a6-4758-bfb0-0338668ffc26",
     "userName": "user2",
     "firstName": "name2",
     "lastName": "last2",
-    "email": "user-2@sada.com",
-    "enabled": true
+    "email": "user-2@sada.com"
   },
   {
     "id": "51127593-6681-4a6b-982e-bc868710bfc2",
     "userName": "user3",
     "firstName": "name3",
     "lastName": "last3",
-    "email": "user-3@sada.com",
-    "enabled": true
+    "email": "user-3@sada.com"
   },
   {
     "id": "ecaa8bcb-2678-4f29-a827-5be00675b8da",
     "userName": "user4",
     "firstName": "name4",
     "lastName": "last4",
-    "email": "user-4@sada.com",
-    "enabled": true
+    "email": "user-4@sada.com"
   },
   {
     "id": "f78a8360-7462-41d8-8ae6-b933d84ab5da",
     "userName": "user5",
     "firstName": "name5",
     "lastName": "last5",
-    "email": "user-5@sada.com",
-    "enabled": true
+    "email": "user-5@sada.com"
   },
   {
     "id": "f3aba332-9a0b-4a47-bcbe-693c2a072caf",
     "userName": "user6",
     "firstName": "name6",
     "lastName": "last6",
-    "email": "user-6@sada.com",
-    "enabled": true
+    "email": "user-6@sada.com"
   },
   {
     "id": "217230ae-6b74-42e4-bf3e-492c07922825",
     "userName": "user7",
     "firstName": "name7",
     "lastName": "last7",
-    "email": "user-7@sada.com",
-    "enabled": true
+    "email": "user-7@sada.com"
   },
   {
     "id": "6574fe49-f2bb-4ebc-97bc-6675c2be01f1",
     "userName": "user8",
     "firstName": "name8",
     "lastName": "last8",
-    "email": "user-8@sada.com",
-    "enabled": true
+    "email": "user-8@sada.com"
   },
   {
     "id": "c08361e8-08bb-438c-978e-67bdac50d6b5",
     "userName": "user9",
     "firstName": "name9",
     "lastName": "last9",
-    "email": "user-9@sada.com",
-    "enabled": true
+    "email": "user-9@sada.com"
   },
   {
     "id": "a37bd7a9-31cb-43c4-a9f1-386949a03c1f",
     "userName": "user10",
     "firstName": "name10",
     "lastName": "last10",
-    "email": "user-10@sada.com",
-    "enabled": true
+    "email": "user-10@sada.com"
   },
   {
     "id": "33473716-b9b9-43b5-977d-31ed391e6fb5",
     "userName": "user11",
     "firstName": "name11",
     "lastName": "last11",
-    "email": "user-11@sada.com",
-    "enabled": true
+    "email": "user-11@sada.com"
   },
   {
     "id": "320ce7de-728d-4b3f-9475-effcb126b45a",
     "userName": "user12",
     "firstName": "name12",
     "lastName": "last12",
-    "email": "user-12@sada.com",
-    "enabled": true
+    "email": "user-12@sada.com"
   },
   {
     "id": "b3e09cae-21a5-461c-9a16-987af1497590",
     "userName": "user13",
     "firstName": "name13",
     "lastName": "last13",
-    "email": "user-13@sada.com",
-    "enabled": true
+    "email": "user-13@sada.com"
   },
   {
     "id": "573c42b4-0e3e-4c61-a5aa-1e16f428ce12",
     "userName": "user14",
     "firstName": "name14",
     "lastName": "last14",
-    "email": "user-14@sada.com",
-    "enabled": true
+    "email": "user-14@sada.com"
   },
   {
     "id": "fd70337b-914c-4bc8-80ed-16f75851ed26",
     "userName": "user15",
     "firstName": "name15",
     "lastName": "last15",
-    "email": "user-15@sada.com",
-    "enabled": true
+    "email": "user-15@sada.com"
   },
   {
     "id": "25af8e09-7758-4c81-a627-22ea36799825",
     "userName": "user16",
     "firstName": "name16",
     "lastName": "last16",
-    "email": "user-16@sada.com",
-    "enabled": true
+    "email": "user-16@sada.com"
   },
   {
     "id": "9d0ffabd-11aa-4003-af70-eb7d18da7442",
     "userName": "user17",
     "firstName": "name17",
     "lastName": "last17",
-    "email": "user-17@sada.com",
-    "enabled": true
+    "email": "user-17@sada.com"
   },
   {
     "id": "8e7b4fcf-e887-456e-923a-7ecca613b456",
     "userName": "user18",
     "firstName": "name18",
     "lastName": "last18",
-    "email": "user-18@sada.com",
-    "enabled": true
+    "email": "user-18@sada.com"
   },
   {
     "id": "d4608c0f-daef-4d37-8412-26b9773ca8d2",
     "userName": "user19",
     "firstName": "name19",
     "lastName": "last19",
-    "email": "user-19@sada.com",
-    "enabled": true
+    "email": "user-19@sada.com"
   },
   {
     "id": "8e7d5fcf-e387-416e-923a-1eccs613245f",
     "userName": "user20",
     "firstName": "name20",
     "lastName": "last20",
-    "email": "user-20@sada.com",
-    "enabled": true
+    "email": "user-20@sada.com"
   },
   {
     "id": "d46j8c0f-jf73-4d37-28j2-21b8743ca7d1",
     "userName": "user21",
     "firstName": "name21",
     "lastName": "last21",
-    "email": "user-21@sada.com",
-    "enabled": false
+    "email": "user-21@sada.com"
   },
   {
     "id": "d4838c0f-jf73-h727-28b1-u7b8743ca7jd",
     "userName": "user22",
     "firstName": "name22",
     "lastName": "last22",
-    "email": "user-22@sada.com",
-    "enabled": false
+    "email": "user-22@sada.com"
   }
 ]

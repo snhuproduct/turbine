@@ -29,7 +29,7 @@ import {
   RowActions
 } from './user-table.types';
 
-type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
+type UserStatusPayload = Omit<IUpdatedUser, 'id'>;
 
 @Component({
   selector: 'toboggan-ws-user-table',
@@ -135,10 +135,12 @@ export class UserTableComponent implements OnInit, OnDestroy {
     }
     const { first, last, mail } = rowData.cellData as unknown as ICellRowData;
     const userId = rowData.userId;
+    const user = this.getAllUsers()?.find((user) => user?.userId === userId);
     const userPayload: UserStatusPayload = {
       firstName: first,
       lastName: last,
       email: mail[1],
+      userType : user?.userType
     };
     switch (action) {
       case RowActions.Activate:
@@ -151,8 +153,6 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.resetPassword(mail[1], first, last);
         break;
       case RowActions.Edit:
-        const users = this.getAllUsers();
-        const user = users.find((user) => user.userId === userId);
         if (!user) {
           throw new Error('Could not find user with id: ' + userId);
         }
@@ -397,7 +397,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
     await this.userService.updateUser(
       {
         ...userPayload,
-        enabled: status === 'active',
+        status: status
       },
       userId
     );

@@ -75,7 +75,6 @@ export class CreateUserComponent {
           this.modalHandle.alertBanners = []; //reset if there is was error from previous attempt
         }
         const userObj = this.userForm.getRawValue() as unknown as IUser;
-        userObj.enabled = true;
         userObj.userType = UserType.Faculty;
         this.isLoading = true;
         await delay(400); // add delay if need to demo loader
