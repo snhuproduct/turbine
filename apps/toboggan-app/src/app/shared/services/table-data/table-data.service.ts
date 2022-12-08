@@ -67,6 +67,7 @@ export class TableDataService {
   ): Observable<ITableDataGeneratorFactoryOutput> {
     return new Observable((observer) => {
       let rowsObservableSubscription: Subscription;
+      let tableRefreshed = false;
       const tableDataGeneratorFactoryOutput: ITableDataGeneratorFactoryOutput =
         {
           dataGenerator: {} as TableDataGenerator,
@@ -84,6 +85,11 @@ export class TableDataService {
             currentPage: number = currentPageNumer
           ) => {
             rowsObservableSubscription = rowsObservable.subscribe((rows) => {
+              let pageNumber = currentPage; // for normal pagination
+              if (!tableRefreshed) {
+                // if table refreshed
+                pageNumber = currentPageNumer;
+              }
               dataGenerator.isFiltered = true;
               const tableRows = cellDataFormatterFunc(rows);
               tableDataGeneratorFactoryOutput.rawData = rows;
@@ -116,7 +122,7 @@ export class TableDataService {
                   )
                 );
               tableDataGeneratorFactoryOutput.tableRows = sortedAndFilteredRows;
-              const startRow = (currentPage - 1) * rowsPerPage;
+              const startRow = (pageNumber - 1) * rowsPerPage;
               const pageData = sortedAndFilteredRows.slice(
                 startRow,
                 startRow + rowsPerPage
@@ -124,10 +130,11 @@ export class TableDataService {
               dataGenerator.retrievalCallback(
                 pageData,
                 sortedAndFilteredRows.length,
-                currentPage,
+                pageNumber,
                 Math.ceil(sortedAndFilteredRows.length / rowsPerPage)
               );
               observer.next(tableDataGeneratorFactoryOutput);
+              tableRefreshed = true;
             });
           },
           // updateRow
