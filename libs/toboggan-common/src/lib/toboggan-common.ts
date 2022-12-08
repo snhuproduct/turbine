@@ -39,7 +39,6 @@ export interface IUser {
   email?: string | null;
   groups?: IGroup[];
   userGroups?: IGroup[];
-  enabled: boolean;
 }
 
 export type INewUser = Omit<IUser, 'userId'>;
