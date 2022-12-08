@@ -29,7 +29,7 @@ import {
   RowActions
 } from './user-table.types';
 
-type UserStatusPayload = Omit<IUpdatedUser, 'id' | 'enabled'>;
+type UserStatusPayload = Omit<IUpdatedUser, 'id'>;
 
 @Component({
   selector: 'toboggan-ws-user-table',
