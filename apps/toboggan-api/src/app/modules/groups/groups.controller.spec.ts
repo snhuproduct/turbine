@@ -125,19 +125,4 @@ describe('GroupsController', () => {
       expect(service.deleteGroup).toBeCalledWith(id);
     });
   });
-
-  describe('addUsersToGroup', () => {
-    it('should add users to group', async () => {
-      const request = {
-        groupId: '1',
-        email: 'email@test.com',
-      };
-
-      jest.spyOn(service, 'addUsersToGroup');
-
-      await controller.addUsersToGroup(request);
-
-      expect(service.addUsersToGroup).toBeCalledWith(request);
-    });
-  });
 });
