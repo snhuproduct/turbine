@@ -4,3 +4,7 @@
     box-shadow: 0px 2px 15px rgba(126, 159, 166, 0.25);
     border-radius: 16px;
 }
+
+::ng-deep #popover-listbox {
+  z-index: 1;
+}
