@@ -7,16 +7,11 @@
       <gp-tab label="To evaluate (30)">
         <toboggan-ws-assessment-list [selectedTab]="'toBeEvaluate'">
           <div table-cta-right>
-            <button
-              gp-button
+            <cf-listbox
               label="Filter"
-              size="default"
-              styleType="secondary"
-              iconVariations="iconleft"
               iconId="gp-icon-filter-alt"
-              [isLoading]="false"
-              ariaLabel="Filter"
-            ></button>
+              [options]="listBoxData"
+            ></cf-listbox>
           </div>
         </toboggan-ws-assessment-list>
       </gp-tab>
