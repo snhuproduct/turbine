@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PriorExperiencesMainPageComponent } from './prior-experiences-main-page.component';
@@ -8,7 +9,8 @@ describe('PriorExperiencesMainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PriorExperiencesMainPageComponent ]
+      declarations: [ PriorExperiencesMainPageComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 
