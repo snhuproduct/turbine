@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { RouterTestingModule } from '@angular/router/testing';
 import { StoriesModule } from '@snhuproduct/toboggan-ui-components-library';
+import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../shared/auth/auth.service';
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -14,7 +18,10 @@ describe('OnboardingComponent', () => {
       declarations: [ OnboardingComponent ],
       imports: [
         StoriesModule,
-        SharedModule
+        SharedModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
+        RouterTestingModule
       ],
       providers: [AuthService]
     })
