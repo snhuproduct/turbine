@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { IUser } from '@toboggan-ws/toboggan-common';
 import * as firebase from 'firebase/app';
 import { getAuth, OAuthProvider, signInWithPopup } from 'firebase/auth';
 import { JWTToken } from 'libs/jwttoken/jwttoken';
@@ -174,6 +175,17 @@ export class AuthService {
 
   get authBearerToken(): string | undefined {
     return this.jwtSso?.jwtToken;
+  }
+
+  //to retrieve loggedInUser Details from token
+  get loggedInUser() {
+    const userDetails = this.jwtSso?.decodeToken();
+    const user = {
+      firstName: userDetails?.['given_name'],
+      lastName: userDetails?.['family_name'],
+      email: userDetails?.['email']
+    }
+    return user as Partial<IUser>;
   }
 
   // TODO

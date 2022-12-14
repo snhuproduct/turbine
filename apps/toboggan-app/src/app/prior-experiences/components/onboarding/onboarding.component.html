@@ -1,13 +1,18 @@
-<toboggan-ws-modal
-  #onboarding
-  title="Hello, Lindsey! Looks like you’re new here. Let’s show you around."
+<toboggan-ws-modal 
+  #onboarding 
+  title="Hello, {{ loggedInUser.firstName }}! Looks like you’re new here. Let’s show you around." 
   acceptButton="Get Started"
-  cancelButton="Don’t show this again"
-  id="onboarding"
-  (hidden)="onBoardingHidden()"
-  (accept)="onBoardingAccept()"
->
-<p class="gp-paragraph">
-	We’ve made it easier for you to match prior learning experiences to SNHU’s course catalog. Watch this video to learn how it works. 
-</p>
+  cancelButton="Don’t show this again" 
+  id="onboarding" 
+  (hidden)="onBoardingHidden()" 
+  (accept)="onBoardingAccept()">
+  <!-- IMPORTANT - must remove this image from assets when onboarding video is available for integration -->
+  <gp-illustration 
+    imageUrl="assets/images/onboarding-video-sample.png" 
+    type="landscape">
+  </gp-illustration>
+  <p class="gp-paragraph">
+    We’ve made it easier for you to match prior learning experiences to SNHU’s
+    course catalog. Watch this video to learn how it works.
+  </p>
 </toboggan-ws-modal>
