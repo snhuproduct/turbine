@@ -28,4 +28,7 @@ export class OnboardingComponent implements OnInit,AfterViewInit{
   onBoardingAccept() {
     this.onboardingModal.close();
   }
+  get title(): string {
+    return `Hello,${this.loggedInUser.firstName }! Looks like you’re new here. Let’s show you around.`
+  }
 }
