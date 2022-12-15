@@ -35,4 +35,17 @@ describe('OnboardingComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('modal should open', () => {
+    jest.spyOn(component.onboardingModal, 'open');
+    component.ngAfterViewInit();
+    expect(component.onboardingModal.open).toHaveBeenCalled();
+  });
+
+  it('modal should close', () => {
+    jest.spyOn(component.onboardingModal, 'close');
+    component.onBoardingHidden();
+    expect(component.onboardingModal.close).toHaveBeenCalled();
+  });
 });
+
