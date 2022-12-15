@@ -68,6 +68,7 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Center,
     dataType: TableColumnDataTypeEnum.PercentLink,
+    sticky: true,
   },
 ];
 
