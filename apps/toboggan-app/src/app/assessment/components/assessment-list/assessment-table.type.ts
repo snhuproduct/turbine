@@ -68,6 +68,8 @@ export const assessmentTableHeader: TableColumnDisplayMetadatum[] = [
     searchableField: true,
     alignment: TableColumnAlignmentEnum.Center,
     dataType: TableColumnDataTypeEnum.PercentLink,
+    hint: 'This similarity score was automatically generated. Review the similarity report and use your judgment to determine if the score is accurate before flagging this submission.',
+    sticky: true,
   },
 ];
 

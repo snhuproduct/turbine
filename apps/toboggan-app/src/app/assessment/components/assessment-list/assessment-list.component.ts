@@ -132,6 +132,12 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
 
       const timeLeftCellObject = cellData.flagged ? pausedTimeLeftCellObject : defaultTimeLeftCellObject;
 
+      const hint = cellData.attempts == 3 && cellData.currentAttempt > cellData.attempts
+        ? 'Before evaluating this submission, contact the instructor to confirm the learner is approved to make this submission. Learners need instructor approval to exceed 1 attempt on a practice activity.'
+        : cellData.attempts == 1 && cellData.currentAttempt > cellData.attempts
+          ? 'Before evaluating this submission, contact the instructor to confirm the learner is approved to make this submission. Learners need instructor approval to exceed 3 attempts on a final project.'
+          : null;
+
       return {
         rowId: String(index + 1),
         actionIcon,
@@ -147,6 +153,7 @@ export class AssessmentListComponent implements OnInit, OnDestroy {
             0: cellData.currentAttempt,
             1: cellData.attempts,
             cellClass: attemptBorderCellClass,
+            hint,
           },
           instructor: cellData.instructor,
           similarity: [

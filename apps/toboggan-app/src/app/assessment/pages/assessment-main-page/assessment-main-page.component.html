@@ -1,9 +1,9 @@
-<gp-page [loggedin]="true" mainClassName="gp-forest-background">
+<gp-page [loggedin]="true" mainClassName="gp-forest-background" contentClass="m-6">
   <toboggan-ws-banner></toboggan-ws-banner>
   <div class="gp-level-4 page-heading mb-5">Assessments</div>
   <toboggan-ws-modal-alert></toboggan-ws-modal-alert>
-  <div class="assessment-list-container p-5">
-    <gp-tabs orientation="horz">
+
+    <gp-tabs orientation="horz" contentClass="gp-tabs-x-content-small">
       <gp-tab label="To evaluate (30)">
         <toboggan-ws-assessment-list [selectedTab]="'toBeEvaluate'">
           <div table-cta-right>
@@ -37,5 +37,5 @@
         </toboggan-ws-assessment-evaluated-list>
       </gp-tab>
     </gp-tabs>
-  </div>
+
 </gp-page>
