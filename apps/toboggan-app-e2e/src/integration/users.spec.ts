@@ -136,7 +136,6 @@ describe('Users', () => {
       cy.get('.gp-table-x-dropdownmenubutton').contains('Deactivate').click();
 
       cy.fixture('users').then(users => {
-        users[0].enabled = false;
 
         cy.intercept('GET', 'api/users', users);
       });

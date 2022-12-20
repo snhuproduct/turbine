@@ -136,9 +136,10 @@ export class ListUsersComponent implements OnInit, OnDestroy {
           first: user.firstName,
           last: user.lastName,
           mail: ['gp-icon-mail', user.email],
-          status: user.enabled
-            ? ['is-category', 'Active', 50] // this will generate the custom tag
-            : ['is-category', 'Inactive', 50],
+          status:
+            user.status == 'active'
+              ? ['is-category', 'Active', 50] // this will generate the custom tag
+              : ['is-category', 'Inactive', 50],
           userId: user.userId,
         },
       };

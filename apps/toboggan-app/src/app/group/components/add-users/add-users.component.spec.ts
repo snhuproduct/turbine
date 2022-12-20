@@ -22,8 +22,7 @@ const mockUsers = [
     lastName: 'last1',
     email: 'email1@sada.com',
     groups: [],
-    userGroups: [],
-    enabled: true
+    userGroups: []
   },
   {
     userType: 'type',
@@ -34,8 +33,7 @@ const mockUsers = [
     lastName: 'last2',
     email: 'email2@sada.com',
     groups: [],
-    userGroups: [],
-    enabled: true
+    userGroups: []
   },
 ];
 

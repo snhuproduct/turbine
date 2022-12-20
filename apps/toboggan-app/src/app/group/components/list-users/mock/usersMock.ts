@@ -9,8 +9,7 @@ export const mockUsers = () => {
       userName: `user${i}`,
       firstName: `name${i}`,
       lastName: `last${i}`,
-      email: `user-${i}@sada.com`,
-      enabled: true,
+      email: `user-${i}@sada.com`
     });
   }
 

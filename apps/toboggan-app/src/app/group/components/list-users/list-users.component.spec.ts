@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   StoriesModule,
   TableComponent,
-  TableRow,
+  TableRow
 } from '@snhuproduct/toboggan-ui-components-library';
 import { of } from 'rxjs';
 import { BannerService } from '../../../shared/services/banner/banner.service';
@@ -139,8 +139,7 @@ describe('ListUsersComponent', () => {
         lastName: 'babish',
         email: 'email',
         groups: [],
-        userGroups: [],
-        enabled: true,
+        userGroups: []
       },
       {
         userType: 'type',
@@ -151,8 +150,7 @@ describe('ListUsersComponent', () => {
         lastName: 'ajith',
         email: 'email',
         groups: [],
-        userGroups: [],
-        enabled: true,
+        userGroups: []
       },
     ];
     expect(

@@ -15,8 +15,7 @@ const user: IUser = {
   userName: `user1`,
   firstName: `name1`,
   lastName: `last1`,
-  email: `user-1@sada.com`,
-  enabled: true,
+  email: `user-1@sada.com`
 };
 
 const users: IUser[] = [];
@@ -27,8 +26,7 @@ for (let i = 0; i < 20; i++) {
     userName: `user${i}`,
     firstName: `name${i}`,
     lastName: `last${i}`,
-    email: `user-${i}@sada.com`,
-    enabled: true,
+    email: `user-${i}@sada.com`
   });
 }
 
