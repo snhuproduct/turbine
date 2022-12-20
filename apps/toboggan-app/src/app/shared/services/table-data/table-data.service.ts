@@ -34,6 +34,7 @@ export interface ITableDataGeneratorFactoryOutput {
 export class TableDataService {
   constructor(private tablesortingService: TableSortingService) {}
 
+  private prevSearchString = '';
   private defaultFilterFunc(
     tr: TableRow,
     columnMetadata: TableColumnDisplayMetadatum[],
@@ -88,6 +89,10 @@ export class TableDataService {
               let pageNumber = currentPage; // for normal pagination
               if (!tableRefreshed) {
                 // if table refreshed
+                pageNumber = currentPageNumer;
+              }
+              if (this.prevSearchString != _searchString) {
+                this.prevSearchString = _searchString;
                 pageNumber = currentPageNumer;
               }
               dataGenerator.isFiltered = true;
